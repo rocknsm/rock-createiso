@@ -21,8 +21,8 @@ TMP_EFIBOOT=$(mktemp -d)
 . ./offline-snapshot.sh
 
 cleanup() {
-  umount $TMP_ISO 2>/dev/null
-  unmount $TMP_EFIBOOT 2>/dev/null
+  #fusermount -u $TMP_ISO 2>/dev/null
+  guestunmount $TMP_EFIBOOT 2>/dev/null
   [ -d ${TMP_ISO} ] && rm -rf ${TMP_ISO}
   [ -d ${TMP_NEW} ] && rm -rf ${TMP_NEW}
   [ -d ${TMP_RPMDB} ] && rm -rf ${TMP_RPMDB}
@@ -30,6 +30,29 @@ cleanup() {
 }
 
 trap cleanup EXIT
+
+debug() {
+  echo "Stuff is broken. You'll need this:"
+  cat <<EOF
+  NAME: ${NAME}
+  VERSION: ${VERSION}
+  RELEASE: ${RELEASE}
+  ARCH: ${ARCH}
+  KICKSTART: ${KICKSTART}
+  KICKSTART_MAN: ${KICKSTART_MAN}
+  TIMESTAMP: ${TIMESTAMP}
+  SCRIPT_DIR: ${SCRIPT_DIR}
+
+  SRCISO: ${SRCISO}
+  OUT_ISO: ${OUT_ISO}
+
+  TMP_ISO: ${TMP_ISO}
+  TMP_NEW: ${TMP_NEW}
+  TMP_RPMDB: ${TMP_RPMDB}
+  TMP_EFIBOOT: ${TMP_EFIBOOT}
+EOF
+}
+# trap debug EXIT
 
 check_depends() {
   which mkisofs    # genisoimage
@@ -62,11 +85,11 @@ extract_iso() {
   # done
 
   # Mount existing iso and copy to new dir
-  cond_out mount -o loop -t iso9660 "${SRCISO}" ${TMP_ISO}
+  cond_out fuseiso "${SRCISO}" ${TMP_ISO}
   cond_out rsync --recursive --exclude=Packages --exclude=repodata ${TMP_ISO}/ ${TMP_NEW}/
   cond_out mkdir -p ${TMP_NEW}/repodata
   cond_out cp $(ls ${TMP_ISO}/repodata/*comps.xml | head -1 ) ${TMP_NEW}/repodata/comps.xml
-  cond_out umount ${TMP_ISO}
+  cond_out fusermount -u ${TMP_ISO}
 
   # Remove TRANS files
   find ${TMP_NEW} -name TRANS.TBL -delete
@@ -104,9 +127,9 @@ EOF
     cat - > ${TMP_NEW}/EFI/BOOT/grub.cfg
 
   # Update efiboot img
-  cond_out mount -o loop ${TMP_NEW}/images/efiboot.img ${TMP_EFIBOOT}
+  cond_out guestmount -a ${TMP_NEW}/images/efiboot.img -i ${TMP_EFIBOOT}
   cond_out cp ${TMP_NEW}/EFI/BOOT/grub.cfg ${TMP_EFIBOOT}/EFI/BOOT/grub.cfg
-  cond_out umount ${TMP_EFIBOOT}
+  cond_out guestunmount ${TMP_EFIBOOT}
 
   # Copy boot splash branding
   cond_out cp ${SCRIPT_DIR}/images/splash_rock.png ${TMP_NEW}/isolinux/splash.png

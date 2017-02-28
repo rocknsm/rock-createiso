@@ -15,7 +15,7 @@ This will install the needed RPMs, pkg repos, and Python modules.
 You need to have a working CentOS 7 ISO, I think any will do. Currently,
 the script doesn't do any smart caching, simply downloads all needed RPMs
 using yum. If you're tight on bandwidth, you might setup a caching proxy
-server. I've had good experience with `polipo`.
+server.
 
 Run the `master_iso.sh` script, as root and give it the path to your
 source ISO, then optionally the the output filename.
