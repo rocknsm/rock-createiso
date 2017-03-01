@@ -95,6 +95,13 @@ EOF
       --yum-cmd -- install --downloadonly \
       --downloaddir=${ROCK_CACHE_DIR}/Packages/
 
+  # Add packages needed for anaconda
+  grep -vE '^[%#-]|^$' ks/local.list | \
+    awk '{print$1}' | \
+    xargs mock --root=src/mock/rock-2-x86_64.cfg \
+      --yum-cmd -- install --downloadonly \
+      --downloaddir=${ROCK_CACHE_DIR}/Packages/
+
   # Clear old repo data & generate fresh
   rm -rf ${ROCK_CACHE_DIR}/repodata
   createrepo ${ROCK_CACHE_DIR}
