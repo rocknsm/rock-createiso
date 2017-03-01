@@ -17,6 +17,8 @@ trap cleanup-snapshot EXIT
 
 function offline-snapshot () {
 
+  ROCK_CACHE_DIR=${1:-ROCK_CACHE_DIR}
+
   # Requires to run as root
   #if [ $(id -u) != 0 ]; then echo "Run this script as root (try sudo)"; exit 1; fi
   mkdir -p ${TMP_RPM_ROOT}
