@@ -8,6 +8,7 @@ KICKSTART="ks.cfg"
 KICKSTART_MAN="ks_manual.cfg"
 TIMESTAMP=$(date +%FT%R)
 SCRIPT_DIR=$(dirname $(readlink -f $0))
+BUILD_LOG="build-$(date +%YT%H%M).log"
 
 SRCISO=$(realpath $1)
 OUT_ISO=${1/.iso/-$TIMESTAMP}.iso
@@ -21,8 +22,8 @@ TMP_EFIBOOT=$(mktemp -d)
 . ./offline-snapshot.sh
 
 cleanup() {
-  #fusermount -u $TMP_ISO 2>/dev/null
-  guestunmount $TMP_EFIBOOT 2>/dev/null
+  umount $TMP_ISO 2>/dev/null
+  unmount $TMP_EFIBOOT 2>/dev/null
   [ -d ${TMP_ISO} ] && rm -rf ${TMP_ISO}
   [ -d ${TMP_NEW} ] && rm -rf ${TMP_NEW}
   [ -d ${TMP_RPMDB} ] && rm -rf ${TMP_RPMDB}
@@ -30,29 +31,6 @@ cleanup() {
 }
 
 trap cleanup EXIT
-
-debug() {
-  echo "Stuff is broken. You'll need this:"
-  cat <<EOF
-  NAME: ${NAME}
-  VERSION: ${VERSION}
-  RELEASE: ${RELEASE}
-  ARCH: ${ARCH}
-  KICKSTART: ${KICKSTART}
-  KICKSTART_MAN: ${KICKSTART_MAN}
-  TIMESTAMP: ${TIMESTAMP}
-  SCRIPT_DIR: ${SCRIPT_DIR}
-
-  SRCISO: ${SRCISO}
-  OUT_ISO: ${OUT_ISO}
-
-  TMP_ISO: ${TMP_ISO}
-  TMP_NEW: ${TMP_NEW}
-  TMP_RPMDB: ${TMP_RPMDB}
-  TMP_EFIBOOT: ${TMP_EFIBOOT}
-EOF
-}
-# trap debug EXIT
 
 check_depends() {
   which mkisofs    # genisoimage
@@ -68,7 +46,7 @@ usage() {
 if [ $# -lt 1 ] || [ -z "$1" ]; then usage; fi
 
 die() { echo "ERROR: $@" >&2 ; exit 2 ; }
-cond_out() { "$@" > .tmp.log 2>&1 || { cat .tmp.log >&2 ; die "Failed to run $@" ; } && rm .tmp.log || : ; return $? ; }
+cond_out() { "$@" 2>&1 | tee -a ${BUILD_LOG} > .tmp.log 2>&1 || { cat .tmp.log >&2 ; die "Failed to run $@" ; } && rm .tmp.log || : ; return $? ; }
 
 extract_iso() {
   echo "[1/4] Extracting ISO"
@@ -85,11 +63,11 @@ extract_iso() {
   # done
 
   # Mount existing iso and copy to new dir
-  cond_out fuseiso "${SRCISO}" ${TMP_ISO}
+  cond_out mount -o loop -t iso9660 "${SRCISO}" ${TMP_ISO}
   cond_out rsync --recursive --exclude=Packages --exclude=repodata ${TMP_ISO}/ ${TMP_NEW}/
   cond_out mkdir -p ${TMP_NEW}/repodata
   cond_out cp $(ls ${TMP_ISO}/repodata/*comps.xml | head -1 ) ${TMP_NEW}/repodata/comps.xml
-  cond_out fusermount -u ${TMP_ISO}
+  cond_out umount ${TMP_ISO}
 
   # Remove TRANS files
   find ${TMP_NEW} -name TRANS.TBL -delete
@@ -127,17 +105,19 @@ EOF
     cat - > ${TMP_NEW}/EFI/BOOT/grub.cfg
 
   # Update efiboot img
-  cond_out guestmount -a ${TMP_NEW}/images/efiboot.img -i ${TMP_EFIBOOT}
+  cond_out mount -o loop ${TMP_NEW}/images/efiboot.img ${TMP_EFIBOOT}
   cond_out cp ${TMP_NEW}/EFI/BOOT/grub.cfg ${TMP_EFIBOOT}/EFI/BOOT/grub.cfg
-  cond_out guestunmount ${TMP_EFIBOOT}
+  cond_out umount ${TMP_EFIBOOT}
 
   # Copy boot splash branding
   cond_out cp ${SCRIPT_DIR}/images/splash_rock.png ${TMP_NEW}/isolinux/splash.png
 
   # Generate product image
   cd ${SCRIPT_DIR}/product
-  cond_out find . | cpio --quiet -c -o | pigz -q -9c > ${TMP_NEW}/images/product.img
+  find . | cpio -c -o | gzip -9cv > ../product.img
   cd ${SCRIPT_DIR}
+  mkdir -p ${TMP_NEW}/images
+  cp product.img ${TMP_NEW}/images/
 
   # Sync over offline content
   cond_out rsync --recursive --quiet ${ROCK_CACHE_DIR}/ ${TMP_NEW}/
@@ -172,6 +152,9 @@ create_iso() {
   local _build_dir="${TMP_NEW}"
   local _iso_fname="${OUT_ISO}"
   local _volid="${NAME} ${VERSION} ${ARCH}"
+
+  cond_out echo "Dumping tree listing"
+  cond_out tree ${_build_dir}
 
   cond_out /usr/bin/mkisofs -J \
     -translation-table \
