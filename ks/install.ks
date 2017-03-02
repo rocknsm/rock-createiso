@@ -77,11 +77,11 @@ cat << 'EOF' > /etc/rocknsm/config.yml
 rock_online_install: False
 EOF
 
-${ROCK_DIR}/ansible/generate_defaults.sh
+${ROCK_DIR}/bin/generate_defaults.sh
 
 # Install /etc/issue updater
-cp ${ROCK_DIR}/ansible/files/etc-issue.in /etc/issue.in
-cp ${ROCK_DIR}/ansible/files/nm-issue-update /etc/NetworkManager/dispatcher.d/50-rocknsm-issue-update
+cp ${ROCK_DIR}/playbooks/files/etc-issue.in /etc/issue.in
+cp ${ROCK_DIR}/playbooks/files/nm-issue-update /etc/NetworkManager/dispatcher.d/50-rocknsm-issue-update
 chmod 755 /etc/NetworkManager/dispatcher.d/50-rocknsm-issue-update
 
 %end
