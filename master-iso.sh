@@ -6,7 +6,7 @@ RELEASE="1"
 ARCH="x86_64"
 KICKSTART="ks.cfg"
 KICKSTART_MAN="ks_manual.cfg"
-TIMESTAMP=$(date +%FT%R)
+BUILD="1703"
 SCRIPT_DIR=$(dirname $(readlink -f $0))
 
 SRCISO=$(realpath $1)
@@ -114,7 +114,7 @@ add_content() {
   "arch": "${ARCH}",
   "kickstart": "${KICKSTART}",
   "kickstart_man": "${KICKSTART_MAN}",
-  "build": "${TIMESTAMP}"
+  "build": "${BUILD}"
 }
 EOF
 
