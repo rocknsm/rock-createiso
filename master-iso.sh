@@ -66,7 +66,7 @@ extract_iso() {
   cond_out mount -o loop -t iso9660 "${SRCISO}" ${TMP_ISO}
   cond_out rsync --recursive --exclude=Packages --exclude=repodata ${TMP_ISO}/ ${TMP_NEW}/
   cond_out mkdir -p ${TMP_NEW}/repodata
-  cond_out cp $(ls ${TMP_ISO}/repodata/*comps.xml | head -1 ) ${TMP_NEW}/repodata/comps.xml
+  cond_out cp $(ls ${TMP_ISO}/repodata/*comps*.xml | head -1 ) ${TMP_NEW}/repodata/comps.xml
   cond_out umount ${TMP_ISO}
 
   # Remove TRANS files
