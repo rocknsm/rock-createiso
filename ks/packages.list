@@ -8,6 +8,11 @@ git
 bzip2
 ansible
 
+# Necessary for boot customization
+firstboot
+# initial-setup
+initial-setup-gui
+
 # Needed for better AF_PACKET support for now
 kernel-ml
 

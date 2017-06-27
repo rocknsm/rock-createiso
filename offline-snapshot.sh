@@ -120,6 +120,9 @@ EOF
   curl -Ls -o "rock_$(echo ${ROCK_BRANCH} | tr '/' '-').tar.gz" \
     "https://github.com/rocknsm/rock/archive/${ROCK_BRANCH}.tar.gz"
 
+  echo "Copying EPEL keys..."
+  cp /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7 .
+
   # Because I'm pedantic
   popd >/dev/null
 }
