@@ -1,9 +1,9 @@
 # Setup installer
 install
 cdrom
-firstboot --disabled
+firstboot --enable
 eula --agreed
-#reboot --eject
+reboot --eject
 
 # Configure Storage
 ignoredisk --only-use=sda
@@ -83,5 +83,7 @@ ${ROCK_DIR}/bin/generate_defaults.sh
 cp ${ROCK_DIR}/playbooks/files/etc-issue.in /etc/issue.in
 cp ${ROCK_DIR}/playbooks/files/nm-issue-update /etc/NetworkManager/dispatcher.d/50-rocknsm-issue-update
 chmod 755 /etc/NetworkManager/dispatcher.d/50-rocknsm-issue-update
+
+systemctl enable initial-setup-graphical.service
 
 %end

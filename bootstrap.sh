@@ -18,7 +18,7 @@ else
   yum -y install epel-release
 fi
 
-yum -y install python-pip python-jinja2 python-simplejson genisoimage pykickstart createrepo rsync isomd5sum syslinux pigz mock fuseiso libguestfs-tools-c
+yum -y install python-pip python-jinja2 python-simplejson genisoimage pykickstart createrepo rsync isomd5sum syslinux pigz mock fuseiso libguestfs-tools-c initial-setup-gui firstboot
 
 pip install pythonpy
 

@@ -134,9 +134,9 @@ EOF
 %end
 EOF
 
-# Generate flattened automated kickstart & add pre-inst hooks
-cond_out ksflatten -c ks/manual.ks -o "${TMP_NEW}/${KICKSTART_MAN}"
-cat <<EOF >> "${TMP_NEW}/${KICKSTART_MAN}"
+  # Generate flattened automated kickstart & add pre-inst hooks
+  cond_out ksflatten -c ks/manual.ks -o "${TMP_NEW}/${KICKSTART_MAN}"
+  cat <<EOF >> "${TMP_NEW}/${KICKSTART_MAN}"
 
 # This seems to get removed w/ ksflatten
 %addon com_redhat_kdump --disable
