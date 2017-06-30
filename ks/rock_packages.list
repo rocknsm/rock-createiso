@@ -30,6 +30,9 @@ kernel-ml-devel
 firstboot
 # initial-setup
 initial-setup-gui
+# Necessary for nginx auth setup
+easy-rsa
+xkcdpass
 # Needed for pulledpork
 perl-Crypt-SSLeay
 perl-LWP-Protocol-https

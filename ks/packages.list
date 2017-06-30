@@ -8,6 +8,10 @@ git
 bzip2
 ansible
 
+# Necessary for nginx auth setup
+easy-rsa
+xkcdpass
+
 # Necessary for boot customization
 firstboot
 # initial-setup
