@@ -6,7 +6,7 @@ RELEASE="1"
 ARCH="x86_64"
 KICKSTART="ks.cfg"
 KICKSTART_MAN="ks_manual.cfg"
-TIMESTAMP=$(date +%FT%R)
+BUILD="1703"
 SCRIPT_DIR=$(dirname $(readlink -f $0))
 BUILD_LOG="build-$(date +%YT%H%M).log"
 
@@ -66,7 +66,7 @@ extract_iso() {
   cond_out mount -o loop -t iso9660 "${SRCISO}" ${TMP_ISO}
   cond_out rsync --recursive --exclude=Packages --exclude=repodata ${TMP_ISO}/ ${TMP_NEW}/
   cond_out mkdir -p ${TMP_NEW}/repodata
-  cond_out cp $(ls ${TMP_ISO}/repodata/*comps.xml | head -1 ) ${TMP_NEW}/repodata/comps.xml
+  cond_out cp $(ls ${TMP_ISO}/repodata/*comps*.xml | head -1 ) ${TMP_NEW}/repodata/comps.xml
   cond_out umount ${TMP_ISO}
 
   # Remove TRANS files
@@ -92,7 +92,7 @@ add_content() {
   "arch": "${ARCH}",
   "kickstart": "${KICKSTART}",
   "kickstart_man": "${KICKSTART_MAN}",
-  "build": "${TIMESTAMP}"
+  "build": "${BUILD}"
 }
 EOF
 
@@ -134,9 +134,9 @@ EOF
 %end
 EOF
 
-# Generate flattened automated kickstart & add pre-inst hooks
-cond_out ksflatten -c ks/manual.ks -o "${TMP_NEW}/${KICKSTART_MAN}"
-cat <<EOF >> "${TMP_NEW}/${KICKSTART_MAN}"
+  # Generate flattened automated kickstart & add pre-inst hooks
+  cond_out ksflatten -c ks/manual.ks -o "${TMP_NEW}/${KICKSTART_MAN}"
+  cat <<EOF >> "${TMP_NEW}/${KICKSTART_MAN}"
 
 # This seems to get removed w/ ksflatten
 %addon com_redhat_kdump --disable
