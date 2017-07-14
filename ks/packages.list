@@ -3,6 +3,7 @@
 
 # Tools for operator sanity
 vim
+nano
 tmux
 git
 bzip2
