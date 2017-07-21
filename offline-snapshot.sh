@@ -49,6 +49,17 @@ baseurl=http://elrepo.org/linux/kernel/el7/\$basearch/
 gpgcheck=1
 gpgkey=https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
 protect=0
+
+[rocknsm-copr]
+name=Copr repo for rocknsm owned by @rocknsm
+baseurl=https://copr-be.cloud.fedoraproject.org/results/@rocknsm/rocknsm-2.1/epel-7-\$basearch/
+type=rpm-md
+skip_if_unavailable=True
+gpgcheck=1
+gpgkey=https://copr-be.cloud.fedoraproject.org/results/@rocknsm/rocknsm-2.1/pubkey.gpg
+repo_gpgcheck=0
+enabled=1
+enabled_metadata=1
 EOF
 
   mkdir -p "${ROCK_CACHE_DIR}/Packages"
