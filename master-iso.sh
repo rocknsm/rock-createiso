@@ -1,12 +1,12 @@
 #!/bin/bash
 
 NAME="ROCK"
-VERSION="2.0"
+VERSION="2.1"
 RELEASE="1"
 ARCH="x86_64"
 KICKSTART="ks.cfg"
 KICKSTART_MAN="ks_manual.cfg"
-BUILD="1703"
+BUILD="1708"
 SCRIPT_DIR=$(dirname $(readlink -f $0))
 BUILD_LOG="build-$(date +%YT%H%M).log"
 

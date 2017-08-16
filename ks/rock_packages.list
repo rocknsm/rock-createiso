@@ -28,6 +28,7 @@ nginx
 kernel-ml
 kernel-ml-devel
 firstboot
+python-markupsafe
 # initial-setup
 initial-setup-gui
 # Necessary for nginx auth setup
