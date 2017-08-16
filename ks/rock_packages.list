@@ -24,6 +24,7 @@ logrotate
 elasticsearch
 logstash
 kibana
+filebeat
 nginx
 kernel-ml
 kernel-ml-devel
