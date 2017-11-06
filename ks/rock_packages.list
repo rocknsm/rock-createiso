@@ -25,8 +25,8 @@ elasticsearch
 logstash
 kibana
 nginx
-kernel-ml
-kernel-ml-devel
+filebeat
+metricbeat
 firstboot
 # initial-setup
 initial-setup-gui

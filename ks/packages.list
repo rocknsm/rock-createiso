@@ -18,9 +18,6 @@ firstboot
 # initial-setup
 initial-setup-gui
 
-# Needed for better AF_PACKET support for now
-kernel-ml
-
 # Needed for repoquery in ansible scripts
 yum-utils
 

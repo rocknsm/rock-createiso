@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "bento/centos-7.3"
+  config.vm.box = "centos/7"
 
   config.vm.provision "shell", inline: <<-SHELL
     sudo /vagrant/bootstrap.sh
