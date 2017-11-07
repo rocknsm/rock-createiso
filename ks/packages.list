@@ -9,6 +9,9 @@ git
 bzip2
 ansible
 
+# Install RockNSM
+rock
+
 # Necessary for nginx auth setup
 easy-rsa
 xkcdpass

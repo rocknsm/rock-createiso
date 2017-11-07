@@ -1,12 +1,12 @@
 #!/bin/bash
 
 NAME="ROCK"
-VERSION="2.0"
-RELEASE="1"
+VERSION="2.1"
+RELEASE="0beta$(date +%Y%m%d)"
 ARCH="x86_64"
 KICKSTART="ks.cfg"
 KICKSTART_MAN="ks_manual.cfg"
-BUILD="1703"
+BUILD="$(date +%Y%m)"
 SCRIPT_DIR=$(dirname $(readlink -f $0))
 BUILD_LOG="build-$(date +%YT%H%M).log"
 
@@ -39,7 +39,7 @@ check_depends() {
 }
 
 usage() {
-  echo "Usage: $0 CentOS-7-x86_64-Everything-1611.iso [output.iso]"
+  echo "Usage: $0 CentOS-7-x86_64-Everything-1708.iso [output.iso]"
   exit 2
 }
 

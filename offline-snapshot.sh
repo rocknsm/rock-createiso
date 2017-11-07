@@ -1,10 +1,10 @@
 #!/bin/bash
 
 ROCK_CACHE_DIR=rocknsm_cache
-ROCK_REPO=2
+ROCK_REPO=2_1
 ROCKSCRIPTS_BRANCH=master
 ROCKDASHBOARDS_BRANCH=master
-ROCK_BRANCH=master
+#ROCK_BRANCH=master
 PULLEDPORK_RELEASE=0.7.2
 TMP_RPM_ROOT=$(mktemp -d)
 
@@ -127,9 +127,9 @@ EOF
   curl -Ls -o "rock-dashboards_$(echo ${ROCKDASHBOARDS_BRANCH} | tr '/' '-').tar.gz" \
     "https://github.com/rocknsm/rock-dashboards/archive/${ROCKDASHBOARDS_BRANCH}.tar.gz"
 
-  echo "Downloading ROCK Snapshot..."
-  curl -Ls -o "rock_$(echo ${ROCK_BRANCH} | tr '/' '-').tar.gz" \
-    "https://github.com/rocknsm/rock/archive/${ROCK_BRANCH}.tar.gz"
+#  echo "Downloading ROCK Snapshot..."
+#  curl -Ls -o "rock_$(echo ${ROCK_BRANCH} | tr '/' '-').tar.gz" \
+#    "https://github.com/rocknsm/rock/archive/${ROCK_BRANCH}.tar.gz"
 
   echo "Copying EPEL keys..."
   cp /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7 .
