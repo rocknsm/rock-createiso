@@ -66,8 +66,6 @@ EOF
 #######################################
 # Extract current ROCK NSM scripts
 #######################################
-#mkdir -p ${ROCK_DIR}; cd ${ROCK_DIR}
-#tar --extract --strip-components=1 --auto-compress --file=$(ls /srv/rocknsm/support/rock_*.tar.gz|head -1)
 
 # Default to offline build and generate values
 mkdir -p /etc/rocknsm
