@@ -57,7 +57,9 @@ cat << 'EOF' > /etc/yum.repos.d/rocknsm-local.repo
 [rocknsm-local]
 name=ROCKNSM Local Repository
 baseurl=file:///srv/rocknsm
-gpgcheck=0
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-RockNSM-2
 enabled=1
 # Prefer these packages versus online
 cost=500

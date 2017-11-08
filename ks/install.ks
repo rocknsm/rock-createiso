@@ -44,6 +44,9 @@ auth --enableshadow --passalgo=sha512 --kickstart
 mkdir -p /mnt/sysimage/srv/rocknsm
 rsync -rP --exclude 'TRANS.TBL' /mnt/install/repo/{Packages,repodata,support} /mnt/sysimage/srv/rocknsm/
 
+# Copy over GPG key
+cp -a /mnt/install/repo/RPM-GPG-KEY-RockNSM-2 /etc/pki/rpm-gpg/RPM-GPG-KEY-RockNSM-2
+
 %end
 
 %post --log=/root/ks-post-chroot.log
@@ -59,15 +62,13 @@ cat << 'EOF' > /etc/yum.repos.d/rocknsm-local.repo
 [rocknsm-local]
 name=ROCKNSM Local Repository
 baseurl=file:///srv/rocknsm
-gpgcheck=0
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-RockNSM-2
 enabled=1
 # Prefer these packages versus online
 cost=500
 EOF
-
-#######################################
-# Extract current ROCK NSM scripts
-#######################################
 
 # Default to offline build and generate values
 mkdir -p /etc/rocknsm

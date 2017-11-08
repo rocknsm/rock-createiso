@@ -143,6 +143,9 @@ EOF
 %end
 EOF
 
+  # Copy over GPG key
+  cp -a "${SCRIPT_DIR}/RPM-GPG-KEY-RockNSM-2" "${TMP_NEW}/RPM-GPG-KEY-RockNSM-2"
+
 }
 
 create_iso() {

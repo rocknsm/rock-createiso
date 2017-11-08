@@ -43,13 +43,6 @@ gpgcheck = 1
 gpgkey = https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7
 name = EPEL YUM repo
 
-[elrepo-kernel]
-name=ELRepo.org Community Enterprise Linux Kernel Repository - el7
-baseurl=http://elrepo.org/linux/kernel/el7/\$basearch/
-gpgcheck=1
-gpgkey=https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
-protect=0
-
 [rocknsm-copr]
 name=Copr repo for rocknsm owned by @rocknsm
 baseurl=https://copr-be.cloud.fedoraproject.org/results/@rocknsm/rocknsm-2.1/epel-7-\$basearch/
@@ -57,7 +50,7 @@ type=rpm-md
 skip_if_unavailable=True
 gpgcheck=1
 gpgkey=https://copr-be.cloud.fedoraproject.org/results/@rocknsm/rocknsm-2.1/pubkey.gpg
-repo_gpgcheck=0
+repo_gpgcheck=1
 enabled=1
 enabled_metadata=1
 EOF
@@ -95,9 +88,17 @@ EOF
       --downloaddir=${ROCK_CACHE_DIR}/Packages/ \
       --installroot=${TMP_RPM_ROOT}
 
+  # Setup for gpg signatures; Ensure key is already available
+  cat << 'EOF' > ~/.rpmmacros
+%_gpg_name ROCKNSM 2 Key (ROCKNSM 2 Official Signing Key) <security@rocknsm.io>
+EOF
+  # This will take a while
+  rpmsign --addsign ${ROCK_CACHE_DIR}/Packages/*.rpm
+
   # Clear old repo data & generate fresh
   rm -rf ${ROCK_CACHE_DIR}/repodata
   createrepo ${ROCK_CACHE_DIR}
+  gpg --detach-sign --armor -u security@rocknsm.io ${ROCK_CACHE_DIR}/repodata/repomd.xml
 
   mkdir -p "${ROCK_CACHE_DIR}/support"
   pushd "${ROCK_CACHE_DIR}/support" >/dev/null
