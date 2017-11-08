@@ -78,6 +78,9 @@ EOF
 
 ${ROCK_DIR}/bin/generate_defaults.sh
 
+# Set version id
+echo "2.1.0" > /etc/rocknsm/rock-version
+
 # Install /etc/issue updater
 cp ${ROCK_DIR}/playbooks/files/etc-issue.in /etc/issue.in
 cp ${ROCK_DIR}/playbooks/files/nm-issue-update /etc/NetworkManager/dispatcher.d/50-rocknsm-issue-update
