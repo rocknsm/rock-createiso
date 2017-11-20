@@ -5,16 +5,11 @@ firstboot --enable
 eula --agreed
 reboot --eject
 
-# Configure Storage
-clearpart --all --initlabel --drives=sda
-bootloader --location=mbr --boot-drive=sda
-
 # Configure OS
 timezone UTC
 lang en_US.UTF-8
 keyboard us
 network --bootproto=dhcp --noipv6 --activate
-unsupported_hardware
 
 services --enabled=ssh
 

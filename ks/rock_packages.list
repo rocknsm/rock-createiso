@@ -32,6 +32,8 @@ perl-libwww-perl
 # Stenographer
 stenographer
 jq
+docket
+lighttpd
 
 # Kafka
 zookeeper
@@ -49,6 +51,7 @@ kibana
 metricbeat
 filebeat
 nginx
+
 
 # Necessary for nginx auth setup
 easy-rsa

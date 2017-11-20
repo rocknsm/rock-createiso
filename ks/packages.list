@@ -2,7 +2,7 @@
 @core
 
 # Tools for operator sanity
-vim
+vim-enhanced
 nano
 tmux
 git
@@ -13,8 +13,9 @@ ansible
 rock
 
 # Necessary for boot customization
-firstboot
-initial-setup-gui
+#firstboot
+#initial-setup-gui
+initial-setup
 
 # Needed for repoquery in ansible scripts
 yum-utils
@@ -23,6 +24,13 @@ yum-utils
 openscap
 openscap-scanner
 scap-security-guide
+
+# These are needed for STIG policy
+pam_pkcs11
+openssh-server
+screen
+-esc
+
 
 # unnecessary firmware
 -aic94xx-firmware
