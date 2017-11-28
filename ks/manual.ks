@@ -5,16 +5,11 @@ firstboot --enable
 eula --agreed
 reboot --eject
 
-# Configure Storage
-clearpart --all --initlabel --drives=sda
-bootloader --location=mbr --boot-drive=sda
-
 # Configure OS
 timezone UTC
 lang en_US.UTF-8
 keyboard us
 network --bootproto=dhcp --noipv6 --activate
-unsupported_hardware
 
 services --enabled=ssh
 
@@ -57,7 +52,9 @@ cat << 'EOF' > /etc/yum.repos.d/rocknsm-local.repo
 [rocknsm-local]
 name=ROCKNSM Local Repository
 baseurl=file:///srv/rocknsm
-gpgcheck=0
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-RockNSM-2
 enabled=1
 # Prefer these packages versus online
 cost=500
@@ -66,8 +63,6 @@ EOF
 #######################################
 # Extract current ROCK NSM scripts
 #######################################
-mkdir -p ${ROCK_DIR}; cd ${ROCK_DIR}
-tar --extract --strip-components=1 --auto-compress --file=$(ls /srv/rocknsm/support/rock_*.tar.gz|head -1)
 
 # Default to offline build and generate values
 mkdir -p /etc/rocknsm
@@ -77,6 +72,9 @@ rock_online_install: False
 EOF
 
 ${ROCK_DIR}/bin/generate_defaults.sh
+
+# Set version id
+echo "2.1.0" > /etc/rocknsm/rock-version
 
 # Install /etc/issue updater
 cp ${ROCK_DIR}/playbooks/files/etc-issue.in /etc/issue.in

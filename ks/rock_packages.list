@@ -1,19 +1,5 @@
 # ROCK packages
-bro
-bro-plugin-kafka
-bro-plugin-af_packet
 bwm-ng
-suricata
-snort
-daq
-stenographer
-zookeeper
-kafka
-kafkacat
-java-1.8.0-openjdk-headless
-jq
-GeoIP
-GeoIP-update
 tcpreplay
 tcpdump
 bats
@@ -21,22 +7,52 @@ policycoreutils-python
 htop
 nmap-ncat
 logrotate
-elasticsearch
-logstash
-kibana
-nginx
-kernel-ml
-kernel-ml-devel
-firstboot
-# initial-setup
-initial-setup-gui
-# Necessary for nginx auth setup
-easy-rsa
-xkcdpass
-# Needed for pulledpork
+
+# Bro
+bro
+bro-plugin-kafka
+bro-plugin-af_packet
+GeoIP
+GeoIP-update
+
+
+# Suricata / Snort
+suricata
+snort
+daq
+
+# Pulled Pork
 perl-Crypt-SSLeay
 perl-LWP-Protocol-https
 perl-Sys-Syslog
 perl-Archive-Tar
 perl-libwww-perl
+
+
+# Stenographer
+stenographer
+jq
+docket
+lighttpd
+
+# Kafka
+zookeeper
+kafka
+kafkacat
+java-1.8.0-openjdk-headless
+
+# FSF
 fsf
+
+# Elastic Stack
+elasticsearch
+logstash
+kibana
+metricbeat
+filebeat
+nginx
+
+
+# Necessary for nginx auth setup
+easy-rsa
+python2-xkcdpass
