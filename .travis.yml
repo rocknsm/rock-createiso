@@ -1,0 +1,24 @@
+---
+sudo: required
+language: python
+
+env:
+  global:
+    - DOCKER_IMAGE=dcode/rocknsm_createiso
+    - OS_ARCH=x86_64
+    - ISO_MIRROR=http://mirror.cogentco.com/pub/linux/centos/7/isos/x86_64/CentOS-7-x86_64-Everything-1708.iso
+
+services:
+  - docker
+
+install: true
+
+script:
+  - curl -LOJ ${ISO_MIRROR}
+  - docker run -v ${PWD}:/sources -v ${PWD}/build:/output:Z -w /sources ${DOCKER_IMAGE}:latest /sources/master-iso.sh $(basename ${ISO_MIRROR}) /output/rocknsm-2.1-nightly-$(date +%Y%m%d).iso
+  - echo "TRAVIS_TAG=${TRAVIS_TAG}"
+
+    #after_success:
+    #  - pip install copr-cli simplejson
+    #  - openssl aes-256-cbc -K $encrypted_775977b6796c_key -iv $encrypted_775977b6796c_iv -in .copr.enc -out .copr -d
+    #  - if [ ! -z "${TRAVIS_TAG}" ]; then copr-cli --config .copr build -r ${OS_DIST}-${OS_VERSION}-${OS_ARCH} ${COPR_REPOSITORY} *.src.rpm; fi
