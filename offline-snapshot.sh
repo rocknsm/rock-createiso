@@ -24,18 +24,24 @@ function offline-snapshot () {
 
   # List group packages
   for item in ${PKGGROUPS}; do
+    echo "Adding package group: ${item}"
     PKGS=$(repoquery --config rock-yum.conf --group --grouppkgs=all --list ${item} 2>/dev/null)
     DEPLIST+="${PKGS}"
   done
 
   # Add explicit packages
-  DEPLIST+="$(cat ks/*.list | grep --color=never -vE '^[%#-]|^$')"
+  DEPLIST+="$(cat ks/*.list | grep --color=never -vE '^[@%#-]|^$')"
   # Dedupe
   DEPLIST=$(echo ${DEPLIST} | sed 's/ /\n/g' | sort -u | sed -e :a -e '$!N; s/\n/ /; ta')
   echo "Downloading the following packages and their dependencies:"
   echo "${DEPLIST}"
-  
-  repotrack --config rock-yum.conf --arch=x86_64,noarch --download_path rocknsm_cache/Packages/ ${DEPLIST}
+
+  # Download _ALL_ dependencies
+  repotrack --config rock-yum.conf --download_path ${ROCK_CACHE_DIR}/Packages/ ${DEPLIST}
+  # Remove the i686 stuff
+  echo "Removing i686 packages"
+  ls ${ROCK_CACHE_DIR}/Packages/*i686.rpm
+  rm ${ROCK_CACHE_DIR}/Packages/*i686.rpm
 
   SKIP_GPG=0
   if [ -z "${CONTINUOUS_INTEGRATION}" ] && [ "${CONTINUOUS_INTEGRATION}" != "true" ]; then
@@ -92,7 +98,7 @@ function offline-snapshot () {
   # ROCK-Scripts:
   curl -Ls -o "rock-scripts_$(echo ${ROCKSCRIPTS_BRANCH} | tr '/' '-').tar.gz" \
     "https://github.com/rocknsm/rock-scripts/archive/${ROCKSCRIPTS_BRANCH}.tar.gz"
-  
+
   if [ "${SKIP_GPG}" -eq "0" ]; then
       gpg2 --detach-sign --yes --armor -u security@rocknsm.io "rock-scripts_$(echo ${ROCKSCRIPTS_BRANCH} | tr '/' '-').tar.gz"
   fi
