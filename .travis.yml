@@ -21,9 +21,10 @@ before_deploy:
       - git tag "nightly-$(date +'%Y%m%d')"
 deploy:
   provider: releases
+  skip_cleanup: true
   api_key:
     secure: AzcLFATr7UyL8FpzL5W+1NJw/Ogwt0MrRi16sxX+XmbrnWuFccbdpjmTiLtU3bJ1BPBF5vJe9F9BpC/6B93xrxdMQiBv1ubrULBmoYyXijUIR3n+f/Zrg7etoH5YkbHDMgOwC5nAepYrw+f3dEuLFdQavtU5t8mGG4fOsNzrI5FGTBG9DW659CGZRkSlgiLkUCiAlpxUB+0g2f9c41/RMzLmQwxhLxWyeox6nYNmFtd9r3hRhW9+8BTr0t0TupVoWbvLDBucLv0vfnMmf0gY45OamB5DH2OgW8la+Tp4Qsui059NA6BPAjlMGpbZcdl6utsA2WKWwpFGISMAgoLTG4IvZ5+vhemwVlfa6AVQ6FJTNEdW3PbwqtyCxqnvZMreb1p2j7j9qm5cSvjSvy0fGgOeiHXb4Wa2cU7dKxq2+3Tw2gdI9hRMNf289+ILUkrwJnyr+qmheEjtTayXXZWQfFQ1F/kvlprhTSeTMoP6YC+o0L9+6pi84te0omApAydk5BxIXEnhx5apUHYg2G/80GVxRducZiC5RhjK2ZunQB74G/LEfP8jxSbAizH8wswVVU+lcpb9xhLkBBc/x2OP0Z1OcAzZM0klofMTh5AxFnL7CC7CXgR4SXvQl8bbt8VqJZAdpPY8Nn/zXO4uCUNvfPqKlKOG+GXM2D3aY45LGtQ=
   file: build/rocknsm-2.1-nightly-*.iso
+  file_glob: true
   on:
     repo: rocknsm/rock-createiso
-    tags: false
