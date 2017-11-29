@@ -11,7 +11,7 @@ services:
 install: true
 script:
     - curl -LOJ ${ISO_MIRROR}
-    - docker run -v ${PWD}:/sources -v ${PWD}/build:/output:Z -w /sources ${DOCKER_IMAGE}:latest /sources/master-iso.sh $(basename ${ISO_MIRROR}) /output/rocknsm-2.1-nightly-$(date +%Y%m%d).iso
+    - docker run -a stdout -v ${PWD}:/sources -v ${PWD}/build:/output:Z -w /sources ${DOCKER_IMAGE}:latest /sources/master-iso.sh $(basename ${ISO_MIRROR}) /output/rocknsm-2.1-nightly-$(date +%Y%m%d).iso
     - echo "TRAVIS_TAG=${TRAVIS_TAG}"
 before_deploy:
     # Set up git user name and tag this commit
