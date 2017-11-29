@@ -105,10 +105,6 @@ function offline-snapshot () {
       gpg2 --detach-sign --yes --armor -u security@rocknsm.io "rock-dashboards_$(echo ${ROCKDASHBOARDS_BRANCH} | tr '/' '-').tar.gz"
   fi
 
-#  echo "Downloading ROCK Snapshot..."
-#  curl -Ls -o "rock_$(echo ${ROCK_BRANCH} | tr '/' '-').tar.gz" \
-#    "https://github.com/rocknsm/rock/archive/${ROCK_BRANCH}.tar.gz"
-
   # Because I'm pedantic
   popd >/dev/null
 }
