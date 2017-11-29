@@ -28,3 +28,4 @@ deploy:
       on:
           repo: rocknsm/rock-createiso
           tags: false
+          all_branches: true
