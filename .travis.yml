@@ -31,4 +31,6 @@ deploy:
       file_glob: true
       on:
           repo: rocknsm/rock-createiso
+          tags: false
+          all_branches: true
           condition: ${TRAVIS_EVENT_TYPE} == cron
