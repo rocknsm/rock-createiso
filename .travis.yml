@@ -31,4 +31,4 @@ deploy:
           repo: rocknsm/rock-createiso
           tags: false
           branch: devel
-          condition: ${TRAVIS_EVENT_TYPE} == cron
+          #condition: ${TRAVIS_EVENT_TYPE} == cron
