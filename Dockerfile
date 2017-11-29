@@ -7,7 +7,7 @@ ENV WORKSPACE=${WORKSPACE} \
     OUTPUT=/output \
     CACHEDIR=/cachedir \
     YUM=yum \
-    PACKAGES="python-pip python-jinja2 python-simplejson pykickstart createrepo rsync isomd5sum syslinux pigz mkisofs libguestfs-tools-c initial-setup tree" \
+    PACKAGES="python-pip python-jinja2 python-simplejson pykickstart createrepo rsync isomd5sum syslinux pigz mkisofs libguestfs-tools-c initial-setup tree yum-utils rpm-sign" \
     PYTHON_PKGS="pythonpy"
 RUN ${YUM} -y install ${PACKAGES} ${EXTRA_PACKAGES} \
     && ${YUM} -y clean all \
