@@ -17,6 +17,7 @@ before_deploy:
     # Set up git user name and tag this commit
     - git config --local user.name "Travis CI"
     - git config --local user.email "travis-ci@rocknsm.io"
+    - git checkout ${TRAVIS_BRANCH}
     - git tag "nightly-$(date +'%Y%m%d')"
 deploy:
     - provider: releases
@@ -29,4 +30,5 @@ deploy:
       on:
           repo: rocknsm/rock-createiso
           tags: false
-          all_branches: true
+          branch: devel
+          condition: ${TRAVIS_EVENT_TYPE} == cron

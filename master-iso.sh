@@ -49,6 +49,7 @@ usage() {
 if [ $# -lt 1 ] || [ -z "$1" ]; then usage; fi
 
 die() { echo "ERROR: $@" >&2 ; exit 2 ; }
+
 cond_out() { "$@" 2>&1 | tee -a ${BUILD_LOG} > .tmp.log 2>&1 || { cat .tmp.log >&2 ; die "Failed to run $@" ; } && rm .tmp.log || : ; return $? ; }
 
 extract_iso() {
@@ -86,7 +87,8 @@ download_content() {
   echo "[2/4] Downloading offline snapshot."
 
   # Download offline-snapshot
-  cond_out offline-snapshot
+  offline-snapshot
+
 }
 
 add_content() {
@@ -113,12 +115,12 @@ EOF
     cat - > ${TMP_NEW}/EFI/BOOT/grub.cfg
 
   # Update efiboot img
-  cond_out mcopy -Do -i ${TMP_NEW}/images/efiboot.img \
+  mcopy -Do -i ${TMP_NEW}/images/efiboot.img \
       ${TMP_NEW}/EFI/BOOT/grub.cfg \
       ::/EFI/BOOT/grub.cfg
 
   # Copy boot splash branding
-  cond_out cp ${SCRIPT_DIR}/images/splash_rock.png ${TMP_NEW}/isolinux/splash.png
+  cp ${SCRIPT_DIR}/images/splash_rock.png ${TMP_NEW}/isolinux/splash.png
 
   # Generate product image
   cd ${SCRIPT_DIR}/product
@@ -128,14 +130,14 @@ EOF
   cp product.img ${TMP_NEW}/images/
 
   # Sync over offline content
-  cond_out cp -a ${ROCK_CACHE_DIR}/* ${TMP_NEW}/
+  cp -a ${ROCK_CACHE_DIR}/* ${TMP_NEW}/
 
   # Create new repo metadata
-  cond_out createrepo_c -g ${TMP_NEW}/repodata/comps.xml ${TMP_NEW}
+  createrepo_c -g ${TMP_NEW}/repodata/comps.xml ${TMP_NEW}
   rm  ${TMP_NEW}/repodata/comps.xml
 
   # Generate flattened manual kickstart & add pre-inst hooks
-  cond_out ksflatten -c ks/install.ks -o "${TMP_NEW}/${KICKSTART}"
+  ksflatten -c ks/install.ks -o "${TMP_NEW}/${KICKSTART}"
 
   cat <<EOF >> "${TMP_NEW}/${KICKSTART}"
 
@@ -145,7 +147,7 @@ EOF
 EOF
 
   # Generate flattened automated kickstart & add pre-inst hooks
-  cond_out ksflatten -c ks/manual.ks -o "${TMP_NEW}/${KICKSTART_MAN}"
+  ksflatten -c ks/manual.ks -o "${TMP_NEW}/${KICKSTART_MAN}"
 
   cat <<EOF >> "${TMP_NEW}/${KICKSTART_MAN}"
 
@@ -170,11 +172,11 @@ create_iso() {
   local _iso_fname="${OUT_ISO}"
   local _volid="${NAME} ${VERSION} ${ARCH}"
 
-  cond_out echo "Dumping tree listing"
-  cond_out tree ${_build_dir}
+  echo "Dumping tree listing"
+  tree ${_build_dir}
 
   # This is the genisoimage version of mkisofs
-  cond_out /usr/bin/mkisofs -J \
+  /usr/bin/mkisofs -J \
     -translation-table \
     -untranslated-filenames \
     -joliet-long \
@@ -193,8 +195,8 @@ create_iso() {
     -appid "${_volid}" \
     -V "${_volid}" \
     ${_build_dir}
-  cond_out isohybrid --uefi ${_iso_fname}
-  cond_out implantisomd5 --force ${_iso_fname}
+  isohybrid --uefi ${_iso_fname}
+  implantisomd5 --force ${_iso_fname}
 }
 
 main() {
