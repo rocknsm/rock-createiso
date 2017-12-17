@@ -38,6 +38,11 @@ function offline-snapshot () {
 
   # Download _ALL_ dependencies
   repotrack --config rock-yum.conf --download_path ${ROCK_CACHE_DIR}/Packages/ ${DEPLIST}
+  if [ "$?" -ne "0" ]; then
+      echo "Downloading packages failed."
+      exit 1
+  fi
+
   # Remove the i686 stuff
   echo "Removing i686 packages"
   ls ${ROCK_CACHE_DIR}/Packages/*i686.rpm
