@@ -13,6 +13,9 @@ network --bootproto=dhcp --noipv6 --activate
 
 services --enabled=ssh
 
+# Basic storage requirement
+bootloader --location=mbr
+
 # Users
 rootpw --lock
 #user --name=rockadmin --gecos='ROCK admin account' --groups=wheel
