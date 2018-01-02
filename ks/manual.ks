@@ -4,6 +4,8 @@ cdrom
 firstboot --enable
 eula --agreed
 reboot --eject
+  
+bootloader --location=mbr
 
 # Configure OS
 timezone UTC
