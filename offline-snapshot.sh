@@ -126,9 +126,9 @@ function offline-container-snapshot () {
 
   mkdir -p "${ROCK_CACHE_DIR}/containers"
   pushd "${ROCK_CACHE_DIR}/containers" >/dev/null
-  
+
   echo "Downloading Containers..."
-  for item in CONTAINERS; do
+  for item in $CONTAINERS; do
     docker pull $item
     if [ "$?" -ne "0" ]; then
         echo "Downloading Container $item failed."
@@ -136,10 +136,11 @@ function offline-container-snapshot () {
     fi
   done
   echo "Exporting Container images..."
-  for item in CONTAINERS; do
-    docker save --output="$item.tar" $item
+  for item in $CONTAINERS; do
+    name=$(echo ${item} | tr "/\\" "_")
+    docker save --output="$name.tar" $item
     if [ "$?" -ne "0" ]; then
-        echo "Exporting Container $item failed."
+        echo "Exporting Container $item failed..."
         exit 1
     fi
   done
