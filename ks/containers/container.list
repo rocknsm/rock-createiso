@@ -1,0 +1,5 @@
+# list of container names to download and export
+registry
+elasticsearch
+kibana
+logstash
