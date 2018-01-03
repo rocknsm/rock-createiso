@@ -115,12 +115,40 @@ function offline-snapshot () {
   if [ "${SKIP_GPG}" -eq "0" ]; then
       gpg2 --detach-sign --yes --armor -u security@rocknsm.io "rock-dashboards_$(echo ${ROCKDASHBOARDS_BRANCH} | tr '/' '-').tar.gz"
   fi
-
+  
   # Because I'm pedantic
+  popd >/dev/null
+}
+
+function offline-container-snapshot () {
+
+  CONTAINERS=$(cat ks/containers/container.list | grep --color=never -v '#')
+
+  mkdir -p "${ROCK_CACHE_DIR}/containers"
+  pushd "${ROCK_CACHE_DIR}/containers" >/dev/null
+  
+  echo "Downloading Containers..."
+  for item in CONTAINERS; do
+    docker pull $item
+    if [ "$?" -ne "0" ]; then
+        echo "Downloading Container $item failed."
+        exit 1
+    fi
+  done
+  echo "Exporting Container images..."
+  for item in CONTAINERS; do
+    docker save --output="$item.tar" $item
+    if [ "$?" -ne "0" ]; then
+        echo "Exporting Container $item failed."
+        exit 1
+    fi
+  done
+
   popd >/dev/null
 }
 
 # Only execute if we are called directly
 if [[ "${BASH_SOURCE}" == "${0}" ]]; then
   offline-snapshot $@
+  offline-container-snapshot
 fi
