@@ -40,7 +40,7 @@ auth --enableshadow --passalgo=sha512 --kickstart
 
 # Save packages to local repo
 mkdir -p /mnt/sysimage/srv/rocknsm
-rsync -rP --exclude 'TRANS.TBL' /mnt/install/repo/{Packages,repodata,support} /mnt/sysimage/srv/rocknsm/
+rsync -rP --exclude 'TRANS.TBL' /mnt/install/repo/{Packages,repodata,support,containers} /mnt/sysimage/srv/rocknsm/
 
 # Copy over GPG key
 cp -a /mnt/install/repo/RPM-GPG-KEY-RockNSM-2 /etc/pki/rpm-gpg/RPM-GPG-KEY-RockNSM-2
