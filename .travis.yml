@@ -11,14 +11,14 @@ services:
 install: true
 script:
     - curl -LOJ ${ISO_MIRROR}
-    - travis_wait 30 docker run -a stdout -v ${PWD}:/sources -v ${PWD}/build:/output:Z -w /sources ${DOCKER_IMAGE}:latest /sources/master-iso.sh $(basename ${ISO_MIRROR}) /output/rocknsm-2.1-nightly-$(date +%Y%m%d).iso
+    - travis_wait 30 docker run -a stdout -v ${PWD}:/sources -v ${PWD}/build:/output:Z -w /sources ${DOCKER_IMAGE}:latest /sources/master-iso.sh $(basename ${ISO_MIRROR}) /output/rocknsm-2.1-nightly-$(date +%Y%m%d-%H%M).iso
     - echo "TRAVIS_TAG=${TRAVIS_TAG}"
 before_deploy:
     # Set up git user name and tag this commit
     - git config --local user.name "Travis CI"
     - git config --local user.email "travis-ci@rocknsm.io"
     - git checkout ${TRAVIS_BRANCH}
-    - git tag "nightly-$(date +'%Y%m%d')"
+    - git tag "nightly-$(date +'%Y%m%d-%H%M')"
 deploy:
     - provider: releases
       skip_cleanup: true
