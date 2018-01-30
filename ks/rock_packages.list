@@ -55,4 +55,5 @@ nginx
 
 # Necessary for nginx auth setup
 easy-rsa
+pyOpenSSL
 python2-xkcdpass
