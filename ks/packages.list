@@ -31,6 +31,8 @@ openssh-server
 screen
 -esc
 
+# Needed for UEFI systems
+shim-x64
 
 # unnecessary firmware
 -aic94xx-firmware
