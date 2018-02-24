@@ -132,8 +132,15 @@ EOF
       ${TMP_NEW}/EFI/BOOT/grub.cfg \
       ::/EFI/BOOT/grub.cfg
 
+  # Copy UEFI splash branding
+  cp ${SCRIPT_DIR}/images/uefi_splash_rock.png ${TMP_NEW}/EFI/BOOT/uefi_splash_rock.png
+
   # Copy boot splash branding
   cp ${SCRIPT_DIR}/images/splash_rock.png ${TMP_NEW}/isolinux/splash.png
+
+  # Setup UEFI branding
+  mkdir ${TMP_NEW}/EFI/BOOT/x86_64-efi
+  cp /usr/lib/grub/x86_64-efi/gfxterm_background.mod ${TMP_NEW}/EFI/BOOT/x86_64-efi/
 
   # Generate product image
   cd ${SCRIPT_DIR}/product
