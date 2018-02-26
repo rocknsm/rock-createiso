@@ -11,6 +11,7 @@ bzip2
 # Install RockNSM
 ansible
 rock
+rock-release
 
 # Necessary for boot customization
 #firstboot

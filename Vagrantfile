@@ -18,6 +18,14 @@
 Vagrant.configure("2") do |config|
   config.vm.box = "centos/7"
 
+  config.vm.provider :libvirt do |libvirt|
+      libvirt.host = "192.168.73.5"
+      libvirt.connect_via_ssh = true
+      libvirt.username = "dcode"
+      libvirt.memory = 2048
+      libvirt.cpus = 2
+  end
+ 
   config.vm.provision "shell", inline: <<-SHELL
     sudo /vagrant/bootstrap.sh
     sudo usermod -a -G mock vagrant
