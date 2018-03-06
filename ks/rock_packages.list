@@ -53,7 +53,6 @@ metricbeat
 filebeat
 nginx
 
-
 # Necessary for nginx auth setup
 easy-rsa
 python2-pyOpenSSL

@@ -50,7 +50,7 @@ function offline-snapshot () {
   echo "${DEPLIST}"
 
   # Download _ALL_ dependencies
-  repotrack --config rock-yum.conf --download_path ${ROCK_CACHE_DIR}/Packages/ ${DEPLIST}
+  repotrack -t --config rock-yum.conf --download_path ${ROCK_CACHE_DIR}/Packages/ ${DEPLIST}
   if [ "$?" -ne "0" ]; then
       echo "Downloading packages failed."
       exit 1
@@ -62,7 +62,7 @@ function offline-snapshot () {
   rm ${ROCK_CACHE_DIR}/Packages/*i686.rpm
 
   SKIP_GPG=0
-  if [ -z "${CONTINUOUS_INTEGRATION}" ] && [ "${CONTINUOUS_INTEGRATION}" != "true" ]; then
+  if [ -n "${CONTINUOUS_INTEGRATION}" ] && [ "${CONTINUOUS_INTEGRATION}" == "true" ]; then
     SKIP_GPG=1
   fi
 
