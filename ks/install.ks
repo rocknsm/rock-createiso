@@ -45,6 +45,9 @@ rsync -rP --exclude 'TRANS.TBL' /mnt/install/repo/{Packages,repodata,support} /m
 # Copy over GPG key
 cp -a /mnt/install/repo/RPM-GPG-KEY-RockNSM-2 /etc/pki/rpm-gpg/RPM-GPG-KEY-RockNSM-2
 
+# Copy over build tag
+cp -a /mnt/install/repo/RockNSM_BuildTag /etc/rocknsm/rocknsm-build
+
 %end
 
 %post --log=/root/ks-post-chroot.log

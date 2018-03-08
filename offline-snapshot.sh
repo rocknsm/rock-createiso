@@ -70,7 +70,7 @@ function offline-snapshot () {
     echo "Signing packages. This can take a while."
     # This will take a while
 
-    setsid -w rpm \
+    setsid -c rpm \
       --define '_gpg_name ROCKNSM 2 Key (ROCKNSM 2 Official Signing Key) <security@rocknsm.io>'  \
       --define '_signature gpg' \
       --define '__gpg_check_password_cmd /bin/true' \

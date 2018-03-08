@@ -5,7 +5,10 @@ firstboot --enable
 eula --agreed
 reboot --eject
   
+# Basic storage requirement
 bootloader --location=mbr
+
+
 
 # Configure OS
 timezone UTC
@@ -14,9 +17,6 @@ keyboard us
 network --bootproto=dhcp --noipv6 --activate
 
 services --enabled=ssh
-
-# Basic storage requirement
-bootloader --location=mbr
 
 # Users
 rootpw --lock
@@ -42,6 +42,12 @@ auth --enableshadow --passalgo=sha512 --kickstart
 mkdir -p /mnt/sysimage/srv/rocknsm
 rsync -rP --exclude 'TRANS.TBL' /mnt/install/repo/{Packages,repodata,support} /mnt/sysimage/srv/rocknsm/
 
+# Copy over GPG key
+cp -a /mnt/install/repo/RPM-GPG-KEY-RockNSM-2 /etc/pki/rpm-gpg/RPM-GPG-KEY-RockNSM-2
+
+# Copy over build tag
+cp -a /mnt/install/repo/RockNSM_BuildTag /etc/rocknsm/rocknsm-build
+
 %end
 
 %post --log=/root/ks-post-chroot.log
@@ -64,10 +70,6 @@ enabled=1
 # Prefer these packages versus online
 cost=500
 EOF
-
-#######################################
-# Extract current ROCK NSM scripts
-#######################################
 
 # Default to offline build and generate values
 mkdir -p /etc/rocknsm
