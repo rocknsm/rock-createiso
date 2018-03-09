@@ -46,6 +46,7 @@ rsync -rP --exclude 'TRANS.TBL' /mnt/install/repo/{Packages,repodata,support} /m
 cp -a /mnt/install/repo/RPM-GPG-KEY-RockNSM-2 /mnt/sysimage/etc/pki/rpm-gpg/RPM-GPG-KEY-RockNSM-2
 
 # Copy over build tag
+mkdir -p /mnt/sysimage/etc/rocknsm/
 cp -a /mnt/install/repo/RockNSM_BuildTag /mnt/sysimage/etc/rocknsm/rocknsm-build
 
 %end
@@ -88,6 +89,6 @@ cp ${ROCK_DIR}/playbooks/files/etc-issue.in /etc/issue.in
 cp ${ROCK_DIR}/playbooks/files/nm-issue-update /etc/NetworkManager/dispatcher.d/50-rocknsm-issue-update
 chmod 755 /etc/NetworkManager/dispatcher.d/50-rocknsm-issue-update
 
-systemctl enable initial-setup-graphical.service
+systemctl enable initial-setup.service
 
 %end
