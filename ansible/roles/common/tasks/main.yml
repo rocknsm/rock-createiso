@@ -1,0 +1,38 @@
+- name: create package directory
+  file:
+    path:
+      - "{{ rock_cache_dir }}/Packages"
+    state:
+      - "directory"
+
+- name: download packages
+  repobuilder:
+    packages:
+      - "{{ download_packages }}"
+    groups:
+      - "{{ package_groups }}"
+    config:
+      - "{{ role_path }}/files/rock-offline.repo"
+    download_path:
+      - "{{ rock_cache_dir }}/Packages"
+    exclude:
+      - "i686"
+
+- name: gather list of rpms to Sign
+  find:
+    paths:
+      - "{{ rock_cache_dir }}/Packages"
+    patterns: 
+      - "*.rpm"
+    register: find_result
+
+- name: Signing packages
+  rpmsign:
+    rpms:
+      - "{{ find_result.path }}"
+    passphrase:
+      - "secret"
+    key:
+      - "ROCKNSM 2 Key"
+    macros:
+      _signature: "gpg"
