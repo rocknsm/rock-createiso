@@ -14,83 +14,64 @@ pulledpork_release:
   0.7.2
 
 package_groups:
-  core
-  anaconda-tools
+  - core
+  - anaconda-tools
 
 download_packages:
-  # Tools for operator sanity
-  vim-enhanced
-  nano
-  tmux
-  git
-  bzip2
-  # Install RockNSM
-  ansible
-  rock
-  rock-release
-  # Necessary for boot customization
-  #firstboot
-  #initial-setup-gui
-  initial-setup
-  # Needed for repoquery in ansible scripts
-  # is this still needed?
-  yum-utils
-  # Hardening packages
-  openscap
-  openscap-scanner
-  scap-security-guide
-  # These are needed for STIG policy
-  pam_pkcs11
-  openssh-server
-  screen
-  # Needed for UEFI systems
-  shim-x64
-  # ROCK packages
-  bwm-ng
-  tcpreplay
-  tcpdump
-  bats
-  policycoreutils-python
-  htop
-  nmap-ncat
-  logrotate
-  rock-release
-  # Bro
-  bro
-  bro-plugin-kafka
-  bro-plugin-af_packet
-  GeoIP
-  GeoIP-update
-  # Suricata / Snort
-  suricata
-  snort
-  daq
-  # Pulled Pork
-  perl-Crypt-SSLeay
-  perl-LWP-Protocol-https
-  perl-Sys-Syslog
-  perl-Archive-Tar
-  perl-libwww-perl
-  # Stenographer
-  stenographer
-  jq
-  docket
-  lighttpd
-  # Kafka
-  zookeeper
-  kafka
-  kafkacat
-  java-1.8.0-openjdk-headless
-  # FSF
-  fsf
-  # Elastic Stack
-  elasticsearch
-  logstash
-  kibana
-  metricbeat
-  filebeat
-  nginx
-  # Necessary for nginx auth setup
-  easy-rsa
-  python2-pyOpenSSL
-  python2-xkcdpass
+  - vim-enhanced
+  - nano
+  - tmux
+  - git
+  - bzip2
+  - ansible
+  - rock
+  - rock-release
+  - initial-setup
+  - yum-utils
+  - openscap
+  - openscap-scanner
+  - scap-security-guide
+  - pam_pkcs11
+  - openssh-server
+  - screen
+  - shim-x64
+  - bwm-ng
+  - tcpreplay
+  - tcpdump
+  - bats
+  - policycoreutils-python
+  - htop
+  - nmap-ncat
+  - logrotate
+  - rock-release
+  - bro
+  - bro-plugin-kafka
+  - bro-plugin-af_packet
+  - GeoIP
+  - GeoIP-update
+  - suricata
+  - snort
+  - daq
+  - perl-Crypt-SSLeay
+  - perl-LWP-Protocol-https
+  - perl-Sys-Syslog
+  - perl-Archive-Tar
+  - perl-libwww-perl
+  - stenographer
+  - jq
+  - docket
+  - lighttpd
+  - zookeeper
+  - kafka
+  - kafkacat
+  - java-1.8.0-openjdk-headless
+  - fsf
+  - elasticsearch
+  - logstash
+  - kibana
+  - metricbeat
+  - filebeat
+  - nginx
+  - easy-rsa
+  - python2-pyOpenSSL
+  - python2-xkcdpass

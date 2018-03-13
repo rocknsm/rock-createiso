@@ -403,7 +403,7 @@ def main():
         repo.cache = 0
         pkg.localpath = local  # Hack: to set the localpath to what we want.
         path = repo.getPackage(pkg)
-        results['changes'].append(pkg)
+        results['changes'].append(pkg.name)
         if not results['changed']:
             results['changed'] = True
         results['results'].append('Downloading {}'.format(os.path.basename(remote)))

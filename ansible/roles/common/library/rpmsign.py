@@ -92,19 +92,19 @@ def sign(module):
                 rpm.addMacro(macro, value)
         for package in module.params['rpms']:
             pyread, cwrite = os.pipe()
-            write = os.fdopen(cwrite, 'w')
+            cwrite = os.fdopen(cwrite, 'w')
             rpm.setLogFile(cwrite)
             result = rpm.addSign(
                 '{rpm}'.format(rpm=package),
                 module.params['passphrase'], module.params['key']
             )
-            write.close()
+            cwrite.close()
             pyread = os.fdopen(pyread)
             msg = pyread.readline()
             pyread.close()
 
             if not result:
-                module.fail_json(rc=1, msg='Error: Failed to sign {rpm}'.format(rpm=package))
+                module.fail_json(rc=1, msg='Error: Failed to sign {rpm}, {msg}'.format(rpm=package, msg=msg))
 
             if not msg:
                 results['changes'].append('{}'.format(package))
