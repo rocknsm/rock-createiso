@@ -283,14 +283,6 @@ def main():
     my = RepoTrack(opts=module.params)
     my.doConfigSetup(fn=module.params["config"], init_plugins=False) # init yum, without plugins
 
-    if module.params["groups"]:
-        my.doGroupSetup()
-    user_pkgs = module.params["packages"]
-    pkgs = my.matchGroups(module.params["groups"])
-    for pkg in pkgs:
-        tmp = pkg.fmt_list()
-        user_pkgs += tmp
-
     if module.params["arch"]:
         archlist = []
         archlist.extend(rpmUtils.arch.getArchList(module.params["arch"]))
@@ -303,6 +295,14 @@ def main():
         if cachedir is None:
             module.fail_json(rc=1, msg='Error: Could not make cachedir')
         my.repos.setCacheDir(cachedir)
+
+    if module.params["groups"]:
+        my.doGroupSetup()
+    user_pkgs = module.params["packages"]
+    pkgs = my.matchGroups(module.params["groups"])
+    for pkg in pkgs:
+        tmp = pkg.fmt_list()
+        user_pkgs += tmp
 
     if len(module.params["repoid"]) > 0:
         myrepos = []
