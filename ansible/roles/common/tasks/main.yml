@@ -10,6 +10,7 @@
     config: "{{ role_path }}/files/rock-offline.repo"
     download_path: "{{ rock_cache_dir }}/Packages"
     exclude: "i686"
+    tempcache: true
 
 - name: gather list of rpms to Sign
   find:
@@ -22,12 +23,14 @@
 - name: Signing packages
   rpmsign:
     rpms: "{{ find_result.files | map(attribute='path') | list }}"
-    passphrase: "secret"
-    key: "Key name"
+    passphrase: {{ gpg_passphrase }}
+    key: {{  gpg_key_name }}
     macros:
       _gpg_check_password_cmd: "/bin/true"
   become: yes
   become_user: user
+  no_log: true
+  when: not skip_gpg
 
 - name: clear old repo data
   file:
@@ -76,10 +79,10 @@
 - name: sign all the things
   command: gpg2 --detach-sign --yes --armor -u security@rocknsm.io {{ item | quote }}
   with_items:
-    - {{ rock_cache_dir }}/repodata/repomd.xml
-    - {{ rock_cache_dir }}/support/emerging.rules-snort.tar.gz
-    - {{ rock_cache_dir }}/support/emerging.rules-suricata.tar.gz
-    - {{ rock_cache_dir }}/support/pulledpork-{{ pulledpork_release }}.tar.gz
-    - {{ rock_cache_dir }}/support/rock-scripts_{{ rockscripts_branch }}.tar.gz
-    - {{ rock_cache_dir }}/support/rock-dashboards_{{ rockdashboards_branch }}.tar.gz
-  when: !{{ skip_gpg }}
+    - "{{ rock_cache_dir }}/repodata/repomd.xml"
+    - "{{ rock_cache_dir }}/support/emerging.rules-snort.tar.gz"
+    - "{{ rock_cache_dir }}/support/emerging.rules-suricata.tar.gz"
+    - "{{ rock_cache_dir }}/support/pulledpork-{{ pulledpork_release }}.tar.gz"
+    - "{{ rock_cache_dir }}/support/rock-scripts_{{ rockscripts_branch }}.tar.gz"
+    - "{{ rock_cache_dir }}/support/rock-dashboards_{{ rockdashboards_branch }}.tar.gz"
+  when: not skip_gpg
