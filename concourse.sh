@@ -14,7 +14,7 @@
 # limitations under the License.
 
 # Install dependencies
-source ./bootstrap.sh
+. ./bootstrap.sh
 
 # Create ISO
-source ./master-iso.sh 
+. ./master-iso.sh
