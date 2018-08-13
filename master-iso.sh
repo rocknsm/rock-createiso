@@ -98,9 +98,10 @@ extract_iso() {
 
 download_content() {
   echo "[2/4] Downloading offline snapshot."
-
+  # get current script dir
+  CWD="$(dirname "$(realpath "$0")")"
   # Download offline-snapshot
-  ansible-playbook --connection=local ${SCRIPT_DIR}/ansible/offline-snapshot.yml skip_gpg=${SKIP_GPG}
+  ansible-playbook --connection=local ${CWD}/ansible/offline-snapshot.yml skip_gpg=${SKIP_GPG}
 
 }
 
