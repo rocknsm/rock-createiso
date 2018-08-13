@@ -20,4 +20,4 @@ cd "$(dirname "$(realpath "$0")")";
 . ./bootstrap.sh
 
 # Create ISO
-. ./master-iso.sh
+. ./master-iso.sh /CentOS-7-x86_64-DVD-1804.iso "rocknsm-$(date '+%Y%m%d')"
