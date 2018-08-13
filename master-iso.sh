@@ -23,6 +23,7 @@ KICKSTART_MAN="ks_manual.cfg"
 SCRIPT_DIR=$(dirname $(readlink -f $0))
 BUILD_LOG="build-${BUILD}.log"
 DEBUG=${0:-}
+SKIP_GPG='true'
 
 if [ "x${DEBUG}" == "x1" ]; then
     echo "Task output logged to ${BUILD_LOG}"
@@ -37,8 +38,6 @@ TMP_NEW=$(mktemp -d)
 TMP_RPMDB=$(mktemp -d)
 TMP_EFIBOOT=$(mktemp -d)
 
-. ./offline-snapshot.sh
-
 cleanup() {
   [ -d ${TMP_ISO} ] && rm -rf ${TMP_ISO}
   [ -d ${TMP_NEW} ] && rm -rf ${TMP_NEW}
@@ -52,6 +51,7 @@ check_depends() {
   which mkisofs    # genisoimage
   which flattenks  # pykiskstart
   which createrepo # createrepo
+  which ansible-playbook # offline snapshot
 }
 
 usage() {
@@ -100,7 +100,7 @@ download_content() {
   echo "[2/4] Downloading offline snapshot."
 
   # Download offline-snapshot
-  offline-snapshot
+  ansible-playbook --connection=local ./ansible/offline-snapshot.yml skip_gpg=${SKIP_GPG}
 
 }
 
