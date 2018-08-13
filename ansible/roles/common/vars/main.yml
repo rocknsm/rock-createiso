@@ -8,10 +8,10 @@ rock_repo:
   2_1
 
 rockscripts_branch:
-  master
+  devel
 
 rockdashboards_branch:
-  master
+  devel
 
 pulledpork_release:
   0.7.2
