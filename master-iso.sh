@@ -100,7 +100,7 @@ download_content() {
   echo "[2/4] Downloading offline snapshot."
 
   # Download offline-snapshot
-  ansible-playbook --connection=local ./ansible/offline-snapshot.yml skip_gpg=${SKIP_GPG}
+  ansible-playbook --connection=local ${SCRIPT_DIR}/ansible/offline-snapshot.yml skip_gpg=${SKIP_GPG}
 
 }
 
