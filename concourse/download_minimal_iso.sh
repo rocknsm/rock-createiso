@@ -13,11 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# change working directory
-cd "$(dirname "$(realpath "$0")")";
+# mkdir
+mkdir centos-minimal-iso
 
-# Install dependencies
-. ./bootstrap.sh
-
-# Create ISO
-. ./master-iso.sh /CentOS-7-x86_64-DVD-1804.iso "rocknsm-$(date '+%Y%m%d')"
+# download ISO
+curl -L http://mirrors.usinternet.com/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1804.iso -o centos-minimal-iso/centos-minimal.iso
