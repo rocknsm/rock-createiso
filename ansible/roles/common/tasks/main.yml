@@ -23,8 +23,8 @@
 - name: Signing packages
   rpmsign:
     rpms: "{{ find_result.files | map(attribute='path') | list }}"
-    passphrase: {{ gpg_passphrase }}
-    key: {{  gpg_key_name }}
+    passphrase: "{{ gpg_passphrase }}"
+    key: "{{  gpg_key_name }}"
     macros:
       _gpg_check_password_cmd: "/bin/true"
   become: yes
@@ -39,7 +39,7 @@
 
 
 - name: generate fresh repo data
-  command: createrepo_c {{ rock_cache_dir | quote }}
+  command: createrepo_c "{{ rock_cache_dir | quote }}"
 
 - name: create support directory
   file:
