@@ -100,7 +100,7 @@ extract_iso() {
 download_content() {
   echo "[2/4] Downloading offline snapshot."
   # Download offline-snapshot
-  ansible-playbook --connection=local ${SCRIPT_DIR}/ansible/offline-snapshot.yml -e skip_gpg=${SKIP_GPG} rock_cache_dir=${ROCK_CACHE_DIR}
+  ansible-playbook --connection=local ${SCRIPT_DIR}/ansible/offline-snapshot.yml -e skip_gpg=${SKIP_GPG} -e rock_cache_dir=${ROCK_CACHE_DIR}
 
 }
 
