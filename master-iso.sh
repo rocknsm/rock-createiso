@@ -98,16 +98,14 @@ extract_iso() {
 
 download_content() {
   echo "[2/4] Downloading offline snapshot."
-  # get current script dir
-  CWD="$(dirname "$(realpath "$0")")"
   # Download offline-snapshot
-  ansible-playbook --connection=local ${CWD}/ansible/offline-snapshot.yml -e skip_gpg=${SKIP_GPG}
+  ansible-playbook --connection=local ${SCRIPT_DIR}/ansible/offline-snapshot.yml -e skip_gpg=${SKIP_GPG}
 
 }
 
 add_content() {
   echo "[3/4] Adding content"
-
+  cd ${SCRIPT_DIR}
   # Add new isolinux & grub config
   read -r -d '' template_json <<EOF || true
 {
@@ -188,7 +186,7 @@ EOF
 create_iso() {
 
   echo "[4/4] Creating new ISO"
-
+  cd ${SCRIPT_DIR}
   local _build_dir="${TMP_NEW}"
   local _iso_fname="${OUT_ISO}"
   local _volid="${NAME} ${VERSION} ${ARCH}"
