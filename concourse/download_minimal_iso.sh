@@ -17,4 +17,5 @@
 mkdir centos-minimal-iso
 
 # download ISO
-curl -L http://mirrors.usinternet.com/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1804.iso -o centos-minimal-iso/centos-minimal.iso
+# curl -L http://mirrors.usinternet.com/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1804.iso -o centos-minimal-iso/centos-minimal.iso
+touch centos-minimal-iso/centos-minimal.iso
