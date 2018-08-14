@@ -24,7 +24,7 @@ SCRIPT_DIR=$(dirname $(readlink -f $0))
 BUILD_LOG="build-${BUILD}.log"
 DEBUG=${0:-}
 SKIP_GPG='true'
-ROCK_CACHE_DIR='rocknsm_cache'
+ROCK_CACHE_DIR=${SCRIPT_DIR}'/rocknsm_cache'
 
 if [ "x${DEBUG}" == "x1" ]; then
     echo "Task output logged to ${BUILD_LOG}"
