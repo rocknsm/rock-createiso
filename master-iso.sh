@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash -xeu
 # Copyright 2017, 2018 RockNSM
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -101,7 +101,7 @@ download_content() {
   # get current script dir
   CWD="$(dirname "$(realpath "$0")")"
   # Download offline-snapshot
-  ansible-playbook --connection=local ${CWD}/ansible/offline-snapshot.yml skip_gpg=${SKIP_GPG}
+  ansible-playbook --connection=local ${CWD}/ansible/offline-snapshot.yml -e skip_gpg=${SKIP_GPG}
 
 }
 
