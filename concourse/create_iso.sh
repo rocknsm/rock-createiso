@@ -20,4 +20,4 @@ cd "$(dirname "$(realpath "$0")")";
 . ../bootstrap.sh
 
 # Create ISO
-. ../master-iso.sh centos-minimal-iso/centos-minimal.iso "rocknsm-$(date '+%Y%m%d').iso"
+../master-iso.sh centos-minimal-iso/centos-minimal.iso "rocknsm-$(date '+%Y%m%d').iso"
