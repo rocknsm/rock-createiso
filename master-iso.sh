@@ -24,6 +24,7 @@ SCRIPT_DIR=$(dirname $(readlink -f $0))
 BUILD_LOG="build-${BUILD}.log"
 DEBUG=${0:-}
 SKIP_GPG='true'
+ROCK_CACHE_DIR='rocknsm_cache'
 
 if [ "x${DEBUG}" == "x1" ]; then
     echo "Task output logged to ${BUILD_LOG}"
@@ -99,7 +100,7 @@ extract_iso() {
 download_content() {
   echo "[2/4] Downloading offline snapshot."
   # Download offline-snapshot
-  ansible-playbook --connection=local ${SCRIPT_DIR}/ansible/offline-snapshot.yml -e skip_gpg=${SKIP_GPG}
+  ansible-playbook --connection=local ${SCRIPT_DIR}/ansible/offline-snapshot.yml -e skip_gpg=${SKIP_GPG} rock_cache_dir=${ROCK_CACHE_DIR}
 
 }
 
