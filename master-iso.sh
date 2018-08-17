@@ -128,6 +128,7 @@ EOF
     cat - > ${TMP_NEW}/EFI/BOOT/grub.cfg
 
   # Update efiboot img
+  export MTOOLS_SKIP_CHECK=1
   mcopy -Do -i ${TMP_NEW}/images/efiboot.img \
       ${TMP_NEW}/EFI/BOOT/grub.cfg \
       ::/EFI/BOOT/grub.cfg
