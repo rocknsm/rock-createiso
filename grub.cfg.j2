@@ -33,7 +33,7 @@ insmod png
 loadfont /EFI/BOOT/fonts/unicode.pf2
 background_image -m stretch /EFI/BOOT/uefi_splash_rock.png
 
-set timeout=60
+set timeout=-1
 ### END /etc/grub.d/00_header ###
 
 search --no-floppy --set=root -l '{{ name }} {{ version }} {{ arch }}'
