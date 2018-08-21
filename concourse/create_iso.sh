@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+GPG_KEY_PATH=$(realpath $1)
+GPG_KEY_NAME=$2
+GPG_PASS=$3
+
 # change working directory
 cd "$(dirname "$(realpath "$0")")";
 
@@ -20,4 +24,9 @@ cd "$(dirname "$(realpath "$0")")";
 . ../bootstrap.sh
 
 # Create ISO
-../master-iso.sh ../../centos-minimal-iso/centos-minimal.iso "rocknsm-$(date '+%Y%m%d').iso"
+../master-iso.sh \
+-s ../../centos-minimal-iso/centos-minimal.iso \
+-o "rocknsm-$(date '+%Y%m%d').iso" \
+-g $GPG_KEY_NAME \
+-p $GPG_PASS \
+-i $GPG_KEY_PATH \
