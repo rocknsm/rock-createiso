@@ -6,4 +6,4 @@ gpg_macros:
   _signature: gpg
   __gpg: /usr/bin/gpg
   _gpg_path: /home/admin/.gnupg
-  _gpg_name: {{ gpg_key_name }}
+  _gpg_name: ROCKNSM 2 Key (ROCKNSM 2 Official Signing Key) <security@rocknsm.io>
