@@ -13,20 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-GPG_KEY_PATH=$(realpath $1)
-GPG_KEY_NAME=$2
-GPG_PASS=$3
-
 # change working directory
-cd "$(dirname "$(realpath "$0")")";
-
+cd "$(dirname "$(realpath "$0")")"
+GPG_KEY_PATH="$(dirname "$(realpath "$0")")/rocknsm-2-sign.asc"
 # Install dependencies
 . ../bootstrap.sh
+
+if [[ $GPG_KEY ]] then
+    echo "$GPG_KEY" > "$GPG_KEY_PATH"
+fi
 
 # Create ISO
 ../master-iso.sh \
 -s ../../centos-minimal-iso/centos-minimal.iso \
 -o "rocknsm-$(date '+%Y%m%d').iso" \
 -g $GPG_KEY_NAME \
--p $GPG_PASS \
+-p $GPG_KEY_PASS \
 -i $GPG_KEY_PATH \
