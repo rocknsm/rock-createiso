@@ -12,7 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-+OUT_ISO=''
+OUT_ISO=''
 SRCISO=''
 HELP=''
 GPG_KEY=''
@@ -31,7 +31,7 @@ DEBUG=${0:-}
 SKIP_GPG='true'
 ROCK_CACHE_DIR=${SCRIPT_DIR}'/rocknsm_cache'
 
-+while getopts 'o:s:g:p:i:h' flag; do
+while getopts 'o:s:g:p:i:h' flag; do
   case "${flag}" in
     o) OUT_ISO=$(realpath "${OPTARG}") ;;
     s) SRCISO=$(realpath "${OPTARG}") ;;

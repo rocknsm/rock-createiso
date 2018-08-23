@@ -19,7 +19,7 @@ GPG_KEY_PATH="$(dirname "$(realpath "$0")")/rocknsm-2-sign.asc"
 # Install dependencies
 . ../bootstrap.sh
 
-if [[ $GPG_KEY ]] then
+if [[ $GPG_KEY ]]; then
     echo "$GPG_KEY" > "$GPG_KEY_PATH"
 fi
 
