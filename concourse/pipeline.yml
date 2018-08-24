@@ -22,8 +22,6 @@ jobs:
         - name: rock-createiso-git
       outputs:
         - name: centos-minimal-iso
-      cache:
-        - path: centos-minimal-iso
       run:
         path: rock-createiso-git/concourse/download_minimal_iso.sh
 
@@ -36,11 +34,12 @@ jobs:
       inputs:
         - name: rock-createiso-git
         - name: centos-minimal-iso
-        - name: gpg-key
-          path: /home/admin/vault-secrets/rocknsm-2-sign.asc
       run:
-        path: rock-createiso-git/concourse/create_iso.sh
+        path: /bin/bash
         args:
-          - gpg-key
-          - ((gpg-key-name))
-          - ((gpg-key-pass))
+          - '-c'
+          - 'rock-createiso-git/concourse/create_iso.sh "$GPG_KEY_NAME" "$GPG_KEY_PASS" "$GPG_KEY"'
+      params:
+        GPG_KEY: ((gpg-key))
+        GPG_KEY_PASS: ((gpg-passphrase))
+        GPG_KEY_NAME: ((gpg-key-name))
