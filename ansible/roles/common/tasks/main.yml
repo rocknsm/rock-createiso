@@ -30,7 +30,7 @@
   become: yes
   become_user: user
   no_log: true
-  when: not skip_gpg
+  when: (skip_gpg == 'false')
 
 - name: clear old repo data
   file:
@@ -85,4 +85,4 @@
     - "{{ rock_cache_dir }}/support/pulledpork-{{ pulledpork_release }}.tar.gz"
     - "{{ rock_cache_dir }}/support/rock-scripts_{{ rockscripts_branch }}.tar.gz"
     - "{{ rock_cache_dir }}/support/rock-dashboards_{{ rockdashboards_branch }}.tar.gz"
-  when: not skip_gpg
+  when: (skip_gpg == 'false')
