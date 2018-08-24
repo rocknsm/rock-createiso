@@ -1,4 +1,4 @@
-#!/bin/bash -xeu
+#!/bin/bash -eu
 # Copyright 2017, 2018 RockNSM
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -68,7 +68,7 @@ fi
 
 if [[ $GPG_KEY_PATH ]]; then
   # validate they also gave us a key and password
-  if ![[ $GPG_KEY && $GPG_PASS ]]; then
+  if ! [[ $GPG_KEY && $GPG_PASS ]]; then
     echo "Error: Need Key name and Password when importing a key"
     usage
   fi
@@ -136,17 +136,25 @@ extract_iso() {
 
 install_gpg_key() {
   # Import gpg key if they gave us the path
-  gpg --import "${GPG_KEY}"
+  gpg --import "${GPG_KEY_PATH}"
 }
 
 download_content() {
   echo "[2/4] Downloading offline snapshot."
   # Download offline-snapshot
+  echo "passing the following vars to ansible."
+  echo "${SCRIPT_DIR}/ansible/offline-snapshot.yml"
+  echo "${SKIP_GPG}"
+  echo "HIDDEN PASSWORD"
+  echo "${GPG_KEY}"
+
+  unset x
   ansible-playbook --connection=local ${SCRIPT_DIR}/ansible/offline-snapshot.yml \
   -e skip_gpg="${SKIP_GPG}" \
   -e rock_cache_dir="${ROCK_CACHE_DIR}" \
   -e gpg_passphrase="${GPG_PASS}"
   -e gpg_key_name="${GPG_KEY}"
+  set x
 }
 
 add_content() {
@@ -266,7 +274,7 @@ create_iso() {
 }
 
 main() {
-
+  set x
   extract_iso
   # only install the gpg key if they passed it in
   if [[ $GPG_KEY_PATH ]]; then install_gpg_key; fi
