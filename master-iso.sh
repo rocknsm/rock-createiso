@@ -60,9 +60,11 @@ if ! [[ $SRCISO ]]; then usage; fi
 
 if ! [[ $OUT_ISO ]]; then
   OUT_ISO="$(dirname ${SRCISO})/rocknsm-${VERSION}-${RELEASE}.iso"
+fi
 
 if [[ $GPG_KEY && $GPG_PASS ]]; then
   SKIP_GPG='false'
+fi
 
 if [[ $GPG_KEY_PATH ]]; then
   # validate they also gave us a key and password
