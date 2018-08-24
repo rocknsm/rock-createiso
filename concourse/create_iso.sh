@@ -32,6 +32,6 @@ cd "$(dirname "$(realpath "$0")")"
 ../master-iso.sh \
 -s ../../centos-minimal-iso/centos-minimal.iso \
 -o "rocknsm-$(date '+%Y%m%d').iso" \
--g $GPG_KEY_NAME \
--p $GPG_KEY_PASS \
--i $GPG_KEY_PATH
+-g "$GPG_KEY_NAME" \
+-p "$GPG_KEY_PASS" \
+-i "$GPG_KEY_PATH"
