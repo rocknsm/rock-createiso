@@ -148,13 +148,13 @@ download_content() {
   echo "HIDDEN PASSWORD"
   echo "${GPG_KEY}"
 
-  unset x
+  unset -x
   ansible-playbook --connection=local ${SCRIPT_DIR}/ansible/offline-snapshot.yml \
   -e skip_gpg="${SKIP_GPG}" \
   -e rock_cache_dir="${ROCK_CACHE_DIR}" \
   -e gpg_passphrase="${GPG_PASS}"
   -e gpg_key_name="${GPG_KEY}"
-  set x
+  set -x
 }
 
 add_content() {
@@ -274,7 +274,7 @@ create_iso() {
 }
 
 main() {
-  set x
+  set -x
   extract_iso
   # only install the gpg key if they passed it in
   if [[ $GPG_KEY_PATH ]]; then install_gpg_key; fi

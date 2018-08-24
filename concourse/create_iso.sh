@@ -14,17 +14,17 @@
 # limitations under the License.
 
 
-set x
+set -x
 GPG_KEY_PATH="$(dirname "$(realpath "$0")")/rocknsm-2-sign.asc"
 GPG_KEY_NAME="$1"
-unset x
+unset -x
 GPG_KEY_PASS="$2"
 GPG_KEY="$3"
 
 # create the gpg key on disk to use for signing
 echo "$GPG_KEY" > "$GPG_KEY_PATH"
 # change working directory
-set x
+set -x
 cd "$(dirname "$(realpath "$0")")"
 
 # Install dependencies
@@ -38,7 +38,7 @@ echo "-g $GPG_KEY_NAME"
 echo "-p HIDDEN PASSWORD"
 echo "-i $GPG_KEY_PATH"
 
-unset x
+unset -x
 ../master-iso.sh \
 -s ../../centos-minimal-iso/centos-minimal.iso \
 -o "rocknsm-$(date '+%Y%m%d').iso" \
