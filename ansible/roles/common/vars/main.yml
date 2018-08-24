@@ -1,5 +1,5 @@
 skip_gpg:
-  false
+  true
 
 rock_cache_dir:
   rocknsm_cache

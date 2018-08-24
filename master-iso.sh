@@ -279,7 +279,6 @@ main() {
   # only install the gpg key if they passed it in
   if [[ $GPG_KEY_PATH ]]; then install_gpg_key; fi
   download_content
-  download_content
   add_content
   create_iso
 
