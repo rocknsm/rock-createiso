@@ -136,17 +136,17 @@ extract_iso() {
 
 install_gpg_key() {
   # Import gpg key if they gave us the path
-  gpg --import ${GPG_KEY}
+  gpg --import "${GPG_KEY}"
 }
 
 download_content() {
   echo "[2/4] Downloading offline snapshot."
   # Download offline-snapshot
   ansible-playbook --connection=local ${SCRIPT_DIR}/ansible/offline-snapshot.yml \
-  -e skip_gpg=${SKIP_GPG} \
-  -e rock_cache_dir=${ROCK_CACHE_DIR} \
-  -e gpg_passphrase=${GPG_PASS}
-  -e gpg_key_name=${GPG_KEY}
+  -e skip_gpg="${SKIP_GPG}" \
+  -e rock_cache_dir="${ROCK_CACHE_DIR}" \
+  -e gpg_passphrase="${GPG_PASS}"
+  -e gpg_key_name="${GPG_KEY}"
 }
 
 add_content() {
