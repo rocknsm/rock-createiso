@@ -152,7 +152,7 @@ download_content() {
   ansible-playbook --connection=local ${SCRIPT_DIR}/ansible/offline-snapshot.yml \
   -e skip_gpg="${SKIP_GPG}" \
   -e rock_cache_dir="${ROCK_CACHE_DIR}" \
-  -e gpg_passphrase="${GPG_PASS}"
+  -e gpg_passphrase="${GPG_PASS}" \
   -e gpg_key_name="${GPG_KEY}"
   set -x
 }
