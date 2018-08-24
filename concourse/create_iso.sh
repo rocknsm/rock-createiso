@@ -17,7 +17,7 @@
 set -x
 GPG_KEY_PATH="$(dirname "$(realpath "$0")")/rocknsm-2-sign.asc"
 GPG_KEY_NAME="$1"
-unset -x
+set +x
 GPG_KEY_PASS="$2"
 GPG_KEY="$3"
 
@@ -38,7 +38,7 @@ echo "-g $GPG_KEY_NAME"
 echo "-p HIDDEN PASSWORD"
 echo "-i $GPG_KEY_PATH"
 
-unset -x
+set +x
 ../master-iso.sh \
 -s ../../centos-minimal-iso/centos-minimal.iso \
 -o "rocknsm-$(date '+%Y%m%d').iso" \
