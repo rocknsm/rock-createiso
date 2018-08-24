@@ -15,9 +15,10 @@
 OUT_ISO=''
 SRCISO=''
 HELP=''
-GPG_KEY=''
+GPG_KEY_NAME=''
 GPG_PASS=''
 GPG_KEY_PATH=''
+RPM_GPG_KEY=''
 NAME="ROCK"
 BUILD="$(date +%Y%m%d-%H%M)"
 VERSION="2.1"
@@ -35,7 +36,7 @@ while getopts 'o:s:g:p:i:h' flag; do
   case "${flag}" in
     o) OUT_ISO=$(realpath "${OPTARG}") ;;
     s) SRCISO=$(realpath "${OPTARG}") ;;
-    g) GPG_KEY="${OPTARG}" ;;
+    g) GPG_KEY_NAME="${OPTARG}" ;;
     p) GPG_PASS="${OPTARG}";;
     i) GPG_KEY_PATH="${OPTARG}";;
     h) HELP='true' ;;
@@ -62,13 +63,13 @@ if ! [[ $OUT_ISO ]]; then
   OUT_ISO="$(dirname ${SRCISO})/rocknsm-${VERSION}-${RELEASE}.iso"
 fi
 
-if [[ $GPG_KEY && $GPG_PASS ]]; then
+if [[ $GPG_KEY_NAME && $GPG_PASS ]]; then
   SKIP_GPG='false'
 fi
 
 if [[ $GPG_KEY_PATH ]]; then
   # validate they also gave us a key and password
-  if ! [[ $GPG_KEY && $GPG_PASS ]]; then
+  if ! [[ $GPG_KEY_NAME && $GPG_PASS ]]; then
     echo "Error: Need Key name and Password when importing a key"
     usage
   fi
@@ -136,7 +137,10 @@ extract_iso() {
 
 install_gpg_key() {
   # Import gpg key if they gave us the path
+  RPM_GPG_KEY="${SCRIPT_DIR}/RPM-GPG-KEY-ROCKNSM"
   gpg --import "${GPG_KEY_PATH}"
+  gpg --export -a "${GPG_KEY_NAME}" > "${RPM_GPG_KEY}"
+  rpm --import "${RPM_GPG_KEY}"
 }
 
 download_content() {
@@ -146,14 +150,14 @@ download_content() {
   echo "${SCRIPT_DIR}/ansible/offline-snapshot.yml"
   echo "${SKIP_GPG}"
   echo "HIDDEN PASSWORD"
-  echo "${GPG_KEY}"
+  echo "${GPG_KEY_NAME}"
 
   set +x
   ansible-playbook --connection=local ${SCRIPT_DIR}/ansible/offline-snapshot.yml \
   -e skip_gpg="${SKIP_GPG}" \
   -e rock_cache_dir="${ROCK_CACHE_DIR}" \
   -e gpg_passphrase="${GPG_PASS}" \
-  -e gpg_key_name="${GPG_KEY}"
+  -e gpg_key_name="${GPG_KEY_NAME}"
   set -x
 }
 
