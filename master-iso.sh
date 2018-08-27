@@ -157,7 +157,8 @@ download_content() {
   -e skip_gpg="${SKIP_GPG}" \
   -e rock_cache_dir="${ROCK_CACHE_DIR}" \
   -e gpg_passphrase="${GPG_PASS}" \
-  -e gpg_key_name="${GPG_KEY_NAME}"
+  -e gpg_key_name="${GPG_KEY_NAME}" \
+  -vvvv
   set -x
 }
 
