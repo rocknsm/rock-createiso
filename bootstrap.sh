@@ -18,6 +18,6 @@ else
   yum -y install epel-release
 fi
 
-yum -y install python-pip python-jinja2 python-simplejson genisoimage pykickstart createrepo rsync isomd5sum syslinux pigz mock fuseiso libguestfs-tools-c initial-setup-gui firstboot tree grub2-efi-modules ansible
+yum -y install python-pip python-jinja2 python-simplejson genisoimage pykickstart createrepo rsync isomd5sum syslinux pigz mock fuseiso libguestfs-tools-c initial-setup-gui firstboot tree grub2-efi-modules ansible rpm-sign
 
 pip install pythonpy
