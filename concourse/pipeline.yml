@@ -1,10 +1,21 @@
 ---
+resource_types:
+- name: slack-notification
+  type: docker-image
+  source:
+    repository: cfcommunity/slack-notification-resource
+
 resources:
 - name: rock-createiso-git
   type: git
   source:
     uri: https://github.com/rocknsm/rock-createiso.git
     branch: devel-spartan782
+
+- name: RockNSM-Slack
+  type: slack-notification
+  source:
+    url: ((slack-webhook))
 
 jobs:
 - name: RockNSM Create ISO
@@ -24,6 +35,12 @@ jobs:
         - name: centos-minimal-iso
       run:
         path: rock-createiso-git/concourse/download_minimal_iso.sh
+    on_failure:
+      put: RockNSM-Slack
+      params:
+        text: "Concourse failed to build. Could not retrieve a copy of centos minimal iso."
+        username: "Concourse-CI"
+        # icon_url: URL
 
   - task: ROCK Create ISO
     config:
@@ -43,3 +60,15 @@ jobs:
         GPG_KEY: ((gpg-key))
         GPG_KEY_PASS: ((gpg-passphrase))
         GPG_KEY_NAME: ((gpg-key-name))
+    on_failure:
+      put: RockNSM-Slack
+      params:
+        text: "Concourse Failed to build. Task: ROCK Create ISO. Check webui for additional information."
+        username: "Concourse-CI"
+        # icon_url: URL
+    on_success:
+      put: RockNSM-Slack
+      params:
+        text: "Concourse build was successful. The Prelease build can be found here <LINK TBD>."
+        username: "Concourse-CI"
+        # icon_url: URL

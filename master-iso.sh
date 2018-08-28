@@ -213,6 +213,8 @@ EOF
 
   # Create new repo metadata
   createrepo_c -g ${TMP_NEW}/repodata/comps.xml ${TMP_NEW}
+  gpg2 --detach-sign --yes --armor --passphrase "${GPG_PASS}" --batch -u security@rocknsm.io ${TMP_NEW}/repodata/repomd.xml
+
   rm  ${TMP_NEW}/repodata/comps.xml
 
   # Generate flattened manual kickstart & add pre-inst hooks
