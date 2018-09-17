@@ -21,6 +21,9 @@ set +x
 GPG_KEY_PASS="$2"
 GPG_KEY="$3"
 
+# Create directory to pass to concourse upload task
+mkdir -p rocknsm-iso
+
 # create the gpg key on disk to use for signing
 echo "$GPG_KEY" > "$GPG_KEY_PATH"
 # change working directory
@@ -33,7 +36,7 @@ cd "$(dirname "$(realpath "$0")")"
 # Create ISO
 echo "passing the following variables to master-iso.sh"
 echo "-s ../../centos-minimal-iso/centos-minimal.iso"
-echo "-o rocknsm-$(date '+%Y%m%d').iso"
+echo "-o ../../rocknsm-iso/rocknsm-$(date '+%Y%m%d').iso"
 echo "-g $GPG_KEY_NAME"
 echo "-p HIDDEN PASSWORD"
 echo "-i $GPG_KEY_PATH"
