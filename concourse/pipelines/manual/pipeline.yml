@@ -17,19 +17,11 @@ resources:
   source:
     url: ((slack-webhook))
 
-- name: Nightly-Timer
-  type: time
-  source:
-    start: 8:00 AM
-    stop: 8:15 AM
-
 jobs:
 - name: RockNSM Create ISO
   serial: true
   plan:
   - get: rock-createiso-git
-  - get: Nightly-Timer
-    trigger: true
   - task: Download centOS Minimal ISO
     config:
       platform: linux
@@ -45,7 +37,7 @@ jobs:
     on_failure:
       put: RockNSM-Slack
       params:
-        text: "Concourse Nightly failed to build. Could not retrieve a copy of centos minimal iso."
+        text: "Concourse Manual failed to build. Could not retrieve a copy of centos minimal iso."
         username: "Concourse-CI"
         # icon_url: URL
 
@@ -72,7 +64,7 @@ jobs:
     on_failure:
       put: RockNSM-Slack
       params:
-        text: "Concourse Nightly Failed to build. Task: ROCK Create ISO. Check webui for additional information."
+        text: "Concourse Manual Failed to build. Task: ROCK Create ISO. Check webui for additional information."
         username: "Concourse-CI"
         # icon_url: URL
   - task: Upload ISO
@@ -87,17 +79,20 @@ jobs:
         path: /bin/bash
         args:
           - '-c'
-          - 'rock-createiso-git/concourse/upload.sh "$MIRROR_USER" "$MIRROR_PASS"'
+          - 'rock-createiso-git/concourse/upload.sh "$MIRROR_USER" "$MIRROR_PASS" "$MIRROR_URI" "$MIRROR_REPO" "$PULP_CERT"'
       params:
         MIRROR_USER: ((mirror-user))
         MIRROR_PASS: ((mirror-pass))
+        MIRROR_URI: ((mirror-uri))
+        MIRROR_REPO: "rocknsm-manual-prereleases"
+        PULP_CERT: ((pulp-cert))
     on_failure:
       put: RockNSM-Slack
       params:
-        text: "Concourse Nightly Failed to upload ISO to mirror. Check webui for additional information."
+        text: "Concourse Manual Failed to upload ISO to mirror. Check webui for additional information."
         username: "Concourse-CI"
     on_success:
       put: RockNSM-Slack
       params:
-        text: "Concourse Nightly build successful. The prerelease build can be found here <http://mirror.rocknsm.io/pulp/isos/rocknsm-2.1/|Nightly Prerelease>"
+        text: "Concourse Manual build successful. The prerelease build can be found here <http://mirror.rocknsm.io/pulp/isos/manual-prereleases/|Manual Prerelease>"
         username: "Concourse-CI"
