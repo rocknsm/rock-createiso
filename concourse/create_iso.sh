@@ -36,7 +36,7 @@ cd "$(dirname "$(realpath "$0")")"
 # Create ISO
 echo "passing the following variables to master-iso.sh"
 echo "-s ../../centos-minimal-iso/centos-minimal.iso"
-echo "-o ../../rocknsm-iso/rocknsm-$(date '+%Y%m%d').iso"
+echo "-o ../../rocknsm-iso/rocknsm-$(date '+%Y%m%d-%T').iso"
 echo "-g $GPG_KEY_NAME"
 echo "-p HIDDEN PASSWORD"
 echo "-i $GPG_KEY_PATH"
@@ -44,7 +44,7 @@ echo "-i $GPG_KEY_PATH"
 set +x
 ../master-iso.sh \
 -s ../../centos-minimal-iso/centos-minimal.iso \
--o "rocknsm-$(date '+%Y%m%d').iso" \
+-o "../../rocknsm-iso/rocknsm-$(date '+%Y%m%d-%T').iso" \
 -g "$GPG_KEY_NAME" \
 -p "$GPG_KEY_PASS" \
 -i "$GPG_KEY_PATH"
