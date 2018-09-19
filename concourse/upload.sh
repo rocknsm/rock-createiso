@@ -10,7 +10,7 @@ cat <<EOF | tee ~/.pulp/admin.conf
 [server]
 host = "$3"
 verify_ssl = true
-ca_path = ~/pulp.cert
+ca_path = $HOME/pulp.cert
 EOF
 
 # Get auth token
