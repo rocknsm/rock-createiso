@@ -88,20 +88,20 @@ jobs:
         path: /bin/bash
         args:
           - '-c'
-          - 'rock-createiso-git/concourse/upload.sh "$MIRROR_USER" "$MIRROR_PASS" "$MIRROR_URI" "$MIRROR_REPO" "$PULP_CERT"'
+          - 'rock-createiso-git/concourse/upload.sh "$MIRROR_USER" "$MIRROR_PASS" "$PULP_HOST" "$MIRROR_REPO" "$PULP_CERT"'
       params:
         MIRROR_USER: ((mirror-user))
         MIRROR_PASS: ((mirror-pass))
-        MIRROR_URI: ((mirror-uri))
-        MIRROR_REPO: "rocknsm-nightly"
+        PULP_HOST: ((pulp-host))
+        MIRROR_REPO: "rocknsm-2.1"
         PULP_CERT: ((pulp-cert))
     on_failure:
       put: RockNSM-Slack
       params:
-        text: "Concourse Nightly Failed to upload ISO to mirror. Check webui for additional information."
+        text: "Concourse Nightly Release Failed to upload ISO to mirror. Check webui for additional information."
         username: "Concourse-CI"
     on_success:
       put: RockNSM-Slack
       params:
-        text: "Concourse Nightly build successful. The prerelease build can be found here <http://mirror.rocknsm.io/pulp/isos/rocknsm-nightly/|Nightly Prerelease>"
+        text: "Concourse Nightly Release build successful. The prerelease build can be found here <((mirror-uri))|Official Release>"
         username: "Concourse-CI"
