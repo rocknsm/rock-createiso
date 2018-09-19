@@ -1,16 +1,15 @@
 #!/bin/bash -
 set -x
 # Create certificate for pulp-admin
-cat <<EOF | tee ~/pulp.cert
-"$5"
+cat <<EOF | tee -a /etc/tls/certs/ca-bundle.crt
+$5
 EOF
 
 # Create pulp admin configuration file
 cat <<EOF | tee ~/.pulp/admin.conf
 [server]
-host = "$3"
+host = $3
 verify_ssl = true
-ca_path = $HOME/pulp.cert
 EOF
 
 # Get auth token
