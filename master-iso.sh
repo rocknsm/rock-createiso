@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -eu
 # Copyright 2017, 2018 RockNSM
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,7 +12,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+OUT_ISO=''
+SRCISO=''
+HELP=''
+GPG_KEY_NAME=''
+GPG_PASS=''
+GPG_KEY_PATH=''
+RPM_GPG_KEY=''
 NAME="ROCK"
 BUILD="$(date +%Y%m%d-%H%M)"
 VERSION="2.1"
@@ -23,21 +29,60 @@ KICKSTART_MAN="ks_manual.cfg"
 SCRIPT_DIR=$(dirname $(readlink -f $0))
 BUILD_LOG="build-${BUILD}.log"
 DEBUG=${0:-}
+SKIP_GPG='true'
+ROCK_CACHE_DIR=${SCRIPT_DIR}'/rocknsm_cache'
+
+while getopts 'o:s:g:p:i:h' flag; do
+  case "${flag}" in
+    o) OUT_ISO=$(realpath "${OPTARG}") ;;
+    s) SRCISO=$(realpath "${OPTARG}") ;;
+    g) GPG_KEY_NAME="${OPTARG}" ;;
+    p) GPG_PASS="${OPTARG}";;
+    i) GPG_KEY_PATH="${OPTARG}";;
+    h) HELP='true' ;;
+    *) error "Unexpected option ${flag}" ;;
+  esac
+done
+
+if [[ $HELP ]]; then usage; fi
+
+usage() {
+  echo "Usage: `basename $0` -s source.iso [-o output.iso] [-g gpg-key-name] [-p gpg-password] [-i gpg-key-path]"
+  echo
+  echo "  -o, path to create output ISO"
+  echo "  -s, path to source ISO"
+  echo "  -g, long name of gpg key to use"
+  echo "  -p, GPG Pass phrase"
+  echo "  -i, Path to gpg key file to import"
+  exit 2
+}
+
+if ! [[ $SRCISO ]]; then usage; fi
+
+if ! [[ $OUT_ISO ]]; then
+  OUT_ISO="$(dirname ${SRCISO})/rocknsm-${VERSION}-${RELEASE}.iso"
+fi
+
+if [[ $GPG_KEY_NAME && $GPG_PASS ]]; then
+  SKIP_GPG='false'
+fi
+
+if [[ $GPG_KEY_PATH ]]; then
+  # validate they also gave us a key and password
+  if ! [[ $GPG_KEY_NAME && $GPG_PASS ]]; then
+    echo "Error: Need Key name and Password when importing a key"
+    usage
+  fi
+fi
 
 if [ "x${DEBUG}" == "x1" ]; then
     echo "Task output logged to ${BUILD_LOG}"
 fi
 
-SRCISO=$(realpath $1)
-OUT_ISO="$(dirname ${SRCISO})/rocknsm-${VERSION}-${RELEASE}.iso"
-[ $# -eq 2 ] && [ ! -z "$2" ] && OUT_ISO=$(realpath $2)
-
 TMP_ISO=$(mktemp -d)
 TMP_NEW=$(mktemp -d)
 TMP_RPMDB=$(mktemp -d)
 TMP_EFIBOOT=$(mktemp -d)
-
-. ./offline-snapshot.sh
 
 cleanup() {
   [ -d ${TMP_ISO} ] && rm -rf ${TMP_ISO}
@@ -52,14 +97,8 @@ check_depends() {
   which mkisofs    # genisoimage
   which flattenks  # pykiskstart
   which createrepo # createrepo
+  which ansible-playbook # offline snapshot
 }
-
-usage() {
-  echo "Usage: $0 CentOS-7-x86_64-Everything-1708.iso [output.iso]"
-  exit 2
-}
-
-if [ $# -lt 1 ] || [ -z "$1" ]; then usage; fi
 
 die() { echo "ERROR: $@" >&2 ; exit 2 ; }
 
@@ -96,17 +135,36 @@ extract_iso() {
 
 }
 
+install_gpg_key() {
+  # Import gpg key if they gave us the path
+  RPM_GPG_KEY="${SCRIPT_DIR}/RPM-GPG-KEY-ROCKNSM"
+  gpg --import "${GPG_KEY_PATH}"
+  gpg --export -a "${GPG_KEY_NAME}" > "${RPM_GPG_KEY}"
+  rpm --import "${RPM_GPG_KEY}"
+}
+
 download_content() {
   echo "[2/4] Downloading offline snapshot."
-
   # Download offline-snapshot
-  offline-snapshot
+  echo "passing the following vars to ansible."
+  echo "${SCRIPT_DIR}/ansible/offline-snapshot.yml"
+  echo "${SKIP_GPG}"
+  echo "HIDDEN PASSWORD"
+  echo "${GPG_KEY_NAME}"
 
+  set +x
+  ansible-playbook --connection=local ${SCRIPT_DIR}/ansible/offline-snapshot.yml \
+  -e "skip_gpg='${SKIP_GPG}'" \
+  -e "rock_cache_dir='${ROCK_CACHE_DIR}'" \
+  -e "gpg_passphrase='${GPG_PASS}'" \
+  -e "gpg_key_name='${GPG_KEY_NAME}'" \
+  -vvvv
+  set -x
 }
 
 add_content() {
   echo "[3/4] Adding content"
-
+  cd ${SCRIPT_DIR}
   # Add new isolinux & grub config
   read -r -d '' template_json <<EOF || true
 {
@@ -155,7 +213,14 @@ EOF
 
   # Create new repo metadata
   createrepo_c -g ${TMP_NEW}/repodata/comps.xml ${TMP_NEW}
-  gpg2 --detach-sign --yes --armor -u security@rocknsm.io ${TMP_NEW}/repodata/repomd.xml
+  echo "Running gpg2 sign"
+  set +x
+  if [[ "${GPG_PASS}" ]]; then
+    gpg2 --detach-sign --yes --armor --passphrase "${GPG_PASS}" --batch -u security@rocknsm.io ${TMP_NEW}/repodata/repomd.xml
+  else 
+    gpg2 --detach-sign --yes --armor -u security@rocknsm.io ${TMP_NEW}/repodata/repomd.xml
+  fi
+  set -x
 
   rm  ${TMP_NEW}/repodata/comps.xml
 
@@ -190,7 +255,7 @@ EOF
 create_iso() {
 
   echo "[4/4] Creating new ISO"
-
+  cd ${SCRIPT_DIR}
   local _build_dir="${TMP_NEW}"
   local _iso_fname="${OUT_ISO}"
   local _volid="${NAME} ${VERSION} ${ARCH}"
@@ -223,8 +288,10 @@ create_iso() {
 }
 
 main() {
-
+  set -x
   extract_iso
+  # only install the gpg key if they passed it in
+  if [[ $GPG_KEY_PATH ]]; then install_gpg_key; fi
   download_content
   add_content
   create_iso

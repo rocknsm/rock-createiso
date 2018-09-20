@@ -1,0 +1,99 @@
+---
+resource_types:
+- name: slack-notification
+  type: docker-image
+  source:
+    repository: cfcommunity/slack-notification-resource
+
+resources:
+- name: rock-createiso-git
+  type: git
+  source:
+    uri: https://github.com/rocknsm/rock-createiso.git
+    branch: devel-spartan782
+
+- name: RockNSM-Slack
+  type: slack-notification
+  source:
+    url: ((slack-webhook))
+
+jobs:
+- name: RockNSM Create ISO
+  serial: true
+  plan:
+  - get: rock-createiso-git
+  - task: Download centOS Minimal ISO
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source: { repository: centos }
+      inputs:
+        - name: rock-createiso-git
+      outputs:
+        - name: centos-minimal-iso
+      run:
+        path: rock-createiso-git/concourse/download_minimal_iso.sh
+    on_failure:
+      put: RockNSM-Slack
+      params:
+        text: "Concourse Manual failed to build. Could not retrieve a copy of centos minimal iso."
+        username: "Concourse-CI"
+        # icon_url: URL
+
+  - task: ROCK Create ISO
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source: { repository: centos }
+      inputs:
+        - name: rock-createiso-git
+        - name: centos-minimal-iso
+      outputs:
+        - name: rocknsm-iso
+      run:
+        path: /bin/bash
+        args:
+          - '-c'
+          - 'rock-createiso-git/concourse/create_iso.sh "$GPG_KEY_NAME" "$GPG_KEY_PASS" "$GPG_KEY"'
+      params:
+        GPG_KEY: ((gpg-key))
+        GPG_KEY_PASS: ((gpg-passphrase))
+        GPG_KEY_NAME: ((gpg-key-name))
+    on_failure:
+      put: RockNSM-Slack
+      params:
+        text: "Concourse Manual Failed to build. Task: ROCK Create ISO. Check webui for additional information."
+        username: "Concourse-CI"
+        # icon_url: URL
+  - task: Upload ISO
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source: { repository: pulp/admin-client }
+      inputs:
+        - name: rocknsm-iso
+        - name: rock-createiso-git
+      run:
+        path: /bin/bash
+        args:
+          - '-c'
+          - 'rock-createiso-git/concourse/upload.sh "$MIRROR_USER" "$MIRROR_PASS" "$PULP_HOST" "$MIRROR_REPO" "$PULP_CERT"'
+      params:
+        MIRROR_USER: ((mirror-user))
+        MIRROR_PASS: ((mirror-pass))
+        PULP_HOST: ((pulp-host))
+        MIRROR_REPO: "rocknsm-manual-prereleases"
+        PULP_CERT: ((pulp-cert))
+    on_failure:
+      put: RockNSM-Slack
+      params:
+        text: "Concourse Manual prerelease Failed to upload ISO to mirror. Check webui for additional information."
+        username: "Concourse-CI"
+    on_success:
+      put: RockNSM-Slack
+      params:
+        text: "Concourse Manual prerelease build successful. The prerelease build can be found here <((mirror-uri))|Manual Release>"
+        username: "Concourse-CI"
