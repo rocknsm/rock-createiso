@@ -215,8 +215,13 @@ EOF
   createrepo_c -g ${TMP_NEW}/repodata/comps.xml ${TMP_NEW}
   echo "Running gpg2 sign"
   set +x
-  gpg2 --detach-sign --yes --armor --passphrase "${GPG_PASS}" --batch -u security@rocknsm.io ${TMP_NEW}/repodata/repomd.xml
+  if [[ "${GPG_PASS}" ]]; then
+    gpg2 --detach-sign --yes --armor --passphrase "${GPG_PASS}" --batch -u security@rocknsm.io ${TMP_NEW}/repodata/repomd.xml
+  else 
+    gpg2 --detach-sign --yes --armor -u security@rocknsm.io ${TMP_NEW}/repodata/repomd.xml
+  fi
   set -x
+
   rm  ${TMP_NEW}/repodata/comps.xml
 
   # Generate flattened manual kickstart & add pre-inst hooks

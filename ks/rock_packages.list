@@ -19,6 +19,7 @@ GeoIP-update
 
 # Suricata / Snort
 suricata
+suricata-update
 snort
 daq
 
