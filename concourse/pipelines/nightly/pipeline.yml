@@ -93,7 +93,7 @@ jobs:
         MIRROR_USER: ((mirror-user))
         MIRROR_PASS: ((mirror-pass))
         PULP_HOST: ((pulp-host))
-        MIRROR_REPO: "rocknsm-2.1"
+        MIRROR_REPO: "rocknsm-nightly"
         PULP_CERT: ((pulp-cert))
     on_failure:
       put: RockNSM-Slack
