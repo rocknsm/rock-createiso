@@ -78,4 +78,3 @@ download_packages:
   - easy-rsa
   - python2-pyOpenSSL
   - python2-xkcdpass
-  - qemu-guest-agent
