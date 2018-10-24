@@ -10,7 +10,7 @@ resources:
   type: git
   source:
     uri: https://github.com/rocknsm/rock-createiso.git
-    branch: devel-spartan782
+    branch: devel
 
 - name: RockNSM-Slack
   type: slack-notification
