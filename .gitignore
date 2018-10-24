@@ -4,3 +4,4 @@ build*.log
 rocknsm_cache
 .vagrant
 product.img
+.DS_Store
