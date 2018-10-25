@@ -46,6 +46,7 @@ download_packages:
   - htop
   - nmap-ncat
   - logrotate
+  - rock-release
   - bro
   - bro-plugin-kafka
   - bro-plugin-af_packet
@@ -53,6 +54,11 @@ download_packages:
   - GeoIP-update
   - suricata
   - suricata-update
+  - perl-Crypt-SSLeay
+  - perl-LWP-Protocol-https
+  - perl-Sys-Syslog
+  - perl-Archive-Tar
+  - perl-libwww-perl
   - stenographer
   - jq
   - docket
@@ -65,9 +71,9 @@ download_packages:
   - elasticsearch
   - logstash
   - kibana
+  - auditbeat
   - metricbeat
   - filebeat
-  - auditbeat
   - easy-rsa
   - python2-pyOpenSSL
   - python2-xkcdpass
