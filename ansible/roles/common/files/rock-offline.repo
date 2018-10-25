@@ -85,13 +85,16 @@ sslverify=1
 sslcacert=/etc/pki/tls/certs/ca-bundle.crt
 metadata_expire=300
 
-[elastic-5.x]
-name=Elastic repository for 5.x packages
-baseurl=https://artifacts.elastic.co/packages/5.x/yum
-gpgcheck=0
-gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
-enabled=0
+[group_rocknsm-testing]
+name=Copr repo for testing owned by @rocknsm
+baseurl=https://copr-be.cloud.fedoraproject.org/results/@rocknsm/testing/epel-7-$basearch/
 type=rpm-md
+skip_if_unavailable=True
+gpgcheck=1
+gpgkey=https://copr-be.cloud.fedoraproject.org/results/@rocknsm/testing/pubkey.gpg
+repo_gpgcheck=0
+enabled=1
+enabled_metadata=1
 
 [elastic-6.x]
 name=Elastic repository for 6.x packages
