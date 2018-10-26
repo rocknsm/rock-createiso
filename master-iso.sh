@@ -21,8 +21,8 @@ GPG_KEY_PATH=''
 RPM_GPG_KEY=''
 NAME="ROCK"
 BUILD="$(date +%Y%m%d-%H%M)"
-VERSION="2.1"
-RELEASE="0beta${BUILD}"
+VERSION="2.2.0"
+RELEASE="${BUILD}"
 ARCH="x86_64"
 KICKSTART="ks.cfg"
 KICKSTART_MAN="ks_manual.cfg"
@@ -217,7 +217,7 @@ EOF
   set +x
   if [[ "${GPG_PASS}" ]]; then
     gpg2 --detach-sign --yes --armor --passphrase "${GPG_PASS}" --batch -u security@rocknsm.io ${TMP_NEW}/repodata/repomd.xml
-  else 
+  else
     gpg2 --detach-sign --yes --armor -u security@rocknsm.io ${TMP_NEW}/repodata/repomd.xml
   fi
   set -x
