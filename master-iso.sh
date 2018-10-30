@@ -170,7 +170,7 @@ add_content() {
   read -r -d '' template_json <<EOF || true
 {
   "name": "${NAME}",
-  "version": "${VERSION}",
+  "version": "${VERSION}-${RELEASE}",
   "arch": "${ARCH}",
   "kickstart": "${KICKSTART}",
   "kickstart_man": "${KICKSTART_MAN}",
