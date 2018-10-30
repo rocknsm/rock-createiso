@@ -82,7 +82,7 @@ EOF
 ${ROCK_DIR}/bin/generate_defaults.sh
 
 # Set version id
-echo "2.1.0" > /etc/rocknsm/rock-version
+echo "2.2.0" > /etc/rocknsm/rock-version
 
 # Install /etc/issue updater
 cp ${ROCK_DIR}/playbooks/files/etc-issue.in /etc/issue.in
