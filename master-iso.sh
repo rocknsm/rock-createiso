@@ -21,8 +21,8 @@ GPG_KEY_PATH=''
 RPM_GPG_KEY=''
 NAME="ROCK"
 BUILD="$(date +%Y%m%d-%H%M)"
-VERSION="2.2.0"
-RELEASE="${BUILD}"
+VERSION="2.2"
+RELEASE="$(date +%y%m)"
 ARCH="x86_64"
 KICKSTART="ks.cfg"
 KICKSTART_MAN="ks_manual.cfg"
@@ -31,6 +31,7 @@ BUILD_LOG="build-${BUILD}.log"
 DEBUG=${0:-}
 SKIP_GPG='true'
 ROCK_CACHE_DIR=${SCRIPT_DIR}'/rocknsm_cache'
+ROCK_RELEASE='RockNSM release ${VERSION}.${RELEASE} (Core)'
 
 while getopts 'o:s:g:p:i:h' flag; do
   case "${flag}" in
@@ -178,12 +179,25 @@ add_content() {
 EOF
 
   echo ${template_json} | \
-    py 'jinja2.Template(open("isolinux.cfg.j2").read()).render(json.loads(sys.stdin.read()))' | \
+    py 'jinja2.Template(open("templates/isolinux.cfg.j2").read()).render(json.loads(sys.stdin.read()))' | \
     cat - > ${TMP_NEW}/isolinux/isolinux.cfg
 
   echo ${template_json} | \
-    py 'jinja2.Template(open("grub.cfg.j2").read()).render(json.loads(sys.stdin.read()))' | \
+    py 'jinja2.Template(open("templates/grub.cfg.j2").read()).render(json.loads(sys.stdin.read()))' | \
     cat - > ${TMP_NEW}/EFI/BOOT/grub.cfg
+
+  echo ${template_json} | \
+    py 'jinja2.Template(open("templates/os-release.j2").read()).render(json.loads(sys.stdin.read()))' | \
+    cat - > ${SCRIPT_DIR}/product/etc/os-release
+
+  echo ${template_json} | \
+    py 'jinja2.Template(open("templates/buildstamp.j2").read()).render(json.loads(sys.stdin.read()))' | \
+    cat - > ${SCRIPT_DIR}/product/.buildstamp
+
+  echo ${ROCK_RELEASE} | \
+    tee ${SCRIPT_DIR}/product/etc/centos-release | \
+    tee ${SCRIPT_DIR}/product/etc/redhat-release | \
+    tee ${SCRIPT_DIR}/product/etc/system-release > /dev/null
 
   # Update efiboot img
   export MTOOLS_SKIP_CHECK=1
@@ -258,7 +272,7 @@ create_iso() {
   cd ${SCRIPT_DIR}
   local _build_dir="${TMP_NEW}"
   local _iso_fname="${OUT_ISO}"
-  local _volid="${NAME} ${VERSION} ${ARCH}"
+  local _volid="${NAME} ${VERSION}-${RELEASE} ${ARCH}"
 
   echo "Dumping tree listing"
   tree ${_build_dir}

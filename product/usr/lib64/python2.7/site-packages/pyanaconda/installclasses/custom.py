@@ -4,7 +4,7 @@ from pyanaconda import network
 from pyanaconda import nm
 
 class CustomBaseInstallClass(BaseInstallClass):
-    name = "ROCK NSM"
+    name = "RockNSM"
     sortPriority = 30000
     if not productName.startswith("ROCK NSM"):
         hidden = True
