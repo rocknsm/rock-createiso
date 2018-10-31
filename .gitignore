@@ -1,2 +1,7 @@
-CentOS-7-x86_64-Everything-1611.iso
+CentOS-7-x86_64-Everything-*.iso
+rocknsm-*.iso
+build*.log
+rocknsm_cache
 .vagrant
+product.img
+.DS_Store

@@ -1,0 +1,81 @@
+skip_gpg:
+  true
+
+rock_cache_dir:
+  rocknsm_cache
+
+rock_repo:
+  2_2
+
+rockscripts_branch:
+  master
+
+rockdashboards_branch:
+  master
+
+pulledpork_release:
+  0.7.2
+
+package_groups:
+  - core
+  - anaconda-tools
+
+download_packages:
+  - vim-enhanced
+  - nano
+  - tmux
+  - git
+  - bzip2
+  - ansible
+  - rock
+  - rock-release
+  - initial-setup
+  - yum-utils
+  - openscap
+  - openscap-scanner
+  - scap-security-guide
+  - pam_pkcs11
+  - openssh-server
+  - screen
+  - shim-x64
+  - bwm-ng
+  - tcpreplay
+  - tcpdump
+  - bats
+  - policycoreutils-python
+  - htop
+  - nmap-ncat
+  - logrotate
+  - rock-release
+  - bro
+  - bro-plugin-kafka
+  - bro-plugin-af_packet
+  - GeoIP
+  - GeoIP-update
+  - suricata
+  - suricata-update
+  - perl-Crypt-SSLeay
+  - perl-LWP-Protocol-https
+  - perl-Sys-Syslog
+  - perl-Archive-Tar
+  - perl-libwww-perl
+  - stenographer
+  - jq
+  - docket
+  - lighttpd
+  - zookeeper
+  - kafka
+  - kafkacat
+  - java-1.8.0-openjdk-headless
+  - fsf
+  - elasticsearch
+  - logstash
+  - kibana
+  - auditbeat
+  - metricbeat
+  - filebeat
+  - easy-rsa
+  - python2-pyOpenSSL
+  - python2-xkcdpass
+  - python2-pytest
+  - python2-testinfra

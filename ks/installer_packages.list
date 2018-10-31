@@ -1,1 +1,9 @@
 @anaconda-tools
+
+# These are needed for the applied STIG profile
+screen
+
+# Adding these for general availability
+virt-what
+open-vm-tools
+qemu-guest-agent

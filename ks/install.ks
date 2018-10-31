@@ -6,17 +6,16 @@ eula --agreed
 reboot --eject
 
 # Configure Storage
-ignoredisk --only-use=sda
-clearpart --all --initlabel --drives=sda
+clearpart --all --initlabel
 autopart --type=lvm
-bootloader --location=mbr --boot-drive=sda
+bootloader --location=mbr
 
 # Configure OS
 timezone UTC
 lang en_US.UTF-8
 keyboard us
 network --bootproto=dhcp --noipv6 --activate
-unsupported_hardware
+
 services --enabled=ssh
 
 # Users
@@ -43,6 +42,13 @@ auth --enableshadow --passalgo=sha512 --kickstart
 mkdir -p /mnt/sysimage/srv/rocknsm
 rsync -rP --exclude 'TRANS.TBL' /mnt/install/repo/{Packages,repodata,support} /mnt/sysimage/srv/rocknsm/
 
+# Copy over GPG key
+cp -a /mnt/install/repo/RPM-GPG-KEY-RockNSM-2 /mnt/sysimage/etc/pki/rpm-gpg/RPM-GPG-KEY-RockNSM-2
+
+# Copy over build tag
+mkdir -p /mnt/sysimage/etc/rocknsm/
+cp -a /mnt/install/repo/RockNSM_BuildTag /mnt/sysimage/etc/rocknsm/rocknsm-build
+
 %end
 
 %post --log=/root/ks-post-chroot.log
@@ -58,17 +64,13 @@ cat << 'EOF' > /etc/yum.repos.d/rocknsm-local.repo
 [rocknsm-local]
 name=ROCKNSM Local Repository
 baseurl=file:///srv/rocknsm
-gpgcheck=0
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-RockNSM-2
 enabled=1
 # Prefer these packages versus online
 cost=500
 EOF
-
-#######################################
-# Extract current ROCK NSM scripts
-#######################################
-mkdir -p ${ROCK_DIR}; cd ${ROCK_DIR}
-tar --extract --strip-components=1 --auto-compress --file=$(ls /srv/rocknsm/support/rock_*.tar.gz|head -1)
 
 # Default to offline build and generate values
 mkdir -p /etc/rocknsm
@@ -79,11 +81,20 @@ EOF
 
 ${ROCK_DIR}/bin/generate_defaults.sh
 
+# Set version id
+echo "2.2.0" > /etc/rocknsm/rock-version
+
 # Install /etc/issue updater
 cp ${ROCK_DIR}/playbooks/files/etc-issue.in /etc/issue.in
 cp ${ROCK_DIR}/playbooks/files/nm-issue-update /etc/NetworkManager/dispatcher.d/50-rocknsm-issue-update
 chmod 755 /etc/NetworkManager/dispatcher.d/50-rocknsm-issue-update
 
-systemctl enable initial-setup-graphical.service
+systemctl enable initial-setup.service
+
+# check for VMware or qemu; Install and enable relevant tools
+case $(virt-what) in
+  vmware) yum -y install open-vm-tools; systemctl enable vmtoolsd ;;
+  qemu)   yum -y install qemu-guest-agent; systemctl enable qemu-guest-agent ;;
+esac
 
 %end

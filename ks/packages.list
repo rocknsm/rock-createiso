@@ -2,24 +2,21 @@
 @core
 
 # Tools for operator sanity
-vim
+vim-enhanced
 nano
 tmux
 git
 bzip2
-ansible
 
-# Necessary for nginx auth setup
-easy-rsa
-xkcdpass
+# Install RockNSM
+ansible
+rock
+rock-release
 
 # Necessary for boot customization
-firstboot
-# initial-setup
-initial-setup-gui
-
-# Needed for better AF_PACKET support for now
-kernel-ml
+#firstboot
+#initial-setup-gui
+initial-setup
 
 # Needed for repoquery in ansible scripts
 yum-utils
@@ -31,6 +28,15 @@ python-markupsafe
 openscap
 openscap-scanner
 scap-security-guide
+
+# These are needed for STIG policy
+pam_pkcs11
+openssh-server
+screen
+-esc
+
+# Needed for UEFI systems
+shim-x64
 
 # unnecessary firmware
 -aic94xx-firmware

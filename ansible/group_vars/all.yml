@@ -1,0 +1,9 @@
+---
+gpg_passphrase: changeme
+gpg_key_name: ROCKNSM 2 Key (ROCKNSM 2 Official Signing Key) <security@rocknsm.io>
+gpg_macros:
+  _gpg_check_password_cmd: /bin/true
+  _signature: gpg
+  __gpg: /usr/bin/gpg
+  _gpg_path: ~/.gnupg
+  _gpg_name: "{{ gpg_key_name }}"
