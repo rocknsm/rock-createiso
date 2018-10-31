@@ -14,7 +14,7 @@
 # limitations under the License.
 
 ROCK_CACHE_DIR=rocknsm_cache
-ROCK_REPO=2_1
+ROCK_REPO=2_2
 ROCKSCRIPTS_BRANCH=master
 ROCKDASHBOARDS_BRANCH=master
 #ROCK_BRANCH=master

@@ -63,24 +63,13 @@ gpgkey=file:///usr/share/distribution-gpg-keys/epel/RPM-GPG-KEY-EPEL-7
 gpgcheck=0
 enabled=1
 
-[copr-rocknsm-2.1]
-name=Copr repo for rocknsm-2.1 owned by @rocknsm
-baseurl=https://copr-be.cloud.fedoraproject.org/results/@rocknsm/rocknsm-2.1/epel-7-x86_64/
-type=rpm-md
-skip_if_unavailable=True
-gpgcheck=0
-gpgkey=https://copr-be.cloud.fedoraproject.org/results/@rocknsm/rocknsm-2.1/pubkey.gpg
-repo_gpgcheck=0
-enabled=1
-enabled_metadata=1
-
-[rocknsm_2_1]
-name=rocknsm_2_1
-baseurl=https://packagecloud.io/rocknsm/2_1/el/7/$basearch
+[rocknsm_2_2]
+name=rocknsm_2_2
+baseurl=https://packagecloud.io/rocknsm/2_2/el/7/$basearch
 repo_gpgcheck=0
 gpgcheck=0
 enabled=1
-gpgkey=https://packagecloud.io/rocknsm/2_1/gpgkey
+gpgkey=https://packagecloud.io/rocknsm/2_2/gpgkey
 sslverify=1
 sslcacert=/etc/pki/tls/certs/ca-bundle.crt
 metadata_expire=300
@@ -93,7 +82,7 @@ skip_if_unavailable=True
 gpgcheck=1
 gpgkey=https://copr-be.cloud.fedoraproject.org/results/@rocknsm/testing/pubkey.gpg
 repo_gpgcheck=0
-enabled=1
+enabled=0
 enabled_metadata=1
 
 [elastic-6.x]
@@ -104,23 +93,23 @@ gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
 enabled=1
 type=rpm-md
 
-[rocknsm-2.1-local]
-name=Local rocknsm testing
-baseurl=http://192.168.73.21/pulp/repos/rocknsm-2.1/stable/
-gpgcheck=0
-repo_gpgcheck=0
-enabled=1
-enabled_metadata=1
-cost=500
+#[rocknsm-2.1-local]
+#name=Local rocknsm testing
+#baseurl=http://192.168.73.21/pulp/repos/rocknsm-2.1/stable/
+#gpgcheck=0
+#repo_gpgcheck=0
+#enabled=1
+#enabled_metadata=1
+#cost=500
 
-[rocknsm-2.1-test-local]
-name=Local rocknsm testing
-baseurl=http://192.168.73.21/pulp/repos/rocknsm-2.1/testing/
-gpgcheck=0
-repo_gpgcheck=0
-enabled=1
-enabled_metadata=1
-cost=500
+#[rocknsm-2.1-test-local]
+#name=Local rocknsm testing
+#baseurl=http://192.168.73.21/pulp/repos/rocknsm-2.1/testing/
+#gpgcheck=0
+#repo_gpgcheck=0
+#enabled=1
+#enabled_metadata=1
+#cost=500
 
 [centos-os-local]
 name=Local centos base

@@ -289,7 +289,7 @@ create_iso() {
     -boot-load-size 4 \
     -boot-info-table \
     -eltorito-alt-boot \
-    -e images/efiboot.img \
+    -eltorito-boot images/efiboot.img \
     -no-emul-boot \
     -rock \
     -rational-rock \

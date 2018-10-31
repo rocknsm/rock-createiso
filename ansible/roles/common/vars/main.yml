@@ -5,7 +5,7 @@ rock_cache_dir:
   rocknsm_cache
 
 rock_repo:
-  2_1
+  2_2
 
 rockscripts_branch:
   master

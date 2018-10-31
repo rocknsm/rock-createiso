@@ -21,6 +21,9 @@ initial-setup
 # Needed for repoquery in ansible scripts
 yum-utils
 
+# Needed for generate-defaults
+python-markupsafe
+
 # Hardening packages
 openscap
 openscap-scanner
