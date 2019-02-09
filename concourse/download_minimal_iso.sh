@@ -17,4 +17,4 @@
 mkdir -p centos-minimal-iso
 
 # download ISO
-curl -L http://mirrors.usinternet.com/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1804.iso -o centos-minimal-iso/centos-minimal.iso
+curl -L `curl -s mirror.cyberlab.lan:8080 | grep Minimal | awk -F'"' '{print $2}'` -o centos-minimal-iso/centos-minimal.iso

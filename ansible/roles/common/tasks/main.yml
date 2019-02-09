@@ -3,11 +3,16 @@
     path: "{{ rock_cache_dir }}/Packages"
     state: "directory"
 
+- name: render template
+  template:
+    src: "{{ role_path }}/templates/rock-offline.j2"
+    dest: "/tmp/rock-offline.conf"
+
 - name: download packages
   repobuilder:
     packages: "{{ download_packages }}"
     groups: "{{ package_groups }}"
-    config: "{{ role_path }}/files/rock-offline.repo"
+    config: "/tmp/rock-offline.conf"
     download_path: "{{ rock_cache_dir }}/Packages"
     exclude: "i686"
     tempcache: true

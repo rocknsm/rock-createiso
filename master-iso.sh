@@ -33,13 +33,19 @@ SKIP_GPG='true'
 ROCK_CACHE_DIR=${SCRIPT_DIR}'/rocknsm_cache'
 ROCK_RELEASE='RockNSM release ${VERSION}.${RELEASE} (Core)'
 
-while getopts 'o:s:g:p:i:h' flag; do
+while getopts 'o:s:g:p:i:t:b:e:E:u:l:h' flag; do
   case "${flag}" in
     o) OUT_ISO=$(realpath "${OPTARG}") ;;
     s) SRCISO=$(realpath "${OPTARG}") ;;
     g) GPG_KEY_NAME="${OPTARG}" ;;
     p) GPG_PASS="${OPTARG}";;
     i) GPG_KEY_PATH="${OPTARG}";;
+    t) YUM_TESTING="${OPTARG}";;
+    b) YUM_BASE_URL="${OPTARG}";;
+    e) YUM_EXTRAS_URL="${OPTARG}";;
+    E) YUM_EPEL_URL="${OPTARG}";;
+    u) YUM_UPDATES_URL="${OPTARG}";;
+    l) YUM_ELASTIC_URL="${OPTARG}";;
     h) HELP='true' ;;
     *) error "Unexpected option ${flag}" ;;
   esac
@@ -55,6 +61,12 @@ usage() {
   echo "  -g, long name of gpg key to use"
   echo "  -p, GPG Pass phrase"
   echo "  -i, Path to gpg key file to import"
+  echo "  -t, 0 Disable, 1 Enable"
+  echo "  -b, Yum base url"
+  echo "  -e, Yum extras url"
+  echo "  -E, Yum EPEL url"
+  echo "  -u, Yum updates url"
+  echo "  -l, Yum elastic url"
   exit 2
 }
 
@@ -64,6 +76,11 @@ if ! [[ $OUT_ISO ]]; then
   OUT_ISO="$(dirname ${SRCISO})/rocknsm-${VERSION}-${RELEASE}.iso"
 fi
 
+if ! [[ $YUM_TESTING ]]; then
+  YUM_TESTING=0
+fi
+
+# We recieved a key and password, so we would use them
 if [[ $GPG_KEY_NAME && $GPG_PASS ]]; then
   SKIP_GPG='false'
 fi
@@ -145,21 +162,59 @@ install_gpg_key() {
 }
 
 download_content() {
-  echo "[2/4] Downloading offline snapshot."
-  # Download offline-snapshot
-  echo "passing the following vars to ansible."
-  echo "${SCRIPT_DIR}/ansible/offline-snapshot.yml"
-  echo "${SKIP_GPG}"
-  echo "HIDDEN PASSWORD"
-  echo "${GPG_KEY_NAME}"
+  # echo "[2/4] Downloading offline snapshot."
+  # # Download offline-snapshot
+  # echo "passing the following vars to ansible."
+  # echo "${SCRIPT_DIR}/ansible/offline-snapshot.yml"
+  # echo "${SKIP_GPG}"
+  # echo "HIDDEN PASSWORD"
+  # echo "${GPG_KEY_NAME}"
+
+  # Variable to hold the ansible command
+  cat << EOF | tee /tmp/extra-vars.yml
+skip_gpg: ${SKIP_GPG}
+rock_cache_dir: ${ROCK_CACHE_DIR}
+gpg_passphrase: ${GPG_PASS}
+gpg_key_name: ${GPG_KEY_NAME}
+EOF
+  if [[ $YUM_BASE_URL ]]; then
+    echo "yum_base_url: ${YUM_BASE_URL}" >> /tmp/extra-vars.yml
+  fi
+
+  # Check what yum urls need to be overriden in assible
+  if [[ $YUM_BASE_URL ]]; then
+    echo "yum_base_url: '${YUM_BASE_URL}'" >> /tmp/extra-vars.yml
+  fi
+  if [[ $YUM_EXTRAS_URL ]]; then
+    echo "yum_extras_url: '${YUM_EXTRAS_URL}'" >> /tmp/extra-vars.yml
+  fi
+  if [[ $YUM_EPEL_URL ]]; then
+    echo "yum_epel_url: '${YUM_EPEL_URL}'" >> /tmp/extra-vars.yml
+  fi
+  if [[ $YUM_UPDATES_URL ]]; then
+    echo "yum_updates_url: '${YUM_UPDATES_URL}'" >> /tmp/extra-vars.yml
+  fi
+  if [[ $YUM_ELASTIC_URL ]]; then
+    echo "yum_elastic_6_url: '${YUM_ELASTIC_URL}'" >> /tmp/extra-vars.yml
+  fi
+
+  echo "Running the following ansible command"
+  echo "ansible-playbook --connection=local ${SCRIPT_DIR}/ansible/offline-snapshot.yml"
+  echo "-vvvv -e skip_gpg='${SKIP_GPG}'"
+  echo "-e rock_cache_dir='${ROCK_CACHE_DIR}'"
+  echo "-e gpg_passphrase='HIDDEN PASSWORD'"
+  echo "-e gpg_key_name='${GPG_KEY_NAME}'"
+  echo "-e yum_rocknsm_testing_enabled='${YUM_TESTING}'"
+  echo "-e @/tmp/extra-vars.yml"
 
   set +x
-  ansible-playbook --connection=local ${SCRIPT_DIR}/ansible/offline-snapshot.yml \
-  -e "skip_gpg='${SKIP_GPG}'" \
-  -e "rock_cache_dir='${ROCK_CACHE_DIR}'" \
-  -e "gpg_passphrase='${GPG_PASS}'" \
-  -e "gpg_key_name='${GPG_KEY_NAME}'" \
-  -vvvv
+  ansible-playbook --connection=local ${SCRIPT_DIR}/ansible/offline-snapshot.yml  \
+  -vvvv -e "skip_gpg='${SKIP_GPG}'" \
+  -e "rock_cache_dir='${ROCK_CACHE_DIR}'"  \
+  -e "gpg_passphrase='${GPG_PASS}'"  \
+  -e "gpg_key_name='${GPG_KEY_NAME}'"  \
+  -e "yum_rocknsm_testing_enabled='${YUM_TESTING}'" \
+  -e "@/tmp/extra-vars.yml"
   set -x
 }
 

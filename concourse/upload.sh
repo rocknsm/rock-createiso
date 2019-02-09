@@ -1,46 +1,21 @@
 #!/bin/bash -
-PULP_USER=$1
-PULP_PASS=$2
-PULP_HOST=$3
-PULP_REPO=$4
-PULP_CERT=$5
-UPLOAD_TRIES=0
-UPLOAD_CODE=''
-UPLOAD_MAX_TRIES=3
+LOCAL_MIRROR_USER=$1
+LOCAL_MIRROR_PASS=$2
+LOCAL_MIRROR_HOST=$3
+LOCAL_MIRROR_REPO=$4
+LOCAL_MIRROR_PRIVATE=$5
+LOCAL_MIRROR_PUBLIC=$6
 
-function upload_iso {
-  pulp-admin iso repo uploads upload --dir rocknsm-iso --repo-id $PULP_REPO
-  if [[ $? -ne 0 ]]; then
-    if [[ $UPLOAD_TRIES -ge $UPLOAD_MAX_TRIES ]]; then
-      exit 1
-    fi
-  else
-    UPLOAD_TRIES=$UPLOAD_MAX_TRIES
-  fi
-}
-
-set -x
-# Create certificate for pulp-admin
-cat <<EOF | tee -a /etc/tls/certs/ca-bundle.crt
-$PULP_CERT
-EOF
-
-# Create pulp admin configuration file
-cat <<EOF | tee ~/.pulp/admin.conf
-[server]
-host = $PULP_HOST
-verify_ssl = true
-EOF
-
-# Get auth token
-echo "passing hidden values to pulp-admin login"
+yum install rsync openssh-clients -y
+echo "exporting hidded keys for password less sync"
 set +x
-pulp-admin login -u $PULP_USER -p $PULP_PASS
+mkdir -p /root/.ssh
+echo "$LOCAL_MIRROR_PRIVATE" > "/root/.ssh/id_ed25519"
 set -x
-# Upload iso file
-while [[ $UPLOAD_TRIES -lt $UPLOAD_MAX_TRIES ]]; do
-  upload_iso
-  ((++UPLOAD_TRIES))
-done
-
-pulp-admin iso repo publish run --repo-id $PULP_REPO
+echo "$LOCAL_MIRROR_PUBLIC" > "/root/.ssh/id_ed25519.pub"
+# change the permissions on the keys
+chmod 0600 /root/.ssh/*
+# Upload to local mirror
+rsync -e "ssh -o StrictHostKeyChecking=no -i /root/.ssh/id_ed25519" -rv rocknsm-iso/ $LOCAL_MIRROR_USER@$LOCAL_MIRROR_HOST:/var/www/mirror/isos/$LOCAL_MIRROR_REPO/
+# Sync to public mirror
+ssh -i /root/.ssh/id_ed25519 -o StrictHostKeyChecking=no admin@mirror.cyberlab.lan 'rsync -rlvP -e "ssh -i ~/.ssh/mirror_sync" /var/www/mirror/ mirror_sync@mirror.rocknsm.io:/var/www/mirror/ --delete' 
