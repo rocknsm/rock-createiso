@@ -1,0 +1,79 @@
+# This var changes to false when a KEY and passphrase are
+skip_gpg: true
+rock_cache_dir: rocknsm_cache
+rock_repo: 2_2
+rockscripts_branch: master
+rockdashboards_branch: master
+pulledpork_release: 0.7.2
+yum_base_url: http://mirror.centos.org/centos/7/os/x86_64/
+yum_updates_url: http://mirror.centos.org/centos/7/updates/x86_64/
+yum_extras_url: http://mirror.centos.org/centos/7/extras/x86_64/
+yum_epel_url: http://download.fedoraproject.org/pub/epel/7/x86_64/
+yum_rocknsm_2_url: https://packagecloud.io/rocknsm/2_2/el/7/$basearch
+yum_rocknsm_testing_url: https://copr-be.cloud.fedoraproject.org/results/@rocknsm/testing/epel-7-$basearch/
+yum_elastic_6_url: https://artifacts.elastic.co/packages/6.x/yum
+yum_rocknsm_testing_enabled: 0
+
+package_groups:
+  - core
+  - anaconda-tools
+
+download_packages:
+  - vim-enhanced
+  - nano
+  - tmux
+  - git
+  - bzip2
+  - ansible
+  - rock
+  - rock-release
+  - initial-setup
+  - yum-utils
+  - openscap
+  - openscap-scanner
+  - scap-security-guide
+  - pam_pkcs11
+  - openssh-server
+  - screen
+  - shim-x64
+  - bwm-ng
+  - tcpreplay
+  - tcpdump
+  - bats
+  - policycoreutils-python
+  - htop
+  - nmap-ncat
+  - logrotate
+  - rock-release
+  - bro
+  - bro-plugin-kafka
+  - bro-plugin-af_packet
+  - GeoIP
+  - GeoIP-update
+  - suricata
+  - suricata-update
+  - perl-Crypt-SSLeay
+  - perl-LWP-Protocol-https
+  - perl-Sys-Syslog
+  - perl-Archive-Tar
+  - perl-libwww-perl
+  - stenographer
+  - jq
+  - docket
+  - lighttpd
+  - zookeeper
+  - kafka
+  - kafkacat
+  - java-1.8.0-openjdk-headless
+  - fsf
+  - elasticsearch
+  - logstash
+  - kibana
+  - auditbeat
+  - metricbeat
+  - filebeat
+  - easy-rsa
+  - python2-pyOpenSSL
+  - python2-xkcdpass
+  - python2-pytest
+  - python2-testinfra
