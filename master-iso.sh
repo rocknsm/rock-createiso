@@ -170,13 +170,6 @@ download_content() {
   # echo "HIDDEN PASSWORD"
   # echo "${GPG_KEY_NAME}"
 
-  # Variable to hold the ansible command
-  cat << EOF | tee /tmp/extra-vars.yml
-skip_gpg: ${SKIP_GPG}
-rock_cache_dir: ${ROCK_CACHE_DIR}
-gpg_passphrase: ${GPG_PASS}
-gpg_key_name: ${GPG_KEY_NAME}
-EOF
   if [[ $YUM_BASE_URL ]]; then
     echo "yum_base_url: ${YUM_BASE_URL}" >> /tmp/extra-vars.yml
   fi
