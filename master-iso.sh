@@ -97,6 +97,10 @@ if [ "x${DEBUG}" == "x1" ]; then
     echo "Task output logged to ${BUILD_LOG}"
 fi
 
+if [ -z "$YUM_TESTING" ]; then
+  YUM_TESTING=0
+fi
+
 TMP_ISO=$(mktemp -d)
 TMP_NEW=$(mktemp -d)
 TMP_RPMDB=$(mktemp -d)
@@ -170,24 +174,21 @@ download_content() {
   # echo "HIDDEN PASSWORD"
   # echo "${GPG_KEY_NAME}"
 
-  if [[ $YUM_BASE_URL ]]; then
-    echo "yum_base_url: ${YUM_BASE_URL}" >> /tmp/extra-vars.yml
-  fi
 
   # Check what yum urls need to be overriden in assible
-  if [[ $YUM_BASE_URL ]]; then
+  if [[ ! -z $YUM_BASE_URL ]]; then
     echo "yum_base_url: '${YUM_BASE_URL}'" >> /tmp/extra-vars.yml
   fi
-  if [[ $YUM_EXTRAS_URL ]]; then
+  if [[ ! -z $YUM_EXTRAS_URL ]]; then
     echo "yum_extras_url: '${YUM_EXTRAS_URL}'" >> /tmp/extra-vars.yml
   fi
-  if [[ $YUM_EPEL_URL ]]; then
+  if [[ ! -z $YUM_EPEL_URL ]]; then
     echo "yum_epel_url: '${YUM_EPEL_URL}'" >> /tmp/extra-vars.yml
   fi
-  if [[ $YUM_UPDATES_URL ]]; then
+  if [[ ! -z $YUM_UPDATES_URL ]]; then
     echo "yum_updates_url: '${YUM_UPDATES_URL}'" >> /tmp/extra-vars.yml
   fi
-  if [[ $YUM_ELASTIC_URL ]]; then
+  if [[ ! -z $YUM_ELASTIC_URL ]]; then
     echo "yum_elastic_6_url: '${YUM_ELASTIC_URL}'" >> /tmp/extra-vars.yml
   fi
 
