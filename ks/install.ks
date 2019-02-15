@@ -92,7 +92,7 @@ chmod 755 /etc/NetworkManager/dispatcher.d/50-rocknsm-issue-update
 systemctl enable initial-setup.service
 
 # check for VMware or qemu; Install and enable relevant tools
-case $(virt-what) in
+case $(sudo virt-what) in
   vmware) yum -y install open-vm-tools; systemctl enable vmtoolsd ;;
   qemu)   yum -y install qemu-guest-agent; systemctl enable qemu-guest-agent ;;
 esac
