@@ -79,6 +79,8 @@ fi
 # We recieved a key and password, so we would use them
 if [[ $GPG_KEY_NAME && $GPG_PASS ]]; then
   SKIP_GPG='false'
+else
+  SKIP_GPG='true'
 fi
 
 if [[ $GPG_KEY_PATH ]]; then
@@ -273,14 +275,16 @@ EOF
 
   # Create new repo metadata
   createrepo_c -g ${TMP_NEW}/repodata/comps.xml ${TMP_NEW}
-  echo "Running gpg2 sign"
-  set +x
-  if [[ "${GPG_PASS}" ]]; then
-    gpg2 --detach-sign --yes --armor --passphrase "${GPG_PASS}" --batch -u security@rocknsm.io ${TMP_NEW}/repodata/repomd.xml
-  else
-    gpg2 --detach-sign --yes --armor -u security@rocknsm.io ${TMP_NEW}/repodata/repomd.xml
+  if ! [[ "${SKIP_GPG}" ]]; then
+    echo "Running gpg2 sign"
+    set +x
+    if [[ "${GPG_PASS}" ]]; then
+      gpg2 --detach-sign --yes --armor --passphrase "${GPG_PASS}" --batch -u security@rocknsm.io ${TMP_NEW}/repodata/repomd.xml
+    else
+      gpg2 --detach-sign --yes --armor -u security@rocknsm.io ${TMP_NEW}/repodata/repomd.xml
+    fi
+    set -x
   fi
-  set -x
 
   rm  ${TMP_NEW}/repodata/comps.xml
 
