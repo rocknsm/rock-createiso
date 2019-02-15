@@ -76,10 +76,6 @@ if ! [[ $OUT_ISO ]]; then
   OUT_ISO="$(dirname ${SRCISO})/rocknsm-${VERSION}-${RELEASE}.iso"
 fi
 
-if ! [[ $YUM_TESTING ]]; then
-  YUM_TESTING=0
-fi
-
 # We recieved a key and password, so we would use them
 if [[ $GPG_KEY_NAME && $GPG_PASS ]]; then
   SKIP_GPG='false'
@@ -97,7 +93,7 @@ if [ "x${DEBUG}" == "x1" ]; then
     echo "Task output logged to ${BUILD_LOG}"
 fi
 
-if [ -z "$YUM_TESTING" ]; then
+if [ -z ${YUM_TESTING+x} ]; then
   YUM_TESTING=0
 fi
 
@@ -174,21 +170,22 @@ download_content() {
   # echo "HIDDEN PASSWORD"
   # echo "${GPG_KEY_NAME}"
 
-
+  # Create the extra vars file and while we are here make sure its empty
+  echo "foo: bar" > /tmp/extra-vars.yml
   # Check what yum urls need to be overriden in assible
-  if [[ ! -z $YUM_BASE_URL ]]; then
+  if [[ ! -z ${YUM_BASE_URL+x} ]]; then
     echo "yum_base_url: '${YUM_BASE_URL}'" >> /tmp/extra-vars.yml
   fi
-  if [[ ! -z $YUM_EXTRAS_URL ]]; then
+  if [[ ! -z ${YUM_EXTRAS_URL+x} ]]; then
     echo "yum_extras_url: '${YUM_EXTRAS_URL}'" >> /tmp/extra-vars.yml
   fi
-  if [[ ! -z $YUM_EPEL_URL ]]; then
+  if [[ ! -z ${YUM_EPEL_URL+x} ]]; then
     echo "yum_epel_url: '${YUM_EPEL_URL}'" >> /tmp/extra-vars.yml
   fi
-  if [[ ! -z $YUM_UPDATES_URL ]]; then
+  if [[ ! -z ${YUM_UPDATES_URL+x} ]]; then
     echo "yum_updates_url: '${YUM_UPDATES_URL}'" >> /tmp/extra-vars.yml
   fi
-  if [[ ! -z $YUM_ELASTIC_URL ]]; then
+  if [[ ! -z ${YUM_ELASTIC_URL+x} ]]; then
     echo "yum_elastic_6_url: '${YUM_ELASTIC_URL}'" >> /tmp/extra-vars.yml
   fi
 
