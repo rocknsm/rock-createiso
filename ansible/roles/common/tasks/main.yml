@@ -24,6 +24,7 @@
     patterns: "*.rpm"
     file_type: "file"
   register: find_result
+  when: (skip_gpg == 'false')
 
 - name: Signing packages
   rpmsign:

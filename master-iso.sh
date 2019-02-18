@@ -76,13 +76,11 @@ if ! [[ $OUT_ISO ]]; then
   OUT_ISO="$(dirname ${SRCISO})/rocknsm-${VERSION}-${RELEASE}.iso"
 fi
 
-if ! [[ $YUM_TESTING ]]; then
-  YUM_TESTING=0
-fi
-
 # We recieved a key and password, so we would use them
 if [[ $GPG_KEY_NAME && $GPG_PASS ]]; then
   SKIP_GPG='false'
+else
+  SKIP_GPG='true'
 fi
 
 if [[ $GPG_KEY_PATH ]]; then
@@ -95,6 +93,10 @@ fi
 
 if [ "x${DEBUG}" == "x1" ]; then
     echo "Task output logged to ${BUILD_LOG}"
+fi
+
+if [ -z ${YUM_TESTING+x} ]; then
+  YUM_TESTING=0
 fi
 
 TMP_ISO=$(mktemp -d)
@@ -170,24 +172,23 @@ download_content() {
   # echo "HIDDEN PASSWORD"
   # echo "${GPG_KEY_NAME}"
 
-  if [[ $YUM_BASE_URL ]]; then
-    echo "yum_base_url: ${YUM_BASE_URL}" >> /tmp/extra-vars.yml
-  fi
+  # Create the extra vars file and while we are here make sure its empty
+  echo "foo: bar" > /tmp/extra-vars.yml
 
   # Check what yum urls need to be overriden in assible
-  if [[ $YUM_BASE_URL ]]; then
+  if [[ ! -z ${YUM_BASE_URL+x} ]]; then
     echo "yum_base_url: '${YUM_BASE_URL}'" >> /tmp/extra-vars.yml
   fi
-  if [[ $YUM_EXTRAS_URL ]]; then
+  if [[ ! -z ${YUM_EXTRAS_URL+x} ]]; then
     echo "yum_extras_url: '${YUM_EXTRAS_URL}'" >> /tmp/extra-vars.yml
   fi
-  if [[ $YUM_EPEL_URL ]]; then
+  if [[ ! -z ${YUM_EPEL_URL+x} ]]; then
     echo "yum_epel_url: '${YUM_EPEL_URL}'" >> /tmp/extra-vars.yml
   fi
-  if [[ $YUM_UPDATES_URL ]]; then
+  if [[ ! -z ${YUM_UPDATES_URL+x} ]]; then
     echo "yum_updates_url: '${YUM_UPDATES_URL}'" >> /tmp/extra-vars.yml
   fi
-  if [[ $YUM_ELASTIC_URL ]]; then
+  if [[ ! -z ${YUM_ELASTIC_URL+x} ]]; then
     echo "yum_elastic_6_url: '${YUM_ELASTIC_URL}'" >> /tmp/extra-vars.yml
   fi
 
@@ -275,14 +276,16 @@ EOF
 
   # Create new repo metadata
   createrepo_c -g ${TMP_NEW}/repodata/comps.xml ${TMP_NEW}
-  echo "Running gpg2 sign"
-  set +x
-  if [[ "${GPG_PASS}" ]]; then
-    gpg2 --detach-sign --yes --armor --passphrase "${GPG_PASS}" --batch -u security@rocknsm.io ${TMP_NEW}/repodata/repomd.xml
-  else
-    gpg2 --detach-sign --yes --armor -u security@rocknsm.io ${TMP_NEW}/repodata/repomd.xml
+  if ! [[ "${SKIP_GPG}" ]]; then
+    echo "Running gpg2 sign"
+    set +x
+    if [[ "${GPG_PASS}" ]]; then
+      gpg2 --detach-sign --yes --armor --passphrase "${GPG_PASS}" --batch -u security@rocknsm.io ${TMP_NEW}/repodata/repomd.xml
+    else
+      gpg2 --detach-sign --yes --armor -u security@rocknsm.io ${TMP_NEW}/repodata/repomd.xml
+    fi
+    set -x
   fi
-  set -x
 
   rm  ${TMP_NEW}/repodata/comps.xml
 
