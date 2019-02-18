@@ -39,24 +39,24 @@ set timeout=-1
 search --no-floppy --set=root -l '{{ name }} {{ version }} {{ arch }}'
 
 ### BEGIN /etc/grub.d/10_linux ###
-menuentry 'Automated install of {{ name }} {{ version }} ({{ build }})' --class fedora --class gnu-linux --class gnu --class os {
+menuentry 'Automated install of {{ name }} {{ version }} ({{ build }})' --class centos --class gnu-linux --class gnu --class os {
 	linuxefi /images/pxeboot/vmlinuz inst.stage2=hd:LABEL={{ name }}\x20{{ version }}\x20{{ arch }} quiet ks=hd:LABEL={{ name }}\x20{{ version }}\x20{{ arch }}:/{{ kickstart }}
 	initrdefi /images/pxeboot/initrd.img
 }
-menuentry 'Custom install of {{ name }} {{ version }} ({{ build }})' --class fedora --class gnu-linux --class gnu --class os {
+menuentry 'Custom install of {{ name }} {{ version }} ({{ build }})' --class centos --class gnu-linux --class gnu --class os {
 	linuxefi /images/pxeboot/vmlinuz inst.stage2=hd:LABEL={{ name }}\x20{{ version }}\x20{{ arch }} quiet ks=hd:LABEL={{ name }}\x20{{ version }}\x20{{ arch }}:/{{ kickstart_man }}
 	initrdefi /images/pxeboot/initrd.img
 }
-menuentry 'Test this media & custom install {{ name }} {{ version }} ({{ build }})' --class fedora --class gnu-linux --class gnu --class os {
+menuentry 'Test this media & custom install {{ name }} {{ version }} ({{ build }})' --class centos --class gnu-linux --class gnu --class os {
 	linuxefi /images/pxeboot/vmlinuz inst.stage2=hd:LABEL={{ name }}\x20{{ version }}\x20{{ arch }} rd.live.check quiet ks=hd:LABEL={{ name }}\x20{{ version }}\x20{{ arch }}:/{{ kickstart_man }}
 	initrdefi /images/pxeboot/initrd.img
 }
 submenu 'Troubleshooting -->' {
-	menuentry 'Install {{ name }} {{ version }} in basic graphics mode' --class fedora --class gnu-linux --class gnu --class os {
+	menuentry 'Install {{ name }} {{ version }} in basic graphics mode' --class centos --class gnu-linux --class gnu --class os {
 		linuxefi /images/pxeboot/vmlinuz inst.stage2=hd:LABEL={{ name }}\x20{{ version }}\x20{{ arch }} xdriver=vesa nomodeset quiet ks=hd:LABEL={{ name }}\x20{{ version }}\x20{{ arch }}:/{{ kickstart_man }}
 		initrdefi /images/pxeboot/initrd.img
 	}
-	menuentry 'Rescue a {{ name }} system' --class fedora --class gnu-linux --class gnu --class os {
+	menuentry 'Rescue a {{ name }} system' --class centos --class gnu-linux --class gnu --class os {
 		linuxefi /images/pxeboot/vmlinuz inst.stage2=hd:LABEL={{ name }}\x20{{ version }}\x20{{ arch }} rescue quiet
 		initrdefi /images/pxeboot/initrd.img
 	}
