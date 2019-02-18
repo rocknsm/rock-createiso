@@ -7,7 +7,7 @@ reboot --eject
 
 # Configure Storage
 clearpart --all --initlabel
-autopart --type=lvm
+autopart --type=lvm --fstype=xfs
 bootloader --location=mbr
 
 # Configure OS

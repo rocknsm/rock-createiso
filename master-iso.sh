@@ -174,6 +174,7 @@ download_content() {
 
   # Create the extra vars file and while we are here make sure its empty
   echo "foo: bar" > /tmp/extra-vars.yml
+
   # Check what yum urls need to be overriden in assible
   if [[ ! -z ${YUM_BASE_URL+x} ]]; then
     echo "yum_base_url: '${YUM_BASE_URL}'" >> /tmp/extra-vars.yml
