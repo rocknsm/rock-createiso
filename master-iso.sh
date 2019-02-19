@@ -61,7 +61,7 @@ usage() {
   echo "  -g, long name of gpg key to use"
   echo "  -p, GPG Pass phrase"
   echo "  -i, Path to gpg key file to import"
-  echo "  -t, 0 Disable, 1 Enable"
+  echo "  -t, Enable testing repo (1) or disable (0). Default: 0"
   echo "  -b, Yum base url"
   echo "  -e, Yum extras url"
   echo "  -E, Yum EPEL url"
@@ -276,7 +276,7 @@ EOF
 
   # Create new repo metadata
   createrepo_c -g ${TMP_NEW}/repodata/comps.xml ${TMP_NEW}
-  if ! [[ "${SKIP_GPG}" ]]; then
+  if [[ "${SKIP_GPG}" == "false" ]]; then
     echo "Running gpg2 sign"
     set +x
     if [[ "${GPG_PASS}" ]]; then
