@@ -47,14 +47,12 @@ cp -a /mnt/install/repo/RPM-GPG-KEY-RockNSM-2 /mnt/sysimage/etc/pki/rpm-gpg/RPM-
 
 # Copy over build tag
 mkdir -p /mnt/sysimage/etc/rocknsm/
-cp -a /mnt/install/repo/RockNSM_BuildTag /mnt/sysimage/etc/rocknsm/rocknsm-build
+install -p /.buildstamp  /mnt/install/etc/rocknsm/rocknsm-buildstamp
 
 %end
 
 %post --log=/root/ks-post-chroot.log
 #!/bin/bash
-
-ROCK_DIR=/opt/rocknsm/rock
 
 # Allow sudo w/ tools like ansible, etc
 sed -i "s/^[^#].*requiretty/#Defaults requiretty/" /etc/sudoers
@@ -79,15 +77,14 @@ cat << 'EOF' > /etc/rocknsm/config.yml
 rock_online_install: False
 EOF
 
-${ROCK_DIR}/bin/generate_defaults.sh
+/usr/sbin/generate_defaults.sh
 
 # Set version id
 echo "2.2.0" > /etc/rocknsm/rock-version
 
 # Install /etc/issue updater
-cp ${ROCK_DIR}/playbooks/files/etc-issue.in /etc/issue.in
-cp ${ROCK_DIR}/playbooks/files/nm-issue-update /etc/NetworkManager/dispatcher.d/50-rocknsm-issue-update
-chmod 755 /etc/NetworkManager/dispatcher.d/50-rocknsm-issue-update
+install -p /usr/share/rock/roles/common/files/etc-issue.in /etc/issue.in
+install -p -m 0755 /usr/share/rock/roles/common/files/nm-issue-update /etc/NetworkManager/dispatcher.d/50-rocknsm-issue-update
 
 systemctl enable initial-setup.service
 

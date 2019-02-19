@@ -1,6 +1,6 @@
 [Main]
-Product=ROCK NSM
-Version=2.2.0
+Product=RockNSM
+Version=x.x.x
 BugURL=http://github.com/rocksnm/rock
 IsFinal=True
 UUID=201711080000.x86_64
