@@ -48,7 +48,7 @@ cp -a /mnt/install/repo/RPM-GPG-KEY-RockNSM-2 /mnt/sysimage/etc/pki/rpm-gpg/RPM-
 # Copy over build tag & version
 mkdir -p /mnt/sysimage/etc/rocknsm/
 install -p /.buildstamp  /mnt/sysimage/etc/rocknsm/rocknsm-buildstamp
-cat /.buildstamp | awk -F'=' '/Version/ { print $2 }' > /etc/rocknsm/rock-version
+cat /.buildstamp | awk -F'=' '/Version/ { print $2 }' > /mnt/sysimage/etc/rocknsm/rock-version
 
 %end
 
