@@ -6,7 +6,7 @@ from pyanaconda import nm
 class CustomBaseInstallClass(BaseInstallClass):
     name = "RockNSM"
     sortPriority = 30000
-    if not productName.startswith("ROCK NSM"):
+    if not productName.startswith("RockNSM"):
         hidden = True
     defaultFS = "xfs"
     bootloaderTimeoutDefault = 60
