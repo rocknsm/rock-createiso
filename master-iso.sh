@@ -276,7 +276,7 @@ EOF
 
   # Create new repo metadata
   createrepo_c -g ${TMP_NEW}/repodata/comps.xml ${TMP_NEW}
-  if ! [[ "${SKIP_GPG}" ]]; then
+  if [[ "${SKIP_GPG}" -eq "false" ]]; then
     echo "Running gpg2 sign"
     set +x
     if [[ "${GPG_PASS}" ]]; then
