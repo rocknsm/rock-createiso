@@ -21,6 +21,19 @@ set +x
 GPG_KEY_PASS="$2"
 GPG_KEY="$3"
 ENABLE_TESTING=$4
+OFFICIAL_RELEASE="$5"
+
+if [[ $OFFICIAL_RELEASE -eq 1 ]]; then
+  # Curl the tags and find the latest tag available on github and cut out all the other cruft
+  GIT_TAG=$(curl -s https://api.github.com/repos/rocknsm/rock/git/refs/tags \
+  | grep \"refs/tags | awk -F'/' '{print $3}' | grep rock | sort | tail -n1 | \
+  awk -F'"' '{print $1}' | awk -F"-" '{print $2}')
+  ISO_DATE=$(date '+%y%d')
+  OUT_ISO="rocknsm-${GIT_TAG}-${ISO_DATE}.iso"
+else
+  ISO_DATE=$(date '+%Y%m%d-%T')
+  OUT_ISO="rocknsm-${ISO_DATE}.iso"
+fi
 # Create directory to pass to concourse upload task
 mkdir -p rocknsm-iso
 
