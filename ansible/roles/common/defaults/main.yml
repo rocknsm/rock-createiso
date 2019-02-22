@@ -51,7 +51,6 @@ download_packages:
   - GeoIP
   - GeoIP-update
   - suricata
-  - suricata-update
   - perl-Crypt-SSLeay
   - perl-LWP-Protocol-https
   - perl-Sys-Syslog
