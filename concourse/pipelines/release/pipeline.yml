@@ -17,7 +17,7 @@ resources:
   source:
     uri: https://github.com/rocknsm/rock.git
     branch: master
-    tag_filter: "[[:digit:].[:digit:]]"
+    tag_filter: "rock-[[:digit:]].[[:digit:]].[[:digit:]]-[[:digit:]]"
 
 - name: RockNSM-Slack
   type: slack-notification
@@ -66,12 +66,13 @@ jobs:
         path: /bin/bash
         args:
           - '-c'
-          - 'rock-createiso-git/concourse/create_iso.sh "$GPG_KEY_NAME" "$GPG_KEY_PASS" "$GPG_KEY" "$ENABLE_TESTING"'
+          - 'rock-createiso-git/concourse/create_iso.sh "$GPG_KEY_NAME" "$GPG_KEY_PASS" "$GPG_KEY" "$ENABLE_TESTING" "$OFFICIAL_RELEASE"'
       params:
         GPG_KEY: ((gpg-key))
         GPG_KEY_PASS: ((gpg-passphrase))
         GPG_KEY_NAME: ((gpg-key-name))
         ENABLE_TESTING: 0
+        OFFICIAL_RELEASE: 1
     on_failure:
       put: RockNSM-Slack
       params:

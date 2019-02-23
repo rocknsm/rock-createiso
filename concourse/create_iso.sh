@@ -21,7 +21,7 @@ set +x
 GPG_KEY_PASS="$2"
 GPG_KEY="$3"
 ENABLE_TESTING=$4
-OFFICIAL_RELEASE="$5"
+OFFICIAL_RELEASE=$5
 
 if [[ $OFFICIAL_RELEASE -eq 1 ]]; then
   # Curl the tags and find the latest tag available on github and cut out all the other cruft
