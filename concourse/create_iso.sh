@@ -28,7 +28,7 @@ if [[ $OFFICIAL_RELEASE -eq 1 ]]; then
   GIT_TAG=$(curl -s https://api.github.com/repos/rocknsm/rock/git/refs/tags \
   | grep \"refs/tags | awk -F'/' '{print $3}' | grep rock | sort | tail -n1 | \
   awk -F'"' '{print $1}' | awk -F"-" '{print $2}')
-  ISO_DATE=$(date '+%y%d')
+  ISO_DATE=$(date '+%y%m')
   OUT_ISO="rocknsm-${GIT_TAG}-${ISO_DATE}.iso"
 else
   ISO_DATE=$(date '+%Y%m%d-%T')
