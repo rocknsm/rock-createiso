@@ -49,7 +49,7 @@ cd "$(dirname "$(realpath "$0")")"
 # Create ISO
 echo "passing the following variables to master-iso.sh"
 echo "-s ../../centos-minimal-iso/centos-minimal.iso"
-echo "-o ../../rocknsm-iso/rocknsm-$(date '+%Y%m%d-%T').iso"
+echo "-o ../../rocknsm-iso/${OUT_ISO}"
 echo "-g $GPG_KEY_NAME"
 echo "-p HIDDEN PASSWORD"
 echo "-i $GPG_KEY_PATH"
@@ -63,7 +63,7 @@ echo "-l http://192.168.73.21/pulp/repos/elastic/6/"
 set +x
 ../master-iso.sh \
 -s ../../centos-minimal-iso/centos-minimal.iso \
--o "../../rocknsm-iso/rocknsm-$(date '+%Y%m%d-%T').iso" \
+-o "../../rocknsm-iso/${OUT_ISO}" \
 -g "$GPG_KEY_NAME" \
 -p "$GPG_KEY_PASS" \
 -i "$GPG_KEY_PATH" \
