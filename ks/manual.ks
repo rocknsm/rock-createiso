@@ -71,13 +71,6 @@ enabled=1
 cost=500
 EOF
 
-# Default to offline build and generate values
-mkdir -p /etc/rocknsm
-cat << 'EOF' > /etc/rocknsm/config.yml
----
-rock_online_install: False
-EOF
-
 /usr/sbin/generate_defaults.sh
 
 # Install /etc/issue updater
