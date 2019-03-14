@@ -71,7 +71,7 @@ enabled=1
 cost=500
 EOF
 
-/usr/sbin/generate_defaults.sh
+rock genconfig -e "rock_online_install=False"
 
 # Install /etc/issue updater
 install -p /usr/share/rock/roles/common/files/etc-issue.in /etc/issue.in
