@@ -54,11 +54,11 @@ echo "-g $GPG_KEY_NAME"
 echo "-p HIDDEN PASSWORD"
 echo "-i $GPG_KEY_PATH"
 echo "-t $ENABLE_TESTING"
-echo "-b http://192.168.73.21/pulp/repos/centos/7.5/os/"
-echo "-e http://192.168.73.21/pulp/repos/centos/7.5/extras/"
-echo "-E http://192.168.73.21/pulp/repos/epel/7/x86_64/"
-echo "-u http://192.168.73.21/pulp/repos/centos/7.5/updates/"
-echo "-l http://192.168.73.21/pulp/repos/elastic/6/"
+echo "-b http://pulp.cyberlab.lan/pulp/repos/centos/7.5/os/"
+echo "-e http://pulp.cyberlab.lan/pulp/repos/centos/7.5/extras/"
+echo "-E http://pulp.cyberlab.lan/pulp/repos/epel/7/x86_64/"
+echo "-u http://pulp.cyberlab.lan/pulp/repos/centos/7.5/updates/"
+echo "-l http://pulp.cyberlab.lan/pulp/repos/elastic/6/"
 
 set +x
 ../master-iso.sh \
@@ -68,8 +68,8 @@ set +x
 -p "$GPG_KEY_PASS" \
 -i "$GPG_KEY_PATH" \
 -t "$ENABLE_TESTING" \
--b "http://192.168.73.21/pulp/repos/centos/7.5/os/" \
--e "http://192.168.73.21/pulp/repos/centos/7.5/extras/" \
--E "http://192.168.73.21/pulp/repos/epel/7/x86_64/" \
--u "http://192.168.73.21/pulp/repos/centos/7.5/updates/" \
--l "http://192.168.73.21/pulp/repos/elastic/6/" \
+-b "http://pulp.cyberlab.lan/pulp/repos/centos/7.5/os/" \
+-e "http://pulp.cyberlab.lan/pulp/repos/centos/7.5/extras/" \
+-E "http://pulp.cyberlab.lan/pulp/repos/epel/7/x86_64/" \
+-u "http://pulp.cyberlab.lan/pulp/repos/centos/7.5/updates/" \
+-l "http://pulp.cyberlab.lan/pulp/repos/elastic/6/" \
