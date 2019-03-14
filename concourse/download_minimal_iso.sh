@@ -17,4 +17,4 @@
 mkdir -p centos-minimal-iso
 
 # download ISO
-curl -L internal-mirror.cyberlab.lan/upstream/`curl -L -s  internal-mirror.cyberlab.lan/upstream | grep Minimal | grep href | awk -F '"' '{print $2}'` -o centos-minimal-iso/centos-minimal.iso
+internal-mirror.cyberlab.lan/upstream/$(curl -L -s  internal-mirror.cyberlab.lan/upstream | awk -F '"' '/href.*Minimal/ {print $2}') -o centos-minimal-iso/centos-minimal.iso
