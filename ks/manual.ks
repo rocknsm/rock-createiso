@@ -71,7 +71,7 @@ enabled=1
 cost=500
 EOF
 
-rock genconfig -e "rock_online_install=False"
+rock genconfig -e "rock_online_install=False" -e "rock_offline_gpgcheck=1" -e "rock_disable_offline_repo=False"
 
 # Install /etc/issue updater
 install -p /usr/share/rock/roles/common/files/etc-issue.in /etc/issue.in
