@@ -157,10 +157,13 @@ extract_iso() {
 
 install_gpg_key() {
   # Import gpg key if they gave us the path
-  RPM_GPG_KEY="${SCRIPT_DIR}/RPM-GPG-KEY-ROCKNSM"
-  gpg --import "${GPG_KEY_PATH}"
-  gpg --export -a "${GPG_KEY_NAME}" > "${RPM_GPG_KEY}"
-  rpm --import "${RPM_GPG_KEY}"
+  # Check to see if the key was previously imported
+  if [[ ! $(gpg --list-secret-keys --keyid-format LONG | grep "${GPG_KEY_NAME}") ]]; then
+    RPM_GPG_KEY="${SCRIPT_DIR}/RPM-GPG-KEY-ROCKNSM"
+    gpg --import "${GPG_KEY_PATH}"
+    gpg --export -a "${GPG_KEY_NAME}" > "${RPM_GPG_KEY}"
+    rpm --import "${RPM_GPG_KEY}"
+  fi
 }
 
 download_content() {
