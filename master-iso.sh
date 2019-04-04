@@ -139,7 +139,7 @@ extract_iso() {
   done
 
   # Extract comps file
-  local COMPS=$(isoinfo -i ${SRCISO} -R -f 2>/dev/null | grep 'comps.xml$' | head -1)
+  local COMPS=$(isoinfo -i ${SRCISO} -R -f 2>/dev/null | grep 'comps.*\.xml$' | head -1)
   mkdir -p ${TMP_NEW}/repodata
   isoinfo -i ${SRCISO} -R -x "${COMPS}" 2>/dev/null > ${TMP_NEW}/repodata/comps.xml
 
