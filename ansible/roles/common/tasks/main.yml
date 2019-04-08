@@ -7,8 +7,6 @@
   template:
     src: "{{ role_path }}/templates/rock-{{ ansible_distribution }}-offline.j2"
     dest: "/tmp/rock-offline.conf"
-  when: ansible_distribution == "CentOS"
-
 
 - name: download packages
   repobuilder:
