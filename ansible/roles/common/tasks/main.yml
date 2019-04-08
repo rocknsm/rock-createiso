@@ -5,7 +5,7 @@
 
 - name: render template
   template:
-    src: "{{ role_path }}/templates/rock-{{ ansible_distribution }}-offline.j2"
+    src: "{{ role_path }}/templates/rock-offline.j2"
     dest: "/tmp/rock-offline.conf"
 
 - name: download packages
