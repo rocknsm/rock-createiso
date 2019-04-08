@@ -91,7 +91,7 @@ enabled={{ yum_rocknsm_testing_enabled }}
 enabled_metadata=1
 
 [elastic-{{ elastic.major_version }}]
-name=Elastic repository for {{ elastic.major_version }}.{{ elastic.suffix}} packages
+name=Elastic repository for {{ elastic.major_version }}.{{ elastic.suffix }} packages
 baseurl="{{ yum_elastic_url }}"
 gpgcheck=0
 gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
