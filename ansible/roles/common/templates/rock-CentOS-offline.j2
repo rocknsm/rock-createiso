@@ -28,6 +28,8 @@ mdpolicy=group:primary
 best=1
 strict=0
 
+{% if ansible_distribution == "CentOS" %}
+
 # repos
 [base]
 name=BaseOS
@@ -54,6 +56,8 @@ failovermethod=priority
 gpgkey=file:///usr/share/distribution-gpg-keys/centos/RPM-GPG-KEY-CentOS-7
 gpgcheck=0
 enabled=1
+
+{% endif %}
 
 [epel]
 name=epel
