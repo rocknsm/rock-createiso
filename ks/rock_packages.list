@@ -50,6 +50,8 @@ logstash
 kibana
 metricbeat
 filebeat
+auditbeat
+heartbeat
 nginx
 
 # Necessary for nginx auth setup
