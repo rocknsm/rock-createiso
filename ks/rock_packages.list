@@ -17,11 +17,9 @@ GeoIP
 GeoIP-update
 
 
-# Suricata / Snort
+# Suricata
 suricata
 suricata-update
-snort
-daq
 
 # Pulled Pork
 perl-Crypt-SSLeay
@@ -41,7 +39,7 @@ lighttpd
 zookeeper
 kafka
 kafkacat
-java-1.8.0-openjdk-headless
+java-11-openjdk-headless
 
 # FSF
 fsf
