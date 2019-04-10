@@ -40,7 +40,6 @@
     state: absent
     path: "{{ rock_cache_dir }}/repodata"
 
-
 - name: generate fresh repo data
   command: createrepo_c "{{ rock_cache_dir | quote }}"
 
@@ -49,22 +48,10 @@
     path: "{{ rock_cache_dir }}/support"
     state: "directory"
 
-- name: download ET snort rules
-  get_url:
-    url: https://rules.emergingthreats.net/open/snort-2.9.0/emerging.rules.tar.gz
-    dest: "{{ rock_cache_dir }}/support/emerging.rules-snort.tar.gz"
-    mode: 0644
-
 - name: download ET Suricata rules
   get_url:
     url: https://rules.emergingthreats.net/open/suricata/emerging.rules.tar.gz
     dest: "{{ rock_cache_dir }}/support/emerging.rules-suricata.tar.gz"
-    mode: 0644
-
-- name: download pulled pork
-  get_url:
-    url: https://github.com/shirkdog/pulledpork/archive/{{ pulledpork_release }}.tar.gz
-    dest: "{{ rock_cache_dir }}/support/pulledpork-{{ pulledpork_release }}.tar.gz"
     mode: 0644
 
 - name: download RockNSM scripts
