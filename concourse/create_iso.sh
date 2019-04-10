@@ -68,8 +68,8 @@ set +x
 -p "$GPG_KEY_PASS" \
 -i "$GPG_KEY_PATH" \
 -t "$ENABLE_TESTING" \
--b "http://pulp.cyberlab.lan/pulp/repos/centos/7.5/os/" \
--e "http://pulp.cyberlab.lan/pulp/repos/centos/7.5/extras/" \
+-b "http://pulp.cyberlab.lan/pulp/repos/centos/7/os/" \
+-e "http://pulp.cyberlab.lan/pulp/repos/centos/7/extras/" \
 -E "http://pulp.cyberlab.lan/pulp/repos/epel/7/x86_64/" \
--u "http://pulp.cyberlab.lan/pulp/repos/centos/7.5/updates/" \
--l "http://pulp.cyberlab.lan/pulp/repos/elastic/6/" \
+-u "http://pulp.cyberlab.lan/pulp/repos/centos/7/updates/" \
+-l "http://pulp.cyberlab.lan/pulp/repos/elastic/7/" \
