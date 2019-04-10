@@ -70,9 +70,7 @@
   command: "gpg2 --detach-sign --yes --armor --passphrase {{ gpg_passphrase }} --batch -u security@rocknsm.io {{ item | quote }}"
   with_items:
     - "{{ rock_cache_dir }}/repodata/repomd.xml"
-    - "{{ rock_cache_dir }}/support/emerging.rules-snort.tar.gz"
     - "{{ rock_cache_dir }}/support/emerging.rules-suricata.tar.gz"
-    - "{{ rock_cache_dir }}/support/pulledpork-{{ pulledpork_release }}.tar.gz"
     - "{{ rock_cache_dir }}/support/rock-scripts_{{ rockscripts_branch }}.tar.gz"
     - "{{ rock_cache_dir }}/support/rock-dashboards_{{ rockdashboards_branch }}.tar.gz"
   when: (skip_gpg == 'false')
