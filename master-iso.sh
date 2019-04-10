@@ -192,7 +192,7 @@ download_content() {
     echo "yum_updates_url: '${YUM_UPDATES_URL}'" >> /tmp/extra-vars.yml
   fi
   if [[ ! -z ${YUM_ELASTIC_URL+x} ]]; then
-    echo "yum_elastic_6_url: '${YUM_ELASTIC_URL}'" >> /tmp/extra-vars.yml
+    echo "yum_elastic_url: '${YUM_ELASTIC_URL}'" >> /tmp/extra-vars.yml
   fi
 
   echo "Running the following ansible command"
