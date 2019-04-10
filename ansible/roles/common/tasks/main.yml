@@ -61,12 +61,6 @@
     dest: "{{ rock_cache_dir }}/support/emerging.rules-suricata.tar.gz"
     mode: 0644
 
-- name: download pulled pork
-  get_url:
-    url: https://github.com/shirkdog/pulledpork/archive/{{ pulledpork_release }}.tar.gz
-    dest: "{{ rock_cache_dir }}/support/pulledpork-{{ pulledpork_release }}.tar.gz"
-    mode: 0644
-
 - name: download RockNSM scripts
   get_url:
     url: https://github.com/rocknsm/rock-scripts/archive/{{ rockscripts_branch }}.tar.gz
