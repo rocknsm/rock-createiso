@@ -8,7 +8,7 @@ rockdashboards_branch: master
 
 elastic:
   major_version: 7
-  suffix: "x-prerelease"
+  suffix: "x"
 
 yum_base_url: http://mirror.centos.org/centos/7/os/x86_64/
 yum_updates_url: http://mirror.centos.org/centos/7/updates/x86_64/
