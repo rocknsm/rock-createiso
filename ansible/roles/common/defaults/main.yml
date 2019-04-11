@@ -2,7 +2,7 @@
 skip_gpg: true
 
 rock_cache_dir: rocknsm_cache
-rock_repo: 2_4
+rock_repo: "2_4"
 rockscripts_branch: master
 rockdashboards_branch: master
 
@@ -15,7 +15,7 @@ yum_base_url: http://mirror.centos.org/centos/7/os/x86_64/
 yum_updates_url: http://mirror.centos.org/centos/7/updates/x86_64/
 yum_extras_url: http://mirror.centos.org/centos/7/extras/x86_64/
 yum_epel_url: http://download.fedoraproject.org/pub/epel/7/x86_64/
-yum_rocknsm_2_url: https://packagecloud.io/rocknsm/{{ rock_repo }}/el/7/$basearch
+yum_rocknsm_2_url: "https://packagecloud.io/rocknsm/{{ rock_repo }}/el/7/$basearch"
 yum_rocknsm_testing_url: https://copr-be.cloud.fedoraproject.org/results/@rocknsm/testing/epel-7-$basearch/
 yum_elastic_url: https://artifacts.elastic.co/packages/{{ elastic.major_version }}.{{ elastic.suffix }}/yum
 yum_rocknsm_testing_enabled: 0
