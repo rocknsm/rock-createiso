@@ -73,3 +73,4 @@ set +x
 -E "http://pulp.cyberlab.lan/pulp/repos/epel/7/x86_64/" \
 -u "http://pulp.cyberlab.lan/pulp/repos/centos/7/updates/" \
 -l "http://pulp.cyberlab.lan/pulp/repos/elastic/7/" \
+-a 'https://packagecloud.io/rocknsm/2_4/el/7/$basearch'
