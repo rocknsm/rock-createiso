@@ -10,6 +10,7 @@ elastic:
   major_version: 7
   suffix: "x"
 
+yum_additional_urls: []
 yum_base_url: http://mirror.centos.org/centos/7/os/x86_64/
 yum_updates_url: http://mirror.centos.org/centos/7/updates/x86_64/
 yum_extras_url: http://mirror.centos.org/centos/7/extras/x86_64/
