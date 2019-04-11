@@ -81,13 +81,13 @@ gpgkey=file:///usr/share/distribution-gpg-keys/epel/RPM-GPG-KEY-EPEL-7
 gpgcheck=0
 enabled=1
 
-[rocknsm_2_2]
-name=rocknsm_2_2
+[rocknsm_pkgcloud]
+name=rocknsm_pkgcloud
 baseurl={{ yum_rocknsm_2_url }}
 repo_gpgcheck=0
 gpgcheck=0
 enabled=1
-gpgkey=https://packagecloud.io/rocknsm/2_2/gpgkey
+gpgkey=https://packagecloud.io/rocknsm/{{ rock_repo }}/gpgkey
 sslverify=1
 sslcacert=/etc/pki/tls/certs/ca-bundle.crt
 metadata_expire=300
