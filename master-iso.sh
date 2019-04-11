@@ -32,8 +32,9 @@ DEBUG=${0:-}
 SKIP_GPG='true'
 ROCK_CACHE_DIR=${SCRIPT_DIR}'/rocknsm_cache'
 ROCK_RELEASE='RockNSM release ${VERSION}.${RELEASE} (Core)'
+YUM_ADDITIONAL_URLS=()
 
-while getopts 'o:s:g:p:i:t:b:e:E:u:l:h' flag; do
+while getopts 'o:s:g:p:i:t:b:e:E:u:l:a:h' flag; do
   case "${flag}" in
     o) OUT_ISO=$(realpath "${OPTARG}") ;;
     s) SRCISO=$(realpath "${OPTARG}") ;;
@@ -46,12 +47,11 @@ while getopts 'o:s:g:p:i:t:b:e:E:u:l:h' flag; do
     E) YUM_EPEL_URL="${OPTARG}";;
     u) YUM_UPDATES_URL="${OPTARG}";;
     l) YUM_ELASTIC_URL="${OPTARG}";;
+    a) YUM_ADDITIONAL_URLS+=("${OPTARG}");;
     h) HELP='true' ;;
     *) error "Unexpected option ${flag}" ;;
   esac
 done
-
-if [[ $HELP ]]; then usage; fi
 
 usage() {
   echo "Usage: `basename $0` -s source.iso [-o output.iso] [-g gpg-key-name] [-p gpg-password] [-i gpg-key-path]"
@@ -67,8 +67,11 @@ usage() {
   echo "  -E, Yum EPEL url"
   echo "  -u, Yum updates url"
   echo "  -l, Yum elastic url"
+  echo "  -a, Additional Yum url. Can be used multiple times"
   exit 2
 }
+
+if [[ $HELP ]]; then usage; fi
 
 if ! [[ $SRCISO ]]; then usage; fi
 
@@ -193,6 +196,12 @@ download_content() {
   fi
   if [[ ! -z ${YUM_ELASTIC_URL+x} ]]; then
     echo "yum_elastic_url: '${YUM_ELASTIC_URL}'" >> /tmp/extra-vars.yml
+  fi
+  if [[ ! -z ${YUM_ADDITIONAL_URLS+x} ]]; then
+    echo "yum_additional_urls: " >> /tmp/extra-vars.yml
+    for item in "${YUM_ADDITIONAL_URLS}"; do
+      echo " - ${item}" >> /tmp/extra-vars.yml
+    done
   fi
 
   echo "Running the following ansible command"

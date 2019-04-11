@@ -28,6 +28,17 @@ mdpolicy=group:primary
 best=1
 strict=0
 
+{% for item in yum_additional_urls %}
+
+# Additional Repos
+[additional-repo-{{ loop.index }}]
+name=additional-repo-{{ loop.index }}
+baseurl={{ item }}
+enabled=1
+gpgcheck=0
+
+{% endfor %}
+
 {% if ansible_distribution == "CentOS" %}
 
 # repos
@@ -58,6 +69,8 @@ gpgcheck=0
 enabled=1
 
 {% endif %}
+
+
 
 [epel]
 name=epel
