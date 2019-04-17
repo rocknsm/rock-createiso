@@ -38,7 +38,7 @@ jobs:
         on_failure:
           put: RockNSM-Slack
           params:
-            text: "Concourse Manual failed to build. Could not retrieve a copy of centos minimal iso."
+            text: "Concourse Pre-Release failed to build. Could not retrieve a copy of centos minimal iso."
             username: "Concourse-CI"
             # icon_url: URL
 
@@ -57,17 +57,17 @@ jobs:
             path: /bin/bash
             args:
               - '-c'
-              - 'rock-createiso-git/concourse/create_iso.sh "$GPG_KEY_NAME" "$GPG_KEY_PASS" "$GPG_KEY" "$ENABLE_TESTING" "$OFFICIAL_RELEASE"'
+              - 'rock-createiso-git/concourse/create_iso.sh "$GPG_KEY_NAME" "$GPG_KEY_PASS" "$GPG_KEY" "$ENABLE_TESTING" "OFFICIAL_RELEASE"'
           params:
             GPG_KEY: ((gpg-key))
             GPG_KEY_PASS: ((gpg-passphrase))
             GPG_KEY_NAME: ((gpg-key-name))
-            ENABLE_TESTING: 1
+            ENABLE_TESTING: 0
             OFFICIAL_RELEASE: 0
         on_failure:
           put: RockNSM-Slack
           params:
-            text: "Concourse Manual Failed to build. Task: ROCK Create ISO. Check webui for additional information."
+            text: "Concourse Pre-Release Failed to build. Task: ROCK Create ISO. Check webui for additional information."
             username: "Concourse-CI"
             # icon_url: URL
       - task: Upload ISO
@@ -88,16 +88,16 @@ jobs:
             MIRROR_USER: ((mirror-user))
             MIRROR_PASS: ((mirror-pass))
             MIRROR_HOST: ((mirror-host))
-            MIRROR_REPO: "testing"
+            MIRROR_REPO: "prerelease"
             MIRROR_PRIVATE: ((mirror-private-key))
             MIRROR_PUBLIC: ((mirror-public-key))
         on_failure:
           put: RockNSM-Slack
           params:
-            text: "Concourse Manual prerelease Failed to upload ISO to mirror. Check webui for additional information."
+            text: "Concourse Pre-Release Failed to upload ISO to mirror. Check webui for additional information."
             username: "Concourse-CI"
         on_success:
           put: RockNSM-Slack
           params:
-            text: "Concourse Manual prerelease build successful. The prerelease build can be found here <((mirror-uri))|Manual Release>"
+            text: "Concourse Pre-Release build successful. The release build can be found here <((mirror-uri))|Pre-Release>"
             username: "Concourse-CI"
