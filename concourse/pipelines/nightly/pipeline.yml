@@ -70,13 +70,14 @@ jobs:
         path: /bin/bash
         args:
           - '-c'
-          - 'rock-createiso-git/concourse/create_iso.sh "$GPG_KEY_NAME" "$GPG_KEY_PASS" "$GPG_KEY" "$ENABLE_TESTING" "$OFFICIAL_RELEASE"'
+          - 'rock-createiso-git/concourse/create_iso.sh "$GPG_KEY_NAME" "$GPG_KEY_PASS" "$GPG_KEY" "$ENABLE_TESTING" "$OFFICIAL_RELEASE" "$PULP_HOST"'
       params:
         GPG_KEY: ((gpg-key))
         GPG_KEY_PASS: ((gpg-passphrase))
         GPG_KEY_NAME: ((gpg-key-name))
         ENABLE_TESTING: 1
         OFFICIAL_RELEASE: 0
+        PULP_HOST: ((pulp-host))
     on_failure:
       put: RockNSM-Slack
       params:
