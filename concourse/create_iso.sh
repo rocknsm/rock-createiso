@@ -22,6 +22,7 @@ GPG_KEY_PASS="$2"
 GPG_KEY="$3"
 ENABLE_TESTING=$4
 OFFICIAL_RELEASE=$5
+PULP_HOST=$6
 
 if [[ $OFFICIAL_RELEASE -eq 1 ]]; then
   # Curl the tags and find the latest tag available on github and cut out all the other cruft
@@ -54,11 +55,11 @@ echo "-g $GPG_KEY_NAME"
 echo "-p HIDDEN PASSWORD"
 echo "-i $GPG_KEY_PATH"
 echo "-t $ENABLE_TESTING"
-echo "-b http://pulp.cyberlab.lan/pulp/repos/centos/7.5/os/"
-echo "-e http://pulp.cyberlab.lan/pulp/repos/centos/7.5/extras/"
-echo "-E http://pulp.cyberlab.lan/pulp/repos/epel/7/x86_64/"
-echo "-u http://pulp.cyberlab.lan/pulp/repos/centos/7.5/updates/"
-echo "-l http://pulp.cyberlab.lan/pulp/repos/elastic/6/"
+echo "-b http://${PULP_HOST}/pulp/repos/centos/7.5/os/"
+echo "-e http://${PULP_HOST}/pulp/repos/centos/7.5/extras/"
+echo "-E http://${PULP_HOST}/pulp/repos/epel/7/x86_64/"
+echo "-u http://${PULP_HOST}/pulp/repos/centos/7.5/updates/"
+echo "-l http://${PULP_HOST}/pulp/repos/elastic/6/"
 
 set +x
 ../master-iso.sh \
@@ -68,9 +69,9 @@ set +x
 -p "$GPG_KEY_PASS" \
 -i "$GPG_KEY_PATH" \
 -t "$ENABLE_TESTING" \
--b "http://pulp.cyberlab.lan/pulp/repos/centos/7/os/" \
--e "http://pulp.cyberlab.lan/pulp/repos/centos/7/extras/" \
--E "http://pulp.cyberlab.lan/pulp/repos/epel/7/x86_64/" \
--u "http://pulp.cyberlab.lan/pulp/repos/centos/7/updates/" \
--l "http://pulp.cyberlab.lan/pulp/repos/elastic/7/" \
+-b "http://${PULP_HOST}/pulp/repos/centos/7/os/" \
+-e "http://${PULP_HOST}/pulp/repos/centos/7/extras/" \
+-E "http://${PULP_HOST}/pulp/repos/epel/7/x86_64/" \
+-u "http://${PULP_HOST}/pulp/repos/centos/7/updates/" \
+-l "http://${PULP_HOST}/pulp/repos/elastic/7/" \
 -a 'https://packagecloud.io/rocknsm/2_4/el/7/$basearch'
