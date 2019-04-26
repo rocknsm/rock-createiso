@@ -37,7 +37,7 @@ jobs:
         path: /bin/bash
         args:
           - '-c'
-          - 'rock-createiso-git/concourse/download_minimal_iso.sh $1'
+          - 'rock-createiso-git/concourse/download_minimal_iso.sh "$MIRROR_HOST"'
     on_failure:
       put: RockNSM-Slack
       params:
