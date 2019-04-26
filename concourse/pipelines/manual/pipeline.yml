@@ -36,7 +36,7 @@ jobs:
       run:
         path: /bin/bash
         args:
-          - 'c'
+          - '-c'
           - 'rock-createiso-git/concourse/download_minimal_iso.sh $1'
     on_failure:
       put: RockNSM-Slack
