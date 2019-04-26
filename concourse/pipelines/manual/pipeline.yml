@@ -38,12 +38,13 @@ jobs:
         args:
           - '-c'
           - 'rock-createiso-git/concourse/download_minimal_iso.sh "$MIRROR_HOST"'
+      params:
+        MIRROR_HOST: ((mirror-host))
     on_failure:
       put: RockNSM-Slack
       params:
         text: "Concourse Manual failed to build. Could not retrieve a copy of centos minimal iso."
         username: "Concourse-CI"
-        MIRROR_HOST: ((mirror-host))
         # icon_url: URL
 
   - task: ROCK Create ISO
