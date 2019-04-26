@@ -13,8 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+LOCAL_MIRROR_HOST=$1
+
 # mkdir
 mkdir -p centos-minimal-iso
 
 # download ISO
-curl -sL internal-mirror.cyberlab.lan/upstream/$(curl -L -s  internal-mirror.cyberlab.lan/upstream | awk -F '"' '/href.*Minimal/ {print $2}') -o centos-minimal-iso/centos-minimal.iso
+curl -sL ${LOCAL_MIRROR_HOST}/upstream/$(curl -L -s ${LOCAL_MIRROR_HOST}/upstream | awk -F '"' '/href.*Minimal/ {print $2}') -o centos-minimal-iso/centos-minimal.iso

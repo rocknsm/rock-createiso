@@ -34,7 +34,12 @@ jobs:
           outputs:
             - name: centos-minimal-iso
           run:
-            path: rock-createiso-git/concourse/download_minimal_iso.sh
+            path: /bin/bash
+            args:
+              - '-c'
+              - 'rock-createiso-git/concourse/download_minimal_iso.sh "$MIRROR_HOST"'
+          params:
+            MIRROR_HOST: ((mirror-host))
         on_failure:
           put: RockNSM-Slack
           params:
@@ -57,13 +62,14 @@ jobs:
             path: /bin/bash
             args:
               - '-c'
-              - 'rock-createiso-git/concourse/create_iso.sh "$GPG_KEY_NAME" "$GPG_KEY_PASS" "$GPG_KEY" "$ENABLE_TESTING" "OFFICIAL_RELEASE"'
+              - 'rock-createiso-git/concourse/create_iso.sh "$GPG_KEY_NAME" "$GPG_KEY_PASS" "$GPG_KEY" "$ENABLE_TESTING" "OFFICIAL_RELEASE" "$PULP_HOST"'
           params:
             GPG_KEY: ((gpg-key))
             GPG_KEY_PASS: ((gpg-passphrase))
             GPG_KEY_NAME: ((gpg-key-name))
             ENABLE_TESTING: 0
             OFFICIAL_RELEASE: 0
+            PULP_HOST: ((pulp-host))
         on_failure:
           put: RockNSM-Slack
           params:
