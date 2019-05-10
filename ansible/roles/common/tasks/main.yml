@@ -51,7 +51,6 @@
 - name: download ET Suricata rules
   get_url:
     url: https://rules.emergingthreats.net/open/suricata-4.0/emerging.rules.tar.gz
-    checksum: "md5:https://rules.emergingthreats.net/open/suricata-4.0/emerging.rules.tar.gz.md5"
     dest: "{{ rock_cache_dir }}/support/emerging.rules-suricata.tar.gz"
     mode: 0644
 
