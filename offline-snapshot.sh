@@ -99,7 +99,7 @@ function offline-snapshot () {
   echo "Downloading ET Suricata rules..."
   # ET Rules - Suricata
   curl -Ls -o emerging.rules-suricata.tar.gz \
-    'https://rules.emergingthreats.net/open/suricata/emerging.rules.tar.gz'
+    'https://rules.emergingthreats.net/open/suricata-4.0/emerging.rules.tar.gz'
 
   if [ "${SKIP_GPG}" -eq "0" ]; then
       gpg2 --detach-sign --yes --armor -u security@rocknsm.io emerging.rules-suricata.tar.gz
