@@ -88,8 +88,6 @@ esac
 /usr/bin/grep -E "\s/data\s" /etc/fstab > /dev/null
 if [[ $? -eq 0 ]]; then
   /usr/bin/sed -i '/\s\/data\s/ s|defaults|rw,relatime,seclabel,attr2,inode64,prjquota|g' /etc/fstab
-else
-  /usr/bin/sed -i '/\s\/\s/ s|defaults|rw,relatime,seclabel,attr2,inode64,prjquota|g' /etc/fstab
 fi
 
 %end
