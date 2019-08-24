@@ -53,8 +53,11 @@ download_packages:
   - logrotate
   - rock-release
   - bro
+  - bro-aux
   - bro-plugin-kafka
   - bro-plugin-af_packet
+  - bro-plugin-gquic
+  - bro-plugin-communityid
   - GeoIP
   - GeoIP-update
   - suricata
