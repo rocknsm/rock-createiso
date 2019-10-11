@@ -52,12 +52,12 @@ download_packages:
   - nmap-ncat
   - logrotate
   - rock-release
-  - bro
-  - bro-aux
-  - bro-plugin-kafka
-  - bro-plugin-af_packet
-  - bro-plugin-gquic
-  - bro-plugin-communityid
+  - zeek
+  - zeek-aux
+  - zeek-plugin-kafka
+  - zeek-plugin-af_packet
+  - zeek-plugin-gquic
+  - zeek-plugin-communityid
   - GeoIP
   - GeoIP-update
   - suricata
