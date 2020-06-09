@@ -88,3 +88,5 @@ download_packages:
   - python2-xkcdpass
   - python2-pytest
   - python2-testinfra
+  - python3
+  - python36-PyYAML
