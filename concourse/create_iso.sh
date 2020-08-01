@@ -74,5 +74,5 @@ set +x
 -E "http://${PULP_HOST}/pulp/repos/epel/7/x86_64/" \
 -u "http://${PULP_HOST}/pulp/repos/centos/7/updates/" \
 -l "http://${PULP_HOST}/pulp/repos/elastic/7/" \
--a 'https://packagecloud.io/rocknsm/2_5/el/7/$basearch' \
+-a 'https://packagecloud.io/rocknsm/2_6/el/7/$basearch' \
 -a 'http://mirror1.internal.perched.io/internal/rock-staging/'
