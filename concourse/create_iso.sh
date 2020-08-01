@@ -55,11 +55,11 @@ echo "-g $GPG_KEY_NAME"
 echo "-p HIDDEN PASSWORD"
 echo "-i $GPG_KEY_PATH"
 echo "-t $ENABLE_TESTING"
-echo "-b http://${PULP_HOST}/pulp/repos/centos/7.5/os/"
-echo "-e http://${PULP_HOST}/pulp/repos/centos/7.5/extras/"
+echo "-b http://${PULP_HOST}/pulp/repos/centos/7/os/"
+echo "-e http://${PULP_HOST}/pulp/repos/centos/7/extras/"
 echo "-E http://${PULP_HOST}/pulp/repos/epel/7/x86_64/"
-echo "-u http://${PULP_HOST}/pulp/repos/centos/7.5/updates/"
-echo "-l http://${PULP_HOST}/pulp/repos/elastic/6/"
+echo "-u http://${PULP_HOST}/pulp/repos/centos/7/updates/"
+echo "-l http://${PULP_HOST}/pulp/repos/elastic/7/"
 
 set +x
 ../master-iso.sh \
