@@ -6,9 +6,9 @@ name: Create ROCK ISO
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ seven62-patch-1 ]
+    branches: [ master ]
   pull_request:
-    branches: [ seven62-patch-1 ]
+    branches: [ master ]
   schedule:
     - cron: '0 7 * * mon' # every monday at 1am local
 
@@ -30,11 +30,18 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: actions-centos
+          
+      - name: Checking runner requirements
+        run: echo "checking local requirements" # local iso / git / ansible / etc
 
       - name: Bootstrap to install dependencies
+        run: echo "running bootstrap"
       
       - name: Execute master ISO script
+        run: echo "running master_iso"
       
       - name: Generate checksums
+        run: echo "generating checksums"
       
       - name: Upload artifacts to webserver
+        run: echo "uploading files"      
