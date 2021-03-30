@@ -28,8 +28,6 @@ jobs:
       - name: Checkout Repository
         # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
         uses: actions/checkout@v2
-        with:
-          ref: actions-centos
           
       - name: Checking runner requirements
         run: echo "checking local requirements" # local iso / git / ansible / etc
