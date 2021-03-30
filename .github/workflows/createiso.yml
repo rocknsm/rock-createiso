@@ -28,12 +28,9 @@ jobs:
       - name: Checkout Repository
         # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
         uses: actions/checkout@v2
-          
-      - name: Checking runner requirements
-        run: echo "checking local requirements" # local iso / git / ansible / etc
 
-      - name: Bootstrap to install dependencies
-        run: echo "running bootstrap"
+      - name: Install dependencies with bootstrap script
+        run: ./bootstrap.sh
       
       - name: Execute master ISO script
         run: echo "running master_iso"
