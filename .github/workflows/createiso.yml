@@ -30,7 +30,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install dependencies with bootstrap script
-        run: ./bootstrap.sh
+        run: sudo ./bootstrap.sh
       
       - name: Execute master ISO script
         run: echo "running master_iso"
