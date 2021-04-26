@@ -73,6 +73,6 @@ set +x
 -e "http://${PULP_HOST}/pulp/repos/centos/7/extras/x86_64/" \
 -u "http://${PULP_HOST}/pulp/repos/centos/7/updates/x86_64/" \
 -E "http://${PULP_HOST}/pulp/repos/pub/epel/7/x86_64/" \
--l "http://${PULP_HOST}pulp/repos/packages/7.x/yum/" \
+-l "http://${PULP_HOST}/pulp/repos/packages/7.x/yum/" \
 -a 'https://packagecloud.io/rocknsm/2_6/el/7/$basearch' \
 
