@@ -55,11 +55,11 @@ echo "-g $GPG_KEY_NAME"
 echo "-p HIDDEN PASSWORD"
 echo "-i $GPG_KEY_PATH"
 echo "-t $ENABLE_TESTING"
-echo "-b https://${PULP_HOST}/pulp/repos/pub/centos/7/os/"
-echo "-e https://${PULP_HOST}/pulp/repos/pub/centos/7/extras/"
+echo "-b https://${PULP_HOST}/pulp/repos/centos/7/os/x86_64/"
+echo "-e https://${PULP_HOST}/pulp/repos/centos/7/extras/x86_64/"
+echo "-u https://${PULP_HOST}/pulp/repos/centos/7/updates/x86_64/"
 echo "-E https://${PULP_HOST}/pulp/repos/pub/epel/7/x86_64/"
-echo "-u https://${PULP_HOST}/pulp/repos/pub/centos/7/updates/"
-echo "-l https://${PULP_HOST}/pulp/repos/pub/elastic/7/"
+echo "-l https://${PULP_HOST}/pulp/repos/packages/7.x/yum/"
 
 set +x
 ../master-iso.sh \
@@ -69,10 +69,10 @@ set +x
 -p "$GPG_KEY_PASS" \
 -i "$GPG_KEY_PATH" \
 -t "$ENABLE_TESTING" \
--b "https://${PULP_HOST}/pulp/repos/pub/centos/7/os/" \
--e "https://${PULP_HOST}/pulp/repos/pub/centos/7/extras/" \
+-b "https://${PULP_HOST}/pulp/repos/centos/7/os/x86_64/" \
+-e "https://${PULP_HOST}/pulp/repos/centos/7/extras/x86_64/" \
+-u "https://${PULP_HOST}/pulp/repos/centos/7/updates/x86_64/" \
 -E "https://${PULP_HOST}/pulp/repos/pub/epel/7/x86_64/" \
--u "https://${PULP_HOST}/pulp/repos/pub/centos/7/updates/" \
--l "https://${PULP_HOST}/pulp/repos/pub/elastic/7/" \
+-l "https://${PULP_HOST}pulp/repos/packages/7.x/yum/" \
 -a 'https://packagecloud.io/rocknsm/2_6/el/7/$basearch' \
 
