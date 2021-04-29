@@ -89,7 +89,7 @@ jobs:
             path: /bin/bash
             args:
               - '-c'
-              - 'rock-createiso-git/concourse/upload.sh "$MIRROR_USER" "$MIRROR_PASS" "$MIRROR_HOST" "$MIRROR_REPO" "$MIRROR_PRIVATE" "$MIRROR_PUBLIC"'
+              - 'rock-createiso-git/concourse/upload.sh "$MIRROR_USER" "$MIRROR_PASS" "$MIRROR_HOST" "$MIRROR_REPO" "$MIRROR_PRIVATE" "$MIRROR_PUBLIC" "$MIRROR_IP"'
           params:
             MIRROR_USER: ((mirror-user))
             MIRROR_PASS: ((mirror-pass))
@@ -97,6 +97,7 @@ jobs:
             MIRROR_REPO: "testing"
             MIRROR_PRIVATE: ((mirror-private-key))
             MIRROR_PUBLIC: ((mirror-public-key))
+            MIRROR_IP: ((mirror-ip))
         on_failure:
           put: RockNSM-Slack
           params:
