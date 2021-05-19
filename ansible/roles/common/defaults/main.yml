@@ -52,7 +52,7 @@ download_packages:
   - nmap-ncat
   - logrotate
   - rock-release
-  - zeek
+  - zeek-3.1.5
   - zeek-aux
   - zeek-plugin-kafka
   - zeek-plugin-af_packet
@@ -60,7 +60,7 @@ download_packages:
   - zeek-plugin-communityid
   - GeoIP
   - GeoIP-update
-  - suricata
+  - suricata-5.0.5
   - perl-Crypt-SSLeay
   - perl-LWP-Protocol-https
   - perl-Sys-Syslog
@@ -74,17 +74,16 @@ download_packages:
   - kafka
   - kafkacat
   - java-11-openjdk-headless
-  - fsf
-  - elasticsearch
-  - logstash
-  - kibana
-  - auditbeat
-  - metricbeat
-  - filebeat
-  - heartbeat
-  - metricbeat
+  - elasticsearch-7.11.2
+  - logstash-7.11.2
+  - kibana-7.11.2
+  - auditbeat-7.11.2
+  - metricbeat-7.11.2
+  - filebeat-7.11.2
+  - heartbeat-7.11.2
+  - metricbeat-7.11.2
   - easy-rsa
-  - python2-pyOpenSSL
+  - pyOpenSSL
   - python2-xkcdpass
   - python2-pytest
   - python2-testinfra
