@@ -19,25 +19,25 @@ resources:
       branch: master
       tag_filter: "rock-[[:digit:]].[[:digit:]].[[:digit:]]-[[:digit:]]"
 
-  - name: RockNSM-Slack
+  - name: rocknsm-slack
     type: slack-notification
     source:
       url: ((slack-webhook))
 
 jobs:
-  - name: RockNSM Create ISO
+  - name: rocknsm-create-iso
     build_logs_to_retain: 14
     serial: true
     plan:
       - get: rock-rocknsm-git
         trigger: true
       - get: rock-createiso-git
-      - task: Download centOS Minimal ISO
+      - task: download-centos-minimal-iso
         config:
           platform: linux
           image_resource:
             type: docker-image
-            source: { repository: centos }
+            source: { repository: centos, tag: 7 }
           inputs:
             - name: rock-createiso-git
           outputs:
@@ -50,18 +50,18 @@ jobs:
           params:
             MIRROR_HOST: ((mirror-host))
         on_failure:
-          put: RockNSM-Slack
+          put: rocknsm-slack
           params:
             text: "Concourse Official Release failed to build. Could not retrieve a copy of centos minimal iso."
             username: "Concourse-CI"
             # icon_url: URL
   
-      - task: ROCK Create ISO
+      - task: rock-create-iso
         config:
           platform: linux
           image_resource:
             type: docker-image
-            source: { repository: centos }
+            source: { repository: centos, tag: 7 }
           inputs:
             - name: rock-createiso-git
             - name: centos-minimal-iso
@@ -80,17 +80,17 @@ jobs:
             OFFICIAL_RELEASE: 1
             PULP_HOST: ((pulp-host))
         on_failure:
-          put: RockNSM-Slack
+          put: rocknsm-slack
           params:
-            text: "Concourse Official Release Failed to build. Task: ROCK Create ISO. Check webui for additional information."
+            text: "Concourse Official Release Failed to build. Task: rock-create-iso. Check webui for additional information."
             username: "Concourse-CI"
             # icon_url: URL
-      - task: Upload ISO
+      - task: upload-iso
         config:
           platform: linux
           image_resource:
             type: docker-image
-            source: { repository: centos }
+            source: { repository: centos, tag: 7 }
           inputs:
             - name: rocknsm-iso
             - name: rock-createiso-git
@@ -98,7 +98,7 @@ jobs:
             path: /bin/bash
             args:
               - '-c'
-              - 'rock-createiso-git/concourse/upload.sh "$MIRROR_USER" "$MIRROR_PASS" "$MIRROR_HOST" "$MIRROR_REPO" "$MIRROR_PRIVATE" "$MIRROR_PUBLIC"'
+              - 'rock-createiso-git/concourse/upload.sh "$MIRROR_USER" "$MIRROR_PASS" "$MIRROR_HOST" "$MIRROR_REPO" "$MIRROR_PRIVATE" "$MIRROR_PUBLIC" "$MIRROR_IP"'
           params:
             MIRROR_USER: ((mirror-user))
             MIRROR_PASS: ((mirror-pass))
@@ -106,13 +106,14 @@ jobs:
             MIRROR_REPO: "stable"
             MIRROR_PRIVATE: ((mirror-private-key))
             MIRROR_PUBLIC: ((mirror-public-key))
+            MIRROR_IP: ((mirror-ip))
         on_failure:
-          put: RockNSM-Slack
+          put: rocknsm-slack
           params:
             text: "Concourse Official Release Failed to upload ISO to mirror. Check webui for additional information."
             username: "Concourse-CI"
         on_success:
-          put: RockNSM-Slack
+          put: rocknsm-slack
           params:
             text: "Concourse Official Release build successful. The release build can be found here <((mirror-uri))|Official Release>"
             username: "Concourse-CI"
