@@ -12,31 +12,31 @@ resources:
       uri: https://github.com/rocknsm/rock-createiso.git
       branch: master
 
-  - name: RockNSM-Slack
+  - name: rocknsm-slack
     type: slack-notification
     source:
       url: ((slack-webhook))
 
-  - name: Nightly-Timer
+  - name: nightly-timer
     type: time
     source:
       start: 8:00 AM
       stop: 8:15 AM
 
 jobs:
-  - name: RockNSM Create ISO
+  - name: rocknsm_create_iso
     build_logs_to_retain: 14
     serial: true
     plan:
       - get: rock-createiso-git
-      - get: Nightly-Timer
+      - get: nightly-timer
         trigger: true
-      - task: Download centOS Minimal ISO
+      - task: download_centos_minimal_iso
         config:
           platform: linux
           image_resource:
             type: docker-image
-            source: { repository: centos }
+            source: { repository: centos, tag: 7 }
           inputs:
             - name: rock-createiso-git
           outputs:
@@ -49,18 +49,18 @@ jobs:
           params:
             MIRROR_HOST: ((mirror-host))
         on_failure:
-          put: RockNSM-Slack
+          put: rocknsm-slack
           params:
             text: "Concourse Nightly failed to build. Could not retrieve a copy of centos minimal iso."
             username: "Concourse-CI"
             # icon_url: URL
   
-      - task: ROCK Create ISO
+      - task: rock_create_iso
         config:
           platform: linux
           image_resource:
             type: docker-image
-            source: { repository: centos }
+            source: { repository: centos, tag: 7 }
           inputs:
             - name: rock-createiso-git
             - name: centos-minimal-iso
@@ -79,17 +79,17 @@ jobs:
             OFFICIAL_RELEASE: 0
             PULP_HOST: ((pulp-host))
         on_failure:
-          put: RockNSM-Slack
+          put: rocknsm-slack
           params:
-            text: "Concourse Nightly Failed to build. Task: ROCK Create ISO. Check webui for additional information."
+            text: "Concourse Nightly Failed to build. Task: rock_create_iso. Check webui for additional information."
             username: "Concourse-CI"
             # icon_url: URL
-      - task: Upload ISO
+      - task: upload_iso
         config:
           platform: linux
           image_resource:
             type: docker-image
-            source: { repository: centos }
+            source: { repository: centos, tag: 7 }
           inputs:
             - name: rock-createiso-git
             - name: rocknsm-iso
@@ -97,7 +97,7 @@ jobs:
             path: /bin/bash
             args:
               - '-c'
-              - 'rock-createiso-git/concourse/upload.sh "$MIRROR_USER" "$MIRROR_PASS" "$MIRROR_HOST" "$MIRROR_REPO" "$MIRROR_PRIVATE" "$MIRROR_PUBLIC"'
+              - 'rock-createiso-git/concourse/upload.sh "$MIRROR_USER" "$MIRROR_PASS" "$MIRROR_HOST" "$MIRROR_REPO" "$MIRROR_PRIVATE" "$MIRROR_PUBLIC" "$MIRROR_IP"'
           params:
             MIRROR_USER: ((mirror-user))
             MIRROR_PASS: ((mirror-pass))
@@ -105,13 +105,14 @@ jobs:
             MIRROR_REPO: "testing"
             MIRROR_PRIVATE: ((mirror-private-key))
             MIRROR_PUBLIC: ((mirror-public-key))
+            MIRROR_IP: ((mirror-ip))
         on_failure:
-          put: RockNSM-Slack
+          put: rocknsm-slack
           params:
             text: "Concourse Nightly Release Failed to upload ISO to mirror. Check webui for additional information."
             username: "Concourse-CI"
         on_success:
-          put: RockNSM-Slack
+          put: rocknsm-slack
           params:
             text: "Concourse Nightly Release build successful. The prerelease build can be found here <((mirror-uri))|Nightly Release>"
             username: "Concourse-CI"
