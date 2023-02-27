@@ -61,13 +61,26 @@ echo "-u http://${PULP_HOST}/pulp/repos/centos/7/updates/x86_64/"
 echo "-E http://${PULP_HOST}/pulp/repos/pub/epel/7/x86_64/"
 echo "-l http://${PULP_HOST}/pulp/repos/packages/7.x/yum/"
 
+
 set +x
+# Temp comment out because GPG key is failing to sign packages
+#../master-iso.sh \
+#-s ../../centos-minimal-iso/centos-minimal.iso \
+#-o "../../rocknsm-iso/${OUT_ISO}" \
+#-g "$GPG_KEY_NAME" \
+#-p "$GPG_KEY_PASS" \
+#-i "$GPG_KEY_PATH" \
+#-t "$ENABLE_TESTING" \
+#-b "http://${PULP_HOST}/pulp/repos/centos/7/os/x86_64/" \
+#-e "http://${PULP_HOST}/pulp/repos/centos/7/extras/x86_64/" \
+#-u "http://${PULP_HOST}/pulp/repos/centos/7/updates/x86_64/" \
+#-E "http://${PULP_HOST}/pulp/repos/pub/epel/7/x86_64/" \
+#-l "http://${PULP_HOST}/pulp/repos/packages/7.x/yum/" \
+#-a 'https://packagecloud.io/rocknsm/2_6/el/7/$basearch' \
+
 ../master-iso.sh \
 -s ../../centos-minimal-iso/centos-minimal.iso \
 -o "../../rocknsm-iso/${OUT_ISO}" \
--g "$GPG_KEY_NAME" \
--p "$GPG_KEY_PASS" \
--i "$GPG_KEY_PATH" \
 -t "$ENABLE_TESTING" \
 -b "http://${PULP_HOST}/pulp/repos/centos/7/os/x86_64/" \
 -e "http://${PULP_HOST}/pulp/repos/centos/7/extras/x86_64/" \
@@ -75,4 +88,3 @@ set +x
 -E "http://${PULP_HOST}/pulp/repos/pub/epel/7/x86_64/" \
 -l "http://${PULP_HOST}/pulp/repos/packages/7.x/yum/" \
 -a 'https://packagecloud.io/rocknsm/2_6/el/7/$basearch' \
-
